@@ -15,6 +15,7 @@ class YourCustomDEModel:
         self.model = AutoModel.from_pretrained(model_name).to(device)
         self.model_name = model_name
         self.tokenizer.add_eos_token = False
+        print('YourCustomDEModel init')
 
     def mean_pooling(self, model_output, attention_mask):
         token_embeddings = model_output[0]  # First element of model_output contains all token embeddings

@@ -16,6 +16,7 @@ class InMemoryDataLoader:
         self.corpus = {}
         self.queries = {}
         self.qrels = {}
+        print('data loader init')
 
     def load_custom(self) -> Tuple[Dict[str, Dict[str, str]], Dict[str, str], Dict[str, Dict[str, int]]]:
         logger.info("Loading Corpus...")
@@ -62,7 +63,7 @@ def load_data_from_hf(task_name):
     try:
         queries_corpus_dataset = load_dataset(f"CoIR-Retrieval/{task_name}-queries-corpus")
         qrels_dataset = load_dataset(f"CoIR-Retrieval/{task_name}-qrels")
-
+        print('fetched data from hf')
         corpus_data = queries_corpus_dataset['corpus']
         query_data = queries_corpus_dataset['queries']
         qrels_data = qrels_dataset['test']
@@ -75,7 +76,7 @@ def load_data_from_hf(task_name):
 
 def get_tasks(tasks: list):
     all_tasks = {}
-
+    print('in tasks ')
     # Define sub-tasks for special cases
     special_tasks = {
         "codesearchnet": [

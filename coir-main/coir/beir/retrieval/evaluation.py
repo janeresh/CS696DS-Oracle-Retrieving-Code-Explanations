@@ -3,6 +3,8 @@ import logging
 from typing import List, Dict, Tuple
 from .search.base import BaseSearch
 from .custom_metrics import mrr, recall_cap, hole, top_k_accuracy
+from collections import defaultdict
+from sentence_transformers.cross_encoder import CrossEncoder
 
 logger = logging.getLogger(__name__)
 
@@ -13,6 +15,8 @@ class EvaluateRetrieval:
         self.top_k = max(k_values)
         self.retriever = retriever
         self.score_function = score_function
+        #self.cross_encoder = CrossEncoder('cross-encoder/ms-marco-MiniLM-L-6-v2')
+
             
     def retrieve(self, corpus: Dict[str, Dict[str, str]], queries: Dict[str, str], **kwargs) -> Dict[str, Dict[str, float]]:
         if not self.retriever:
@@ -37,6 +41,59 @@ class EvaluateRetrieval:
                     new_corpus[doc_id] = corpus[doc_id]
                     
         return self.retriever.search(new_corpus, queries, top_k, self.score_function)
+
+    def rerank_rrf(self, 
+               corpus: Dict[str, Dict[str, str]], 
+               queries: Dict[str, str],
+               results: Dict[str, Dict[str, float]],
+               top_k: int,
+               rrf_k: int = 60) -> Dict[str, Dict[str, float]]:
+        """
+        Enhanced reranking using Reciprocal Rank Fusion (RRF).
+
+        rrf_k: Controls the impact of lower-ranked documents. Higher means lower-ranked docs contribute less.
+        """
+
+        reranked_results = defaultdict(dict)
+
+        for query_id, doc_scores in results.items():
+            # Sort docs by original score and take top-k
+            top_docs = sorted(doc_scores.items(), key=lambda item: item[1], reverse=True)[:top_k]
+
+            # RRF score aggregation
+            rrf_scores = defaultdict(float)
+            for rank, (doc_id, _) in enumerate(top_docs, start=1):
+                # Reciprocal Rank Fusion formula: RRF = 1 / (rank + rrf_k)
+                rrf_scores[doc_id] += 1 / (rank + rrf_k)
+
+            # Sort by final RRF scores
+            reranked_results[query_id] = {doc_id: score for doc_id, score in sorted(rrf_scores.items(), key=lambda x: x[1], reverse=True)}
+
+        return reranked_results
+    
+#     def rerank_cross_encoder(self, 
+#                          corpus: Dict[str, Dict[str, str]], 
+#                          queries: Dict[str, str],
+#                          results: Dict[str, Dict[str, float]],
+#                          top_k: int) -> Dict[str, Dict[str, float]]:
+
+#         reranked_results = {}
+
+#         for query_id, doc_scores in results.items():
+#             # Get the top-k docs from initial retrieval
+#             top_docs = sorted(doc_scores.items(), key=lambda item: item[1], reverse=True)[:top_k]
+
+#             pairs = [(queries[query_id], corpus[doc_id]['text']) for doc_id, _ in top_docs]
+
+#             # Batch predict scores for efficiency
+#             scores = self.cross_encoder.predict(pairs, batch_size=self.batch_size)
+
+#             reranked = sorted(zip([doc_id for doc_id, _ in top_docs], scores), key=lambda x: x[1], reverse=True)
+#             reranked_results[query_id] = {doc_id: score for doc_id, score in reranked}
+
+#         return reranked_results
+
+
 
     @staticmethod
     def evaluate(qrels: Dict[str, Dict[str, int]], 
