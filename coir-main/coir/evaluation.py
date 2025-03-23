@@ -3,6 +3,10 @@ import json
 import logging
 from coir.beir.retrieval.evaluation import EvaluateRetrieval
 from coir.beir.retrieval.search.dense import DenseRetrievalExactSearch as DRES
+from coir.beir.retrieval.search.dense import DenseRetrievalFaissSearch as DRFS
+from coir.beir.retrieval.search.dense import HNSWFaissSearch
+from sentence_transformers.cross_encoder import CrossEncoder
+from coir.beir.reranking.rerank import Rerank
 
 
 logger = logging.getLogger(__name__)
@@ -12,7 +16,7 @@ class COIR:
     def __init__(self, tasks, batch_size):
         self.tasks = tasks
         self.batch_size = batch_size
-        print('COIR init')
+        print('COIR init!')
 
     def run(self, model, output_folder: str):
         results = {}
@@ -29,24 +33,24 @@ class COIR:
             # Initialize custom model
             print('in evaluation.py: loading up dres\n')
             custom_model = DRES(model, batch_size=self.batch_size)
-            print('in evaluation.py: loading up retriever\n')
             retriever = EvaluateRetrieval(custom_model, score_function="cos_sim")
-            print(f"Batch size: {self.batch_size}")
-            # Retrieve results
-            # print('in evaluation.py: retrieving\n')
-            # task_results = retriever.retrieve(corpus, queries)
             
+            # Retrieve results            
             print('in evaluation.py: retrieving\n')
             initial_results = retriever.retrieve(corpus, queries)
-
+            
+            
             # Rerank the results
-            # print('in evaluation.py: reranking\n')
-            # reranked_results = retriever.rerank_rrf(corpus, queries, initial_results, top_k=10)
+            #print('in evaluation.py: reranking\n')
+            #ce_model = CrossEncoder('cross-encoder/qnli-distilroberta-base')
+            #reranker = Rerank(ce_model, self.batch_size)
+            #reranked_results = reranker.rerank(corpus, queries, initial_results, top_k=10)
+            #reranked_results = retriever.rerank_rrf(corpus, queries, initial_results, top_k=10)
 
 
             # Evaluate results
             print('in evaluation.py: evaluating\n')
-            ndcg, map, recall, precision = retriever.evaluate(qrels, initial_results, retriever.k_values)
+            ndcg, map, recall, precision = retriever.evaluate(qrels, initial_results, retriever.k_values, True, True, output_folder)
             metrics = {
                 "NDCG": ndcg,
                 "MAP": map,
