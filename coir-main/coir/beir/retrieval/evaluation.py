@@ -73,27 +73,25 @@ class EvaluateRetrieval:
 
         return reranked_results
     
-#     def rerank_cross_encoder(self, 
-#                          corpus: Dict[str, Dict[str, str]], 
-#                          queries: Dict[str, str],
-#                          results: Dict[str, Dict[str, float]],
-#                          top_k: int) -> Dict[str, Dict[str, float]]:
+    def rerank_cross_encoder(self, 
+                         corpus: Dict[str, Dict[str, str]], 
+                         queries: Dict[str, str],
+                         results: Dict[str, Dict[str, float]],
+                         top_k: int) -> Dict[str, Dict[str, float]]:
 
-#         reranked_results = {}
+        reranked_results = {}
 
-#         for query_id, doc_scores in results.items():
-#             # Get the top-k docs from initial retrieval
-#             top_docs = sorted(doc_scores.items(), key=lambda item: item[1], reverse=True)[:top_k]
+        for query_id, doc_scores in results.items():
+            top_docs = sorted(doc_scores.items(), key=lambda item: item[1], reverse=True)[:top_k]
 
-#             pairs = [(queries[query_id], corpus[doc_id]['text']) for doc_id, _ in top_docs]
+            pairs = [(queries[query_id], corpus[doc_id]['text']) for doc_id, _ in top_docs]
 
-#             # Batch predict scores for efficiency
-#             scores = self.cross_encoder.predict(pairs, batch_size=self.batch_size)
+            scores = self.cross_encoder.predict(pairs, batch_size=self.batch_size)
 
-#             reranked = sorted(zip([doc_id for doc_id, _ in top_docs], scores), key=lambda x: x[1], reverse=True)
-#             reranked_results[query_id] = {doc_id: score for doc_id, score in reranked}
+            reranked = sorted(zip([doc_id for doc_id, _ in top_docs], scores), key=lambda x: x[1], reverse=True)
+            reranked_results[query_id] = {doc_id: score for doc_id, score in reranked}
 
-#         return reranked_results
+        return reranked_results
 
 
 
@@ -126,7 +124,7 @@ class EvaluateRetrieval:
         evaluator = pytrec_eval.RelevanceEvaluator(qrels, {map_string, ndcg_string, recall_string, precision_string})
         scores = evaluator.evaluate(results)
 
-        result_data = []  # Store for CSV logging
+        result_data = []  
 
         for query_id in scores.keys():
             for k in k_values:
@@ -135,12 +133,10 @@ class EvaluateRetrieval:
                 recall[f"Recall@{k}"] += scores[query_id][f"recall_{k}"]
                 precision[f"P@{k}"] += scores[query_id][f"P_{k}"]
 
-            # Store individual retrieval results for analysis
             for doc_id, score in sorted(results[query_id].items(), key=lambda x: x[1], reverse=True):
                 relevance = qrels.get(query_id, {}).get(doc_id, 0)  # Get ground truth relevance (1 or 0)
                 result_data.append([query_id, doc_id, score, relevance])
 
-        # Normalize scores
         total_queries = len(scores)
         for k in k_values:
             ndcg[f"NDCG@{k}"] = round(ndcg[f"NDCG@{k}"] / total_queries, 5)
@@ -148,7 +144,7 @@ class EvaluateRetrieval:
             recall[f"Recall@{k}"] = round(recall[f"Recall@{k}"] / total_queries, 5)
             precision[f"P@{k}"] = round(precision[f"P@{k}"] / total_queries, 5)
 
-        # Save results to CSV
+        # Save results for further analysis
         if save_results:
             df = pd.DataFrame(result_data, columns=["query_id", "retrieved_doc_id", "score", "ground_truth_relevance"])
             os.makedirs(filename, exist_ok=True)
