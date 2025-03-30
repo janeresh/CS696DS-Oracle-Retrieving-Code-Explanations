@@ -5,3 +5,6 @@ __pycache__/
 *.pyo
 *.pyd
 coir-main/coir/beir/retrieval/__pycache__/*
+coir-main/results/
+coir-main/coir/__pycache__/
+

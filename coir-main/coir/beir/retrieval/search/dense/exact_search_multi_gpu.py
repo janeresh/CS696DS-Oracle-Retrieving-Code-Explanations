@@ -78,6 +78,7 @@ class DenseRetrievalParallelExactSearch(BaseSearch):
         self.score_function = None
         self.sort_corpus = True
         self.experiment_id = "exact_search_multi_gpu" # f"test_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}"
+        print('drpes init')
     
     def search(self, 
                corpus: Dataset, 
@@ -88,6 +89,7 @@ class DenseRetrievalParallelExactSearch(BaseSearch):
         #Create embeddings for all queries using model.encode_queries()
         #Runs semantic search against the corpus embeddings
         #Returns a ranked list with the corpus ids
+        print('drpes search')
         if score_function not in self.score_functions:
             raise ValueError("score function: {} must be either (cos_sim) for cosine similarity or (dot) for dot product".format(score_function))
         logger.info("Scoring Function: {} ({})".format(self.score_function_desc[score_function], score_function))
@@ -98,10 +100,10 @@ class DenseRetrievalParallelExactSearch(BaseSearch):
         self.corpus_chunk_size = min(math.ceil(len(corpus) / len(self.target_devices) / 10), 5000) if self.corpus_chunk_size is None else self.corpus_chunk_size
         self.corpus_chunk_size = min(self.corpus_chunk_size, len(corpus)-1) # to avoid getting error in metric.compute()
         
-        if self.sort_corpus:
-            logger.info("Sorting Corpus by document length (Longest first)...")
-            corpus = corpus.map(lambda x: {'len': len(x.get("title", "") + x.get("text", ""))}, num_proc=4)
-            corpus = corpus.sort('len', reverse=True)
+        # if self.sort_corpus:
+        #     logger.info("Sorting Corpus by document length (Longest first)...")
+        #     corpus = corpus.map(lambda x: {'len': len(x.get("title", "") + x.get("text", ""))}, num_proc=4)
+        #     corpus = corpus.sort('len', reverse=True)
 
         # Initiate dataloader
         queries_dl = DataLoader(queries, batch_size=self.corpus_chunk_size)

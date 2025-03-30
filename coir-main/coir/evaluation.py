@@ -4,6 +4,7 @@ import logging
 from coir.beir.retrieval.evaluation import EvaluateRetrieval
 from coir.beir.retrieval.search.dense import DenseRetrievalExactSearch as DRES
 from coir.beir.retrieval.search.dense import DenseRetrievalFaissSearch as DRFS
+from coir.beir.retrieval.search.dense import DenseRetrievalParallelExactSearch as DRPES
 from coir.beir.retrieval.search.dense import HNSWFaissSearch
 from sentence_transformers.cross_encoder import CrossEncoder
 from coir.beir.reranking.rerank import Rerank
