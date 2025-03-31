@@ -67,5 +67,6 @@ class YourCustomDEModel:
         return self.encode_text(all_queries, batch_size, max_length)
 
     def encode_corpus(self, corpus: List[Dict[str, str]], batch_size: int = 12, max_length: int = 512, **kwargs) -> np.ndarray:
-        all_texts = ["passage: "+ doc for doc in corpus]
+        all_texts = ["passage: "+ doc['text'] for doc in corpus]
+        #all_texts = ["passage: "+ doc for doc in corpus]
         return self.encode_text(all_texts, batch_size, max_length)

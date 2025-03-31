@@ -17,3 +17,4 @@ coir-main/results/microsoft/unixcoder-base_explanation_deepseek_1/retrieval_eval
 coir-main/results/microsoft/unixcoder-base_explanation_granite_1/retrieval_evaluation.csv
 coir-main/results/sentence-transformers/all-MiniLM-L6-v2_explanation_deepseek_1/retrieval_evaluation.csv
 coir-main/results/sentence-transformers/all-MiniLM-L6-v2_explanation_granite_1/retrieval_evaluation.csv
+coir-main/results/intfloat/e5-base-v2/baseline/*

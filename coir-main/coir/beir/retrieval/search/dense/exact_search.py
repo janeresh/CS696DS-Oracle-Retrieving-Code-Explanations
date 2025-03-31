@@ -185,11 +185,20 @@ class DenseRetrievalExactSearch(BaseSearch):
                                 heapq.heappush(result_heaps[query_id], (score, corpus_id))
                             else:
                                 heapq.heappushpop(result_heaps[query_id], (score, corpus_id))
-
+                
         print("Finalizing results...")
+        result_data = []
         for qid in result_heaps:
             for score, corpus_id in result_heaps[qid]:
                 self.results[qid][corpus_id] = score
+                result_data.append([qid, corpus_id, score])
+
+        df = pd.DataFrame(result_data, columns=["query_id", "retrieved_doc_id", "score"])
+        filename = "results/intfloat/retrieval_results.csv"
+        os.makedirs(os.path.dirname(filename), exist_ok=True)
+        df.to_csv(filename, index=False)
+
+        print(f"Retrieval evaluation results saved to {filename}")
 
         print("Search complete!")
         return self.results
