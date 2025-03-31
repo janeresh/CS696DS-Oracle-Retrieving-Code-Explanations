@@ -5,7 +5,6 @@ import pandas as pd
 from codegenerator import CodeGeneration
 from tqdm import tqdm
 import gc
-from evaluation import compute_common_scores, compute_metrics
 
 # Logging configuration
 logging.basicConfig(
@@ -32,6 +31,8 @@ model = sys.argv[3]
 df = pd.read_csv(input_csv)
 
 batch_size = 4  # ⚠️ Reduce batch size to fit within 40GB VRAM
+num_backward_passes = 3
+col_no = 4
 # results = {}
 results=[]
 
@@ -40,9 +41,9 @@ results=[]
 logger.info(f"Initializing CodeGeneration for {model}...")
 
 #Load model (keep only one model in memory at a time)
-codegenerator = CodeGeneration(model_path_dict[model], model)
+codegenerator = CodeGeneration(model_path_dict[model])
 col_name = f"explanation_{model}"
-cols = [f"{col_name}_1_cleaned", f"{col_name}_2_cleaned", f"{col_name}_3_cleaned", f"{col_name}_4_cleaned"]
+cols = [f"{col_name}_{i}_cleaned" for i in range(1,col_no+1)]
 
 # Initialize result storage
 result_list = []
@@ -52,7 +53,7 @@ for i in tqdm(range(0, len(df), batch_size), desc=f"Processing batches for {mode
 
     #Generate code for batch (Optimized)
     try:
-        generated_codes = codegenerator.explanation_to_code(batch_df[cols])
+        generated_codes = codegenerator.explanation_to_code(batch_df[cols], num_backward_passes)
     except RuntimeError as e:
         logger.error(f"CUDA OOM Error at batch {i}-{i + batch_size}: {e}")
         torch.cuda.empty_cache()
@@ -61,21 +62,44 @@ for i in tqdm(range(0, len(df), batch_size), desc=f"Processing batches for {mode
         continue  # Skip to next batch
 
     #Store results efficiently
-    batch_result_df = pd.DataFrame(
-        generated_codes, columns=[f"Generated_Code_{model}_{j+1}" for j in range(4)]
-    )
+    # batch_result_df = pd.DataFrame(
+    #     generated_codes, columns=[f"Generated_Code_{model}_{j+1}" for j in range(col_no)]
+    # )
+    flattened_rows = []
 
-    #Add identifiers (Corpus ID, query_id, and Original Code)
-    batch_result_df["Original_Code"] = batch_df["code"].values
-    batch_result_df["corpus_id"] = batch_df["corpus_id"].values
-    batch_result_df["query_id"] = batch_df["query_id"].values
+    # Iterate over each row in the batch and its corresponding generated outputs
+    for batch_row, gen_row in zip(batch_df.itertuples(index=False), generated_codes):
+        row_dict = {
+            "corpus_id": batch_row.corpus_id,
+            "query_id": batch_row.query_id,
+            "Original_Code": batch_row.code,
+        }
+        
+        # Add each explanation output as a dictionary
+        for j in range(col_no):  # 4 descriptions per row
+            variant_outputs = gen_row[j]  # list of 3 prompt completions
+            for k in range(num_backward_passes):
+                row_dict[f"Generated_Code_{model}_{j+1}_code{k+1}"] = variant_outputs[k]
 
+        
+        flattened_rows.append(row_dict)
+
+    # Create DataFrame from all rows in this batch
+    batch_result_df = pd.DataFrame(flattened_rows)
     result_list.append(batch_result_df)
 
+
+    #Add identifiers (Corpus ID, query_id, and Original Code)
+    # batch_result_df["Original_Code"] = batch_df["code"].values
+    # batch_result_df["corpus_id"] = batch_df["corpus_id"].values
+    # batch_result_df["query_id"] = batch_df["query_id"].values
+
+    # result_list.append(batch_result_df)
+
     #Memory Optimization: Clear Cache after Each Batch
-    torch.cuda.empty_cache()
-    torch.cuda.ipc_collect()
-    gc.collect()
+    # torch.cuda.empty_cache()
+    # torch.cuda.ipc_collect()
+    # gc.collect()
 
 #Delete Model After Processing (Frees Up VRAM)
 # del codegenerator
@@ -84,7 +108,6 @@ for i in tqdm(range(0, len(df), batch_size), desc=f"Processing batches for {mode
 # gc.collect()
 
 #Store processed model results
-# results[model] = pd.concat(result_list, ignore_index=True)
 results = pd.concat(result_list, ignore_index=True)
 
 
@@ -123,3 +146,5 @@ results = pd.concat(result_list, ignore_index=True)
 # logger.info(f"Results saved to {output_csv}")
 results.to_csv(output_csv, index=False)
 logger.info(f"Results saved to {output_csv}")
+
+
