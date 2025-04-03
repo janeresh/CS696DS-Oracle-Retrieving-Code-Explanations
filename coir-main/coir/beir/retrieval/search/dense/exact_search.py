@@ -57,6 +57,7 @@ class DenseRetrievalExactSearch(BaseSearch):
         query_ids = list(queries.keys())
         self.results = {qid: {} for qid in query_ids}
         queries = [queries[qid] for qid in queries]
+        print('len of queries: ', len(query_ids))
         query_embeddings = self.model.encode_queries(
             queries, batch_size=self.batch_size, show_progress_bar=self.show_progress_bar, convert_to_tensor=self.convert_to_tensor)
           
@@ -64,7 +65,7 @@ class DenseRetrievalExactSearch(BaseSearch):
 
         corpus_ids = sorted(corpus, key=lambda k: len(corpus[k].get("title", "") + corpus[k].get("text", "")), reverse=True)
         corpus = [corpus[cid] for cid in corpus_ids]
-
+        print('len of corpus: ', len(corpus_ids))
         logger.info("Encoding Corpus in batches... Warning: This might take a while!")
         logger.info("Scoring Function: {} ({})".format(self.score_function_desc[score_function], score_function))
 
@@ -110,7 +111,52 @@ class DenseRetrievalExactSearch(BaseSearch):
         
         return self.results 
     
+    def search_bm25(self, 
+                corpus: Dict[str, Dict[str, str]], 
+                queries: Dict[str, str], 
+                top_k: int, 
+                score_function: str, 
+                return_sorted: bool = False, 
+                **kwargs) -> Dict[str, Dict[str, float]]:
+        print("Starting BM25-only search...")
 
+        # Tokenize corpus for BM25
+        corpus_ids = list(corpus.keys())
+        corpus_tokens = [tokenize(doc["text"]) for doc in corpus.values()]
+
+        print("Initializing BM25...")
+        bm25 = BM25Okapi(corpus_tokens)
+
+        self.results = {qid: {} for qid in queries.keys()}
+        result_data = []  # For storing results in a CSV
+
+        print("Retrieving top-K documents using BM25...")
+        for qid, query in queries.items():
+            query_tokens = query.split()
+            scores = bm25.get_scores(query_tokens)
+
+            # Get top-K BM25 results
+            top_k_indices = np.argsort(scores)[::-1][:top_k]
+            top_docs = [(corpus_ids[idx], scores[idx]) for idx in top_k_indices]
+
+            # Store results
+            for doc_id, score in top_docs:
+                self.results[qid][doc_id] = score
+                result_data.append([qid, doc_id, score])
+
+            # Log BM25 retrieval statistics
+            print(f"Query {qid}: Retrieved {len(top_docs)} documents.")
+            print(f"BM25 score distribution (min: {min(scores)}, max: {max(scores)}, mean: {np.mean(scores):.4f})")
+
+        # # Save results in the required format
+        # filename = "/work/pi_wenlongzhao_umass_edu/27/vaishnavisha/CS696DS-Oracle-Retrieving-Code-Explanations/coir-main/results/intfloat/bm25_results.csv"
+        # os.makedirs(os.path.dirname(filename), exist_ok=True)
+        # df = pd.DataFrame(result_data, columns=["query_id", "retrieved_doc_id", "score"])
+        # df.to_csv(filename, index=False)
+        # print(f"BM25-only results saved to {filename}")
+
+        return self.results
+    
     def search_bm25PreFilter(self, 
            corpus: Dict[str, Dict[str, str]], 
            queries: Dict[str, str], 
@@ -202,54 +248,6 @@ class DenseRetrievalExactSearch(BaseSearch):
 
         print("Search complete!")
         return self.results
-    
-    
-    def search_bm25(self, 
-                corpus: Dict[str, Dict[str, str]], 
-                queries: Dict[str, str], 
-                top_k: int, 
-                score_function: str, 
-                return_sorted: bool = False, 
-                **kwargs) -> Dict[str, Dict[str, float]]:
-        print("Starting BM25-only search...")
-
-        # Tokenize corpus for BM25
-        corpus_ids = list(corpus.keys())
-        corpus_tokens = [tokenize(doc["text"]) for doc in corpus.values()]
-
-        print("Initializing BM25...")
-        bm25 = BM25Okapi(corpus_tokens)
-
-        self.results = {qid: {} for qid in queries.keys()}
-        result_data = []  # For storing results in a CSV
-
-        print("Retrieving top-K documents using BM25...")
-        for qid, query in queries.items():
-            query_tokens = query.split()
-            scores = bm25.get_scores(query_tokens)
-
-            # Get top-K BM25 results
-            top_k_indices = np.argsort(scores)[::-1][:top_k]
-            top_docs = [(corpus_ids[idx], scores[idx]) for idx in top_k_indices]
-
-            # Store results
-            for doc_id, score in top_docs:
-                self.results[qid][doc_id] = score
-                result_data.append([qid, doc_id, score])
-
-            # Log BM25 retrieval statistics
-            print(f"Query {qid}: Retrieved {len(top_docs)} documents.")
-            print(f"BM25 score distribution (min: {min(scores)}, max: {max(scores)}, mean: {np.mean(scores):.4f})")
-
-        # Save results in the required format
-        filename = "/work/pi_wenlongzhao_umass_edu/27/vaishnavisha/CS696DS-Oracle-Retrieving-Code-Explanations/coir-main/results/intfloat/bm25_results.csv"
-        os.makedirs(os.path.dirname(filename), exist_ok=True)
-        df = pd.DataFrame(result_data, columns=["query_id", "retrieved_doc_id", "score"])
-        df.to_csv(filename, index=False)
-        print(f"BM25-only results saved to {filename}")
-
-        return self.results
-    
     
     def search_combinedScores(self, 
                corpus: Dict[str, Dict[str, str]], 
