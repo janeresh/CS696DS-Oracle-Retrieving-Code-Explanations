@@ -11,7 +11,7 @@ model_name = sys.argv[1] if len(sys.argv) > 1 else "deepseek"
 port = sys.argv[2] if len(sys.argv) > 2 else "8000"
 API_BASE = f"http://localhost:{port}/v1"
 
-print(f"🔧 Using model: {model_name}, API: {API_BASE}")
+print(f"Using model: {model_name}, API: {API_BASE}")
 
 # === LangChain ChatOpenAI Wrapper ===
 llm = ChatOpenAI(
@@ -81,7 +81,7 @@ for _, row in df.iterrows():
                 "similarity": round(score, 4)
             })
     except Exception as e:
-        print(f"⚠️ Error expanding query ID {qid}: {e}")
+        print(f"Error expanding query ID {qid}: {e}")
 
 # === Save ===
 pd.DataFrame(results).to_csv(output_csv, index=False)
