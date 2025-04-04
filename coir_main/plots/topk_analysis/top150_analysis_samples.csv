@@ -1,0 +1,501 @@
+query_id,baseline_rank,expl_rank,baseline_in_topk,expl_in_topk,group,query_text
+q20105,inf,inf,False,False,Neither,sort by a token in string python
+q20106,inf,inf,False,False,Neither,python check file is readonly
+q20107,inf,inf,False,False,Neither,declaring empty numpy array in python
+q20108,inf,inf,False,False,Neither,test for iterable is string in python
+q20109,inf,inf,False,False,Neither,python print results of query loop
+q20110,inf,inf,False,False,Neither,how to save header of fits file to export python
+q20111,inf,inf,False,False,Neither,python calc page align
+q20112,inf,inf,False,False,Neither,python numpy array as float
+q20113,inf,inf,False,False,Neither,input string that replaces occurences python
+q20114,inf,inf,False,False,Neither,python check all items in list are ints
+q20115,inf,inf,False,False,Neither,how to save variable to text file python
+q20116,inf,inf,False,False,Neither,how to skip an index in a for loop python
+q20117,inf,inf,False,False,Neither,how to create a tokenization code in python
+q20118,inf,inf,False,False,Neither,python raise without parentheses
+q20119,inf,inf,False,False,Neither,how to seperate list with commas python
+q20120,inf,inf,False,False,Neither,python asynchronous function call return
+q20121,inf,inf,False,False,Neither,how to make a seconds to time in python
+q20122,inf,inf,False,False,Neither,python cast true or false as numbers
+q20123,inf,inf,False,False,Neither,add milliseconds to datetime python
+q20124,inf,inf,False,False,Neither,how to read the last n lines of a program on python
+q20125,inf,inf,False,False,Neither,python mysql get list of table columns
+q20126,inf,inf,False,False,Neither,how to get domain part of a url in python
+q20127,inf,inf,False,False,Neither,python flatten a nested dictionaary
+q20128,inf,inf,False,False,Neither,python session set get
+q20129,inf,inf,False,False,Neither,python save graph into file
+q20130,inf,inf,False,False,Neither,chmod python windows to remove file
+q20131,inf,inf,False,False,Neither,add suffixes on concat python
+q20132,inf,inf,False,False,Neither,how to check python object iterable
+q20133,inf,inf,False,False,Neither,python 3 tkinter open file dialog
+q20134,inf,inf,False,False,Neither,how to indent self python
+q20135,inf,inf,False,False,Neither,tracking centroid of an object python
+q20136,inf,inf,False,False,Neither,python3 ctypes return float array
+q20137,inf,inf,False,False,Neither,how to make paragraphs in python
+q20138,inf,inf,False,False,Neither,python rest requests delete
+q20139,inf,inf,False,False,Neither,python replace month number
+q20140,inf,inf,False,False,Neither,how to tell what type of data object is in python
+q20141,inf,inf,False,False,Neither,python jsonschema validate schema file
+q20142,inf,inf,False,False,Neither,get wechat access token python
+q20143,inf,inf,False,False,Neither,python change str value to int
+q20144,inf,inf,False,False,Neither,implementing drag and drop python
+q20145,inf,inf,False,False,Neither,get unique list from two lists python
+q20146,inf,inf,False,False,Neither,python 3 not runnning in git bash
+q20147,inf,inf,False,False,Neither,create unknown number of names to print in python
+q20148,inf,inf,False,False,Neither,python json if element exists
+q20149,inf,inf,False,False,Neither,number of unique values in list python
+q20150,inf,inf,False,False,Neither,how to randomize items in a list in python
+q20151,inf,inf,False,False,Neither,python windows check for keypress
+q20152,inf,inf,False,False,Neither,python bind scrollbar to canvas
+q20153,inf,inf,False,False,Neither,python setlevel how to only record error
+q20154,inf,inf,False,False,Neither,format string with *args python
+q20155,inf,inf,False,False,Neither,python get hostip from url
+q20156,inf,inf,False,False,Neither,python numpy masked vailding
+q20157,inf,inf,False,False,Neither,python child widget close signal
+q20158,inf,inf,False,False,Neither,python read from csv into numpy array
+q20159,inf,inf,False,False,Neither,cast string to bytearray python
+q20160,inf,inf,False,False,Neither,load str into python object
+q20161,inf,inf,False,False,Neither,python ldap get all groups a user belongs to
+q20162,inf,inf,False,False,Neither,python check type if string
+q20163,inf,inf,False,False,Neither,python get current globals
+q20164,inf,inf,False,False,Neither,get child loggers python
+q20165,inf,inf,False,False,Neither,how to know if a text file is empty in python
+q20166,inf,inf,False,False,Neither,python normal distribution p values
+q20167,inf,inf,False,False,Neither,python ctypes array of arrays
+q20168,inf,inf,False,False,Neither,scale 1d array python to between 0 and 1
+q20169,inf,inf,False,False,Neither,python upper case lower case converter
+q20170,inf,inf,False,False,Neither,ply python expression evaluator
+q20171,inf,inf,False,False,Neither,python hashlib calc sha1 of file
+q20172,inf,inf,False,False,Neither,python pdb no capture std output
+q20173,inf,inf,False,False,Neither,python how to write a factorial
+q20174,inf,inf,False,False,Neither,python get the last column
+q20175,inf,inf,False,False,Neither,python how to change file extension
+q20176,inf,inf,False,False,Neither,python get process memory info
+q20177,inf,inf,False,False,Neither,check if 2 string are equal python
+q20178,inf,inf,False,False,Neither,flask python create one table sqlalchemy
+q20179,inf,inf,False,False,Neither,clean output folder in python
+q20180,inf,inf,False,False,Neither,python print nodes binary tree
+q20181,inf,inf,False,False,Neither,python query string parsing
+q20182,inf,inf,False,False,Neither,cycle through a folder of images python
+q20183,inf,inf,False,False,Neither,check if a date is valid python
+q20184,inf,inf,False,False,Neither,python spherical bessel functions
+q20185,inf,inf,False,False,Neither,how to check a file is empty in python
+q20186,inf,inf,False,False,Neither,python stop process multiprocessing
+q20187,inf,inf,False,False,Neither,python make sure all words are separated by a single space
+q20188,inf,inf,False,False,Neither,making a multidimensional array of only 1 in python
+q20189,inf,inf,False,False,Neither,python initialize variable of an object
+q20190,inf,inf,False,False,Neither,python elasticsearch limit results
+q20191,inf,inf,False,False,Neither,how to force exit python without raise
+q20192,inf,inf,False,False,Neither,python weak reference to bound method
+q20193,inf,inf,False,False,Neither,calling index iterable python
+q20194,inf,inf,False,False,Neither,python datetime maybe undefined
+q20195,inf,inf,False,False,Neither,python go to next page
+q20196,inf,inf,False,False,Neither,filling null value sin data frame in python
+q20197,inf,inf,False,False,Neither,python run external command and get output
+q20198,inf,inf,False,False,Neither,how to compile python program to use in c++
+q20199,inf,inf,False,False,Neither,python img to bytearray
+q20200,inf,inf,False,False,Neither,how to use access token oauth python
+q20201,inf,inf,False,False,Neither,have python line continue on to next line
+q20202,inf,inf,False,False,Neither,precision of ints in python
+q20203,inf,inf,False,False,Neither,modify the dice roll program to call a function for the die roll s python
+q20204,inf,inf,False,False,Neither,python 'namespace' object is not iterable
+q20205,inf,inf,False,False,Neither,how to specify seed for python random
+q20206,inf,inf,False,False,Neither,python use default arg
+q20207,inf,inf,False,False,Neither,python change array dtype to int
+q20208,inf,inf,False,False,Neither,python forcible close socket before opening
+q20209,inf,inf,False,False,Neither,python series'value non zero index
+q20210,inf,inf,False,False,Neither,how to add a number to certain elements of an array numpy python
+q20211,inf,inf,False,False,Neither,python unit test and coverage at same time
+q20212,inf,inf,False,False,Neither,python only list files with specific extension
+q20213,inf,inf,False,False,Neither,python global type hinting
+q20214,inf,inf,False,False,Neither,how to make a function in python to take the average of list numbers
+q20215,inf,inf,False,False,Neither,check if two arrays are equal python
+q20216,inf,inf,False,False,Neither,python round down numpy
+q20217,inf,inf,False,False,Neither,python pywin32 screenshoot refresh
+q20218,inf,inf,False,False,Neither,get largest date from a list python
+q20219,inf,inf,False,False,Neither,python lock no blocking
+q20220,inf,inf,False,False,Neither,delete item from a set python
+q20221,inf,inf,False,False,Neither,how to make a sentence into underscores with python
+q20222,inf,inf,False,False,Neither,python timestamp remove timezone
+q20223,inf,inf,False,False,Neither,python sanic change all object id to string
+q20224,inf,inf,False,False,Neither,python mock mark a test as expected failure
+q20225,inf,inf,False,False,Neither,python get current users desktop
+q20226,inf,inf,False,False,Neither,python connect to redis in other docker container
+q20227,inf,inf,False,False,Neither,python subplot second y axis
+q20228,inf,inf,False,False,Neither,python function to detect first element of list
+q20229,inf,inf,False,False,Neither,how to flip a matrix in python
+q20230,inf,inf,False,False,Neither,python full name of object from global
+q20231,inf,inf,False,False,Neither,check if input is an integer or boolean python
+q20232,inf,inf,False,False,Neither,storing columns as array python
+q20233,inf,inf,False,False,Neither,create column in python by joining columns
+q20234,inf,inf,False,False,Neither,how to remove blank lines in python file
+q20235,inf,inf,False,False,Neither,how to know size of queue in python
+q20236,inf,inf,False,False,Neither,python substring index of
+q20237,inf,inf,False,False,Neither,comparing int to none python
+q20238,inf,inf,False,False,Neither,json to protobuf python
+q20239,inf,inf,False,False,Neither,how to join 2 data frames in python
+q20240,inf,inf,False,False,Neither,how to product of a list in python
+q20241,inf,inf,False,False,Neither,get all dates between range datetime python
+q20242,inf,inf,False,False,Neither,python access file on remote
+q20243,inf,inf,False,False,Neither,how to download txt file from internet in python
+q20244,inf,inf,False,False,Neither,stopwords list remove python
+q20245,inf,inf,False,False,Neither,limit on open file handles in python
+q20246,inf,inf,False,False,Neither,determine the longest sentence in corpus in nlp python ocde
+q20247,inf,inf,False,False,Neither,python deterministic dictionary printing
+q20248,inf,inf,False,False,Neither,remove namespace from xml tag python
+q20249,inf,inf,False,False,Neither,fill is null with other columns python
+q20250,inf,inf,False,False,Neither,python async input from gui
+q20251,inf,inf,False,False,Neither,how to identify the index of an element of a set in python
+q20252,inf,inf,False,False,Neither,python 3 print object string
+q20253,inf,inf,False,False,Neither,python get most recent file containing string
+q20254,inf,inf,False,False,Neither,python sqlite3 delete doesn't delete records
+q20255,inf,inf,False,False,Neither,python apply function to iterator
+q20256,inf,inf,False,False,Neither,use python next to iterate through
+q20257,inf,inf,False,False,Neither,how to print all the variables in an object python
+q20258,inf,inf,False,False,Neither,how to determine the index interval for given range of array python
+q20259,inf,inf,False,False,Neither,python print numpy array with string
+q20260,inf,inf,False,False,Neither,python assert value is of type
+q20261,inf,inf,False,False,Neither,python multiproccessing map with multiple inputs
+q20262,inf,inf,False,False,Neither,python add suffix to filename
+q20263,inf,inf,False,False,Neither,best way to deal with pagination in python
+q20264,inf,inf,False,False,Neither,finding factors in python and return list
+q20265,inf,inf,False,False,Neither,best way to read xml in python
+q20266,inf,inf,False,False,Neither,how to put a string in a yaml file python
+q20267,inf,inf,False,False,Neither,python move cursor to secific line
+q20268,inf,inf,False,False,Neither,token to id python
+q20269,inf,inf,False,False,Neither,python urlparse get domain
+q20270,inf,inf,False,False,Neither,python turn a string into a number
+q20271,inf,inf,False,False,Neither,python check if all are type string in a column
+q20272,inf,inf,False,False,Neither,bin means python numpy
+q20273,inf,inf,False,False,Neither,python boto3 delete key from s3
+q20274,inf,inf,False,False,Neither,random walk steps python
+q20275,inf,inf,False,False,Neither,python delete objects inside of objects
+q20276,inf,inf,False,False,Neither,truncate seconds from a timestamp in python code
+q20277,inf,inf,False,False,Neither,python json load unorde
+q20278,inf,inf,False,False,Neither,python yaml expected single document
+q20279,inf,inf,False,False,Neither,python filter object at
+q20280,inf,inf,False,False,Neither,python nonetype object has no attributte
+q20281,inf,inf,False,False,Neither,python tkinter how to create scrollable canvas
+q20282,inf,inf,False,False,Neither,geojson to topojson python
+q20283,inf,inf,False,False,Neither,python get png image dimensions
+q20284,inf,inf,False,False,Neither,python flask separate functions get and post
+q20285,inf,inf,False,False,Neither,return year from date python
+q20286,inf,inf,False,False,Neither,how to get all modes python
+q20287,inf,inf,False,False,Neither,integer and returns a random bitstring of size python
+q20288,inf,inf,False,False,Neither,how to get the encoding of a file python
+q20289,inf,inf,False,False,Neither,python connect to aws rds
+q20290,inf,inf,False,False,Neither,python cv2 check if image is empty
+q20291,inf,inf,False,False,Neither,how to hide a window using a button in python
+q20292,inf,inf,False,False,Neither,python marshmallow validation schema from parent
+q20293,inf,inf,False,False,Neither,fillna with string for specific columnin python
+q20294,inf,inf,False,False,Neither,how to separate list elements by white space python
+q20295,inf,inf,False,False,Neither,how to default value in python
+q20296,inf,inf,False,False,Neither,python dict keys lowercase
+q20297,inf,inf,False,False,Neither,python get index of list values that equal
+q20298,inf,inf,False,False,Neither,python requests logging not work
+q20299,inf,inf,False,False,Neither,python static files flask
+q20300,inf,inf,False,False,Neither,rest json schema validation python
+q20301,inf,inf,False,False,Neither,write in bold and read in color of the print mesaage in python
+q20302,inf,inf,False,False,Neither,python type cast to bigint
+q20303,inf,inf,False,False,Neither,converts matrix to pictures by python
+q20304,inf,inf,False,False,Neither,python random selection from function
+q20305,inf,inf,False,False,Neither,python keep processpool open until tasks complete
+q20306,inf,inf,False,False,Neither,running a def a specified amount of time python 3
+q20307,inf,inf,False,False,Neither,python str to dateal time
+q20308,inf,inf,False,False,Neither,python check if file is executable
+q20309,inf,inf,False,False,Neither,python how to check the queue lenght
+q20310,inf,inf,False,False,Neither,query server objects ldap in python
+q20311,inf,inf,False,False,Neither,python docx document section different page
+q20312,inf,inf,False,False,Neither,write a json object to file python
+q20313,inf,inf,False,False,Neither,how to compute the minimum value of a tensor in python
+q20314,inf,inf,False,False,Neither,python unittest how to assert 2 lists are almost equal
+q20315,inf,inf,False,False,Neither,how to check if 2 inputs are equal in python assert equal
+q20316,inf,inf,False,False,Neither,python loop through proxies request
+q20317,inf,inf,False,False,Neither,python loess with gaussian kernel
+q20318,inf,inf,False,False,Neither,greatest common divisor function in python
+q20319,inf,inf,False,False,Neither,how to clear up memory python
+q20320,inf,inf,False,False,Neither,get eucliedan distance between two vectors python
+q20321,inf,inf,False,False,Neither,python interactive shell color
+q20322,inf,inf,False,False,Neither,passing a range of values python years
+q20323,inf,inf,False,False,Neither,python yaml for each key value
+q20324,inf,inf,False,False,Neither,python test if value is ctypes array
+q20325,inf,inf,False,False,Neither,function return apply async python
+q20326,inf,inf,False,False,Neither,reload device program code in python
+q20327,inf,inf,False,False,Neither,split string into n parts python
+q20328,inf,inf,False,False,Neither,python get object as dict
+q20329,inf,inf,False,False,Neither,selecting a range of 2d elements from a numpy array gives empty array in python 3
+q20330,inf,inf,False,False,Neither,python read tokens from line
+q20331,inf,inf,False,False,Neither,write data into fits file python
+q20332,inf,inf,False,False,Neither,python print string with visible ansi codes
+q20333,inf,inf,False,False,Neither,python check if value in enum
+q20334,inf,inf,False,False,Neither,python sqlite table names in database
+q20335,inf,inf,False,False,Neither,how to remove all element from a python dictionary
+q20336,inf,inf,False,False,Neither,python parse query string from url
+q20337,inf,inf,False,False,Neither,python remove element set
+q20338,inf,inf,False,False,Neither,manhattan distance in python using longitude and latitude
+q20339,inf,inf,False,False,Neither,how to read from a file to a list python
+q20340,inf,inf,False,False,Neither,dynamically update value in dictionary python
+q20341,inf,inf,False,False,Neither,python replace string from right
+q20342,inf,inf,False,False,Neither,how to check if a path is writeable python
+q20343,inf,inf,False,False,Neither,get attribute type in python
+q20344,inf,inf,False,False,Neither,get fields of object python
+q20345,inf,inf,False,False,Neither,how to fetch one value from one row from mysql query in python
+q20346,inf,inf,False,False,Neither,python flask routes add
+q20347,inf,inf,False,False,Neither,define function arg type and default values python
+q20348,inf,inf,False,False,Neither,python image shape detect
+q20349,inf,inf,False,False,Neither,what can iterators be iterated only once in python
+q20350,inf,inf,False,False,Neither,remove all characters in string in python
+q20351,inf,inf,False,False,Neither,python circle in a square bitmap array
+q20352,inf,inf,False,False,Neither,location of maya python exe
+q20353,inf,inf,False,False,Neither,how to make letters uppercase in python skipping spaces
+q20354,inf,inf,False,False,Neither,python delete element from set
+q20355,inf,inf,False,False,Neither,python get current git branch
+q20356,inf,inf,False,False,Neither,how to make a restart button using python
+q20357,inf,inf,False,False,Neither,tracing python code execution
+q20358,inf,inf,False,False,Neither,delete pyc files from python script
+q20359,inf,inf,False,False,Neither,sleep holding up python
+q20360,inf,inf,False,False,Neither,traversal in tree in python
+q20361,inf,inf,False,False,Neither,timing a function call python
+q20362,inf,inf,False,False,Neither,python how to stop playsound
+q20363,inf,inf,False,False,Neither,python change dictioinary values in place
+q20364,inf,inf,False,False,Neither,can i pass instance method as variable python
+q20365,inf,inf,False,False,Neither,pickle python read entiere file
+q20366,inf,inf,False,False,Neither,should there be equal no of columns to concanate two df python
+q20367,inf,inf,False,False,Neither,python flatten deep nested list
+q20368,inf,inf,False,False,Neither,how to show a variable amount of precision in python string format
+q20369,inf,inf,False,False,Neither,python array get element by index with default
+q20370,inf,inf,False,False,Neither,check if string is int in python
+q20371,inf,inf,False,False,Neither,how to change numpy array to list in python
+q20372,inf,inf,False,False,Neither,read a file into a set python
+q20373,inf,inf,False,False,Neither,python round float to int
+q20374,inf,inf,False,False,Neither,how to write a parser on python
+q20375,inf,inf,False,False,Neither,python dict with keys no value
+q20376,inf,inf,False,False,Neither,how to remove blank lines from a text file in python
+q20377,inf,inf,False,False,Neither,how to hash a binary file in python
+q20378,inf,inf,False,False,Neither,python get function keyword names
+q20379,inf,inf,False,False,Neither,iterate through words in text file python
+q20380,inf,inf,False,False,Neither,python make a put request to restful endpoint
+q20381,inf,inf,False,False,Neither,python get the id of the current thread
+q20382,inf,inf,False,False,Neither,python function returning a list of all entities is called
+q20383,inf,inf,False,False,Neither,how to flat a list of list python
+q20384,inf,inf,False,False,Neither,python read yaml to numpy
+q20385,inf,inf,False,False,Neither,discord python get user from id string
+q20386,inf,inf,False,False,Neither,list of arbitrary objects to counts in python
+q20387,inf,inf,False,False,Neither,how to know queue size in python
+q20388,inf,inf,False,False,Neither,impute missing values in python
+q20389,inf,inf,False,False,Neither,python dict rank by value
+q20390,inf,inf,False,False,Neither,generate short unique id python
+q20391,inf,inf,False,False,Neither,python numpy inverse of the matrix
+q20392,inf,inf,False,False,Neither,python how to mix backslash and forward slashes in path
+q20393,inf,inf,False,False,Neither,reduce functon not defined in python
+q20394,inf,inf,False,False,Neither,python detect key press linux
+q20395,inf,inf,False,False,Neither,how to generate random binary tree in python
+q20396,inf,inf,False,False,Neither,python get epoch milis from datetime
+q20397,inf,inf,False,False,Neither,python get environ user windows
+q20398,inf,inf,False,False,Neither,iterator is past the end python
+q20399,inf,inf,False,False,Neither,python if file not exist then creat
+q20400,inf,inf,False,False,Neither,python howe to tell if path passed in is absolute or relative
+q20401,inf,inf,False,False,Neither,maker a string lowercase pythong
+q20402,inf,inf,False,False,Neither,python sys stdout write new line
+q20403,inf,inf,False,False,Neither,python how to create a iterable
+q20404,inf,inf,False,False,Neither,how to use python function in tensorflow
+q20405,inf,inf,False,False,Neither,python how to get range of array with positive values numpy
+q20406,inf,inf,False,False,Neither,python 3 a build string from iterable
+q20407,inf,inf,False,False,Neither,unchecking a radio button python
+q20408,inf,inf,False,False,Neither,python expected type sized
+q20409,inf,inf,False,False,Neither,python load csv to numpy array
+q20410,inf,inf,False,False,Neither,python remove element from list time complexity
+q20411,inf,inf,False,False,Neither,python property by string name
+q20412,inf,inf,False,False,Neither,index of an entry in a list python
+q20413,inf,inf,False,False,Neither,python how to determine if an iterable is iterable
+q20414,inf,inf,False,False,Neither,python how to create date from string
+q20415,inf,inf,False,False,Neither,how to append a line in a file in the middle of file in python
+q20416,inf,inf,False,False,Neither,how to split a string by every character in python
+q20417,inf,inf,False,False,Neither,python get index of element each time it appears in list
+q20418,inf,inf,False,False,Neither,python how to make dot character
+q20419,inf,inf,False,False,Neither,python heap top element
+q20420,inf,inf,False,False,Neither,"in python, how to print strings in different colours"
+q20421,inf,inf,False,False,Neither,python yield unsupported operand type(s)
+q20422,inf,inf,False,False,Neither,how to sort files by filename python
+q20423,inf,inf,False,False,Neither,how to change the axis range in a plot in python for subplots
+q20424,inf,inf,False,False,Neither,python view vector to asimuth elevation
+q20425,inf,inf,False,False,Neither,python sort data by variable
+q20426,inf,inf,False,False,Neither,compute the middle index in list python
+q20427,inf,inf,False,False,Neither,python josn dump to file
+q20428,inf,inf,False,False,Neither,python remove condition apply to dict
+q20429,inf,inf,False,False,Neither,python remove directory tree if no files
+q20430,inf,inf,False,False,Neither,how to pop a node off a stack python
+q20431,inf,inf,False,False,Neither,python open file with exclusive access permissions
+q20432,inf,inf,False,False,Neither,python gevent combine multiprocessing
+q20433,inf,inf,False,False,Neither,create copy that doesn't alter original python
+q20434,inf,inf,False,False,Neither,remove trailing whitespace in python
+q20435,inf,inf,False,False,Neither,python default menuitem select
+q20436,inf,inf,False,False,Neither,get sort indexes in a list python
+q20437,inf,inf,False,False,Neither,how to start a new line in python gui
+q20438,inf,inf,False,False,Neither,how to get tuple of colors in image python
+q20439,inf,inf,False,False,Neither,make datetime aware python
+q20440,inf,inf,False,False,Neither,python dict drop empty
+q20441,inf,inf,False,False,Neither,python pretty print without sort
+q20442,inf,inf,False,False,Neither,python check if interactive
+q20443,inf,inf,False,False,Neither,python pid determine existence
+q20444,inf,inf,False,False,Neither,python pymongo insert without duplicatte
+q20445,inf,inf,False,False,Neither,how to read json files with multiple object python
+q20446,inf,inf,False,False,Neither,python discord leave voice channel
+q20447,inf,inf,False,False,Neither,python unittest make tests discoverable
+q20448,inf,inf,False,False,Neither,multiline text send message python
+q20449,inf,inf,False,False,Neither,extract integers from string in python
+q20450,inf,inf,False,False,Neither,python take a string after the title
+q20451,inf,inf,False,False,Neither,how to randomly select rows in ndarray in python
+q20452,inf,inf,False,False,Neither,how to open a file with a path in python
+q20453,inf,inf,False,False,Neither,python count distance between two vectors
+q20454,inf,inf,False,False,Neither,python get dimensions of list
+q20455,inf,inf,False,False,Neither,python filter lowpass minmum cutoff frequency
+q20456,inf,inf,False,False,Neither,"python 3, seperate a string into a list at comma"
+q20457,inf,inf,False,False,Neither,how to delete an element in a python dictionary
+q20458,inf,inf,False,False,Neither,how know if the box was selected in checkbox in python
+q20459,inf,inf,False,False,Neither,standard scalar function in python
+q20460,inf,inf,False,False,Neither,python random gaussian distribution noise
+q20461,inf,inf,False,False,Neither,return the number of numeric attributes in python
+q20462,inf,inf,False,False,Neither,python pil camera capture
+q20463,inf,inf,False,False,Neither,python flask create cookie expiration
+q20464,inf,inf,False,False,Neither,python sqlalchemy model *
+q20465,inf,inf,False,False,Neither,python how to move to next command in for loop
+q20466,inf,inf,False,False,Neither,python check if object is a char
+q20467,inf,inf,False,False,Neither,how to achieve logarithmic complexity in python
+q20468,inf,inf,False,False,Neither,python listbox scrollbar not tk
+q20469,inf,inf,False,False,Neither,identify the most common number in an array python
+q20470,inf,inf,False,False,Neither,pull multiple values to make table python
+q20471,inf,inf,False,False,Neither,python adjust data to normal distribution
+q20472,inf,inf,False,False,Neither,python check if float has no floating points
+q20473,inf,inf,False,False,Neither,string remove the last blank python
+q20474,inf,inf,False,False,Neither,python how to display object attributes
+q20475,inf,inf,False,False,Neither,determine if a list of numbers contains duplicates python
+q20476,inf,inf,False,False,Neither,python figure add title label size
+q20477,inf,inf,False,False,Neither,python networkx longest path directed acyclic graph
+q20478,inf,inf,False,False,Neither,how to take list as input in python seperated with spaces
+q20479,inf,inf,False,False,Neither,is a list in python an array
+q20480,inf,inf,False,False,Neither,python cosine similarity of two vectors
+q20481,inf,inf,False,False,Neither,how to model a sphere python
+q20482,inf,inf,False,False,Neither,how to check paths in python
+q20483,inf,inf,False,False,Neither,python test truth value of list
+q20484,inf,inf,False,False,Neither,python string value of enum
+q20485,inf,inf,False,False,Neither,python create null pointer with ctypes
+q20486,inf,inf,False,False,Neither,python md5 hash string
+q20487,inf,inf,False,False,Neither,python how to match dictionarys
+q20488,inf,inf,False,False,Neither,"select elements from a list, then delete these elements in the original list python"
+q20489,inf,inf,False,False,Neither,pybool to c++ python 3
+q20490,inf,inf,False,False,Neither,how to add a ? in python url
+q20491,inf,inf,False,False,Neither,python how to check whether the process with pid exist
+q20492,inf,inf,False,False,Neither,how to cehck if somethign is a constant python
+q20493,inf,inf,False,False,Neither,python check if variable exists in locals
+q20494,inf,inf,False,False,Neither,python filter a dictionary by value
+q20495,inf,inf,False,False,Neither,read json file and turn into dictionary using python
+q20496,inf,inf,False,False,Neither,python change the shape of list
+q20497,inf,inf,False,False,Neither,how to get the datatypes in python
+q20498,inf,inf,False,False,Neither,initializing an empty string with a size python
+q20499,inf,inf,False,False,Neither,cast str as int in python
+q20500,inf,inf,False,False,Neither,"python, sql table column details"
+q20501,inf,inf,False,False,Neither,python pathlib to traverse directories
+q20502,inf,inf,False,False,Neither,python create list of columns with their dtype
+q20503,inf,inf,False,False,Neither,python turn all nested object to dict
+q20504,inf,inf,False,False,Neither,python read dicom images
+q20505,inf,inf,False,False,Neither,python making string lower case
+q20506,inf,inf,False,False,Neither,how to implement a macro in python
+q20507,inf,inf,False,False,Neither,python subprocess close stdin
+q20508,inf,inf,False,False,Neither,sum within a comprehension python
+q20509,inf,inf,False,False,Neither,python timedelta without microseconds
+q20510,inf,inf,False,False,Neither,change python object to string
+q20511,inf,inf,False,False,Neither,eit request header in python flask
+q20512,inf,inf,False,False,Neither,python lower all elements in list
+q20513,inf,inf,False,False,Neither,using sort to move element in to new position in list python
+q20514,inf,inf,False,False,Neither,remove special characters from column names in python
+q20515,inf,inf,False,False,Neither,calculate the average of a given list in python
+q20516,inf,inf,False,False,Neither,past python git clone
+q20517,inf,inf,False,False,Neither,python lambda function with 3 params
+q20518,inf,inf,False,False,Neither,check for punctuation python
+q20519,inf,inf,False,False,Neither,unsupported media type json python
+q20520,inf,inf,False,False,Neither,python separate string to list
+q20521,inf,inf,False,False,Neither,python remove phrase from list of strings
+q20522,inf,inf,False,False,Neither,python fastest way to load data
+q20523,inf,inf,False,False,Neither,add noise to the audio python
+q20524,inf,inf,False,False,Neither,object with commas turned into list python
+q20525,inf,inf,False,False,Neither,python set limits on x axis
+q20526,inf,inf,False,False,Neither,is python ssl socket connection thread safe
+q20527,inf,inf,False,False,Neither,python3 encode decode bytes
+q20528,inf,inf,False,False,Neither,xsd file to python object
+q20529,inf,inf,False,False,Neither,python expand a path
+q20530,inf,inf,False,False,Neither,python flask template table example
+q20531,inf,inf,False,False,Neither,how to check if object defined python
+q20532,inf,inf,False,False,Neither,s3 sync between bucket python
+q20533,inf,inf,False,False,Neither,change the position of 3d coordinate in python
+q20534,inf,inf,False,False,Neither,python how to get the number of cores in a computer
+q20535,inf,inf,False,False,Neither,python how to use pdb set trace
+q20536,inf,inf,False,False,Neither,python dictionary url encode
+q20537,inf,inf,False,False,Neither,how to check whether a string is int in python
+q20538,inf,inf,False,False,Neither,python 3 change permission of file chmod
+q20539,inf,inf,False,False,Neither,python gaussian filter array
+q20540,inf,inf,False,False,Neither,how to cut off a calculated number to two decimals in python
+q20541,inf,inf,False,False,Neither,replace many value at once in python
+q20542,inf,inf,False,False,Neither,python numpy conver to float64
+q20543,inf,inf,False,False,Neither,python how to rank a list object
+q20544,inf,inf,False,False,Neither,how to check if file doesn't exist in python
+q20545,inf,inf,False,False,Neither,how to get the parent directory in python
+q20546,inf,inf,False,False,Neither,resize an image python pil
+q20547,inf,inf,False,False,Neither,python boxplot data frame
+q20548,inf,inf,False,False,Neither,python glpk read from lp file
+q20549,inf,inf,False,False,Neither,python threadpool close join
+q20550,inf,inf,False,False,Neither,python sklearn onehotencoder string values
+q20551,inf,inf,False,False,Neither,python change to bytes
+q20552,inf,inf,False,False,Neither,python json loads try
+q20553,inf,inf,False,False,Neither,create an empty column in data frame python
+q20554,inf,inf,False,False,Neither,remove whitespace at end of line in python
+q20555,inf,inf,False,False,Neither,python file opening modes
+q20556,inf,inf,False,False,Neither,python code input prompt for questions
+q20557,inf,inf,False,False,Neither,python parse a log file that is logging
+q20558,inf,inf,False,False,Neither,remove an entry from a dict python
+q20559,inf,inf,False,False,Neither,new line statemnt pythong write
+q20560,inf,inf,False,False,Neither,python view as series column format string
+q20561,inf,inf,False,False,Neither,python select not null column values
+q20562,inf,inf,False,False,Neither,how do functions in python know the parametr type
+q20563,inf,inf,False,False,Neither,cursor positioning python windows
+q20564,inf,inf,False,False,Neither,python how to equally space points in an ellipse
+q20565,inf,inf,False,False,Neither,how to see how similar two images are in python
+q20566,inf,inf,False,False,Neither,how to make a input to have no spaces in python\
+q20567,inf,inf,False,False,Neither,next line to read in python
+q20568,inf,inf,False,False,Neither,move an item in list to front python
+q20569,inf,inf,False,False,Neither,"python wrap (s,w) print"
+q20570,inf,inf,False,False,Neither,how to check if missing values are blanks or nan or none in python
+q20571,inf,inf,False,False,Neither,python to get the indices of bin edges
+q20572,inf,inf,False,False,Neither,python comma separated value
+q20573,inf,inf,False,False,Neither,python requests disable ssl certificate verification
+q20574,inf,inf,False,False,Neither,python var and distribution of probability
+q20575,inf,inf,False,False,Neither,how to determine it's a orthogonal matrix using python
+q20576,inf,inf,False,False,Neither,strip html tags in python
+q20577,inf,inf,False,False,Neither,center align python text
+q20578,inf,inf,False,False,Neither,python get list of keys on an object
+q20579,inf,inf,False,False,Neither,is there any python function to check for nan valu
+q20580,inf,inf,False,False,Neither,python get cookie for request
+q20581,inf,inf,False,False,Neither,python is list no na
+q20582,inf,inf,False,False,Neither,python determine if a file is image
+q20583,inf,inf,False,False,Neither,python reorganise a data frame
+q20584,inf,inf,False,False,Neither,read first line in txt file in python
+q20585,inf,inf,False,False,Neither,pass defined parser object to subparser python
+q20586,inf,inf,False,False,Neither,how to print generic error in python
+q20587,inf,inf,False,False,Neither,python change the name of a key
+q20588,inf,inf,False,False,Neither,moving mouse python click
+q20589,inf,inf,False,False,Neither,python to determine if services are running
+q20590,inf,inf,False,False,Neither,python set contains multiple items
+q20591,inf,inf,False,False,Neither,python protobyf parse from byte
+q20592,inf,inf,False,False,Neither,python check if a directory is writable
+q20593,inf,inf,False,False,Neither,object as list python
+q20594,inf,inf,False,False,Neither,replace function nan python
+q20595,inf,inf,False,False,Neither,python hash table check if key exist
+q20596,inf,inf,False,False,Neither,take all points in box python
+q20597,inf,inf,False,False,Neither,python create enum by name
+q20598,inf,inf,False,False,Neither,python matplotlib use arrow markers
+q20599,inf,inf,False,False,Neither,python function default args
+q20600,inf,inf,False,False,Neither,python how to select first 100 rows
+q20601,inf,inf,False,False,Neither,removing columnsns in data frame python
+q20602,inf,inf,False,False,Neither,python array to torch tensor
+q20603,inf,inf,False,False,Neither,how to turn a list into a csv python
+q20604,inf,inf,False,False,Neither,how do i unzip file in python

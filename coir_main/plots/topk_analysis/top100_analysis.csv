@@ -1,0 +1,501 @@
+query_id,baseline_rank,expl_rank,baseline_in_topk,expl_in_topk,query_text
+q20105,1.0,2.0,True,True,sort by a token in string python
+q20106,1.0,inf,True,False,python check file is readonly
+q20107,6.0,inf,True,False,declaring empty numpy array in python
+q20108,9.0,41.0,True,True,test for iterable is string in python
+q20109,1.0,6.0,True,True,python print results of query loop
+q20110,6.0,100.0,True,True,how to save header of fits file to export python
+q20111,3.0,19.0,True,True,python calc page align
+q20112,24.0,inf,True,False,python numpy array as float
+q20113,62.0,23.0,True,True,input string that replaces occurences python
+q20114,59.0,inf,True,False,python check all items in list are ints
+q20115,3.0,14.0,True,True,how to save variable to text file python
+q20116,154.0,inf,False,False,how to skip an index in a for loop python
+q20117,34.0,inf,True,False,how to create a tokenization code in python
+q20118,118.0,inf,False,False,python raise without parentheses
+q20119,14.0,97.0,True,True,how to seperate list with commas python
+q20120,10.0,inf,True,False,python asynchronous function call return
+q20121,22.0,46.0,True,True,how to make a seconds to time in python
+q20122,428.0,inf,False,False,python cast true or false as numbers
+q20123,8.0,32.0,True,True,add milliseconds to datetime python
+q20124,2.0,15.0,True,True,how to read the last n lines of a program on python
+q20125,5.0,9.0,True,True,python mysql get list of table columns
+q20126,32.0,inf,True,False,how to get domain part of a url in python
+q20127,1.0,inf,True,False,python flatten a nested dictionaary
+q20128,5.0,31.0,True,True,python session set get
+q20129,19.0,86.0,True,True,python save graph into file
+q20130,4.0,3.0,True,True,chmod python windows to remove file
+q20131,2.0,12.0,True,True,add suffixes on concat python
+q20132,10.0,inf,True,False,how to check python object iterable
+q20133,4.0,4.0,True,True,python 3 tkinter open file dialog
+q20134,78.0,6.0,True,True,how to indent self python
+q20135,1.0,7.0,True,True,tracking centroid of an object python
+q20136,7.0,1.0,True,True,python3 ctypes return float array
+q20137,1.0,inf,True,False,how to make paragraphs in python
+q20138,1.0,97.0,True,True,python rest requests delete
+q20139,1.0,17.0,True,True,python replace month number
+q20140,55.0,inf,True,False,how to tell what type of data object is in python
+q20141,5.0,3.0,True,True,python jsonschema validate schema file
+q20142,1.0,1.0,True,True,get wechat access token python
+q20143,58.0,inf,True,False,python change str value to int
+q20144,3.0,11.0,True,True,implementing drag and drop python
+q20145,15.0,63.0,True,True,get unique list from two lists python
+q20146,1.0,inf,True,False,python 3 not runnning in git bash
+q20147,185.0,inf,False,False,create unknown number of names to print in python
+q20148,100.0,8.0,True,True,python json if element exists
+q20149,22.0,inf,True,False,number of unique values in list python
+q20150,52.0,72.0,True,True,how to randomize items in a list in python
+q20151,28.0,inf,True,False,python windows check for keypress
+q20152,14.0,23.0,True,True,python bind scrollbar to canvas
+q20153,1.0,inf,True,False,python setlevel how to only record error
+q20154,67.0,54.0,True,True,format string with *args python
+q20155,1.0,52.0,True,True,python get hostip from url
+q20156,11.0,77.0,True,True,python numpy masked vailding
+q20157,1.0,32.0,True,True,python child widget close signal
+q20158,25.0,31.0,True,True,python read from csv into numpy array
+q20159,11.0,6.0,True,True,cast string to bytearray python
+q20160,5.0,1.0,True,True,load str into python object
+q20161,1.0,1.0,True,True,python ldap get all groups a user belongs to
+q20162,90.0,inf,True,False,python check type if string
+q20163,103.0,inf,False,False,python get current globals
+q20164,9.0,46.0,True,True,get child loggers python
+q20165,29.0,67.0,True,True,how to know if a text file is empty in python
+q20166,16.0,inf,True,False,python normal distribution p values
+q20167,162.0,19.0,False,True,python ctypes array of arrays
+q20168,1.0,40.0,True,True,scale 1d array python to between 0 and 1
+q20169,65.0,82.0,True,True,python upper case lower case converter
+q20170,305.0,inf,False,False,ply python expression evaluator
+q20171,3.0,4.0,True,True,python hashlib calc sha1 of file
+q20172,7.0,inf,True,False,python pdb no capture std output
+q20173,5.0,16.0,True,True,python how to write a factorial
+q20174,16.0,32.0,True,True,python get the last column
+q20175,25.0,inf,True,False,python how to change file extension
+q20176,20.0,78.0,True,True,python get process memory info
+q20177,12.0,inf,True,False,check if 2 string are equal python
+q20178,1.0,1.0,True,True,flask python create one table sqlalchemy
+q20179,1.0,inf,True,False,clean output folder in python
+q20180,9.0,25.0,True,True,python print nodes binary tree
+q20181,17.0,9.0,True,True,python query string parsing
+q20182,1.0,50.0,True,True,cycle through a folder of images python
+q20183,16.0,inf,True,False,check if a date is valid python
+q20184,2.0,15.0,True,True,python spherical bessel functions
+q20185,51.0,57.0,True,True,how to check a file is empty in python
+q20186,3.0,inf,True,False,python stop process multiprocessing
+q20187,65.0,inf,True,False,python make sure all words are separated by a single space
+q20188,183.0,inf,False,False,making a multidimensional array of only 1 in python
+q20189,73.0,inf,True,False,python initialize variable of an object
+q20190,10.0,67.0,True,True,python elasticsearch limit results
+q20191,34.0,inf,True,False,how to force exit python without raise
+q20192,11.0,inf,True,False,python weak reference to bound method
+q20193,526.0,inf,False,False,calling index iterable python
+q20194,97.0,inf,True,False,python datetime maybe undefined
+q20195,1.0,7.0,True,True,python go to next page
+q20196,33.0,27.0,True,True,filling null value sin data frame in python
+q20197,19.0,63.0,True,True,python run external command and get output
+q20198,10.0,inf,True,False,how to compile python program to use in c++
+q20199,5.0,inf,True,False,python img to bytearray
+q20200,15.0,40.0,True,True,how to use access token oauth python
+q20201,6.0,53.0,True,True,have python line continue on to next line
+q20202,1.0,8.0,True,True,precision of ints in python
+q20203,1.0,3.0,True,True,modify the dice roll program to call a function for the die roll s python
+q20204,58.0,inf,True,False,python 'namespace' object is not iterable
+q20205,2.0,25.0,True,True,how to specify seed for python random
+q20206,4.0,46.0,True,True,python use default arg
+q20207,11.0,41.0,True,True,python change array dtype to int
+q20208,10.0,80.0,True,True,python forcible close socket before opening
+q20209,75.0,20.0,True,True,python series'value non zero index
+q20210,2.0,inf,True,False,how to add a number to certain elements of an array numpy python
+q20211,4.0,inf,True,False,python unit test and coverage at same time
+q20212,3.0,inf,True,False,python only list files with specific extension
+q20213,435.0,inf,False,False,python global type hinting
+q20214,1.0,inf,True,False,how to make a function in python to take the average of list numbers
+q20215,8.0,58.0,True,True,check if two arrays are equal python
+q20216,11.0,inf,True,False,python round down numpy
+q20217,1.0,39.0,True,True,python pywin32 screenshoot refresh
+q20218,1.0,inf,True,False,get largest date from a list python
+q20219,8.0,65.0,True,True,python lock no blocking
+q20220,30.0,inf,True,False,delete item from a set python
+q20221,25.0,inf,True,False,how to make a sentence into underscores with python
+q20222,23.0,92.0,True,True,python timestamp remove timezone
+q20223,8.0,inf,True,False,python sanic change all object id to string
+q20224,6.0,31.0,True,True,python mock mark a test as expected failure
+q20225,1.0,35.0,True,True,python get current users desktop
+q20226,1.0,16.0,True,True,python connect to redis in other docker container
+q20227,3.0,29.0,True,True,python subplot second y axis
+q20228,1.0,inf,True,False,python function to detect first element of list
+q20229,9.0,inf,True,False,how to flip a matrix in python
+q20230,16.0,inf,True,False,python full name of object from global
+q20231,32.0,inf,True,False,check if input is an integer or boolean python
+q20232,1.0,inf,True,False,storing columns as array python
+q20233,7.0,42.0,True,True,create column in python by joining columns
+q20234,60.0,inf,True,False,how to remove blank lines in python file
+q20235,5.0,15.0,True,True,how to know size of queue in python
+q20236,8.0,15.0,True,True,python substring index of
+q20237,108.0,inf,False,False,comparing int to none python
+q20238,2.0,2.0,True,True,json to protobuf python
+q20239,2.0,32.0,True,True,how to join 2 data frames in python
+q20240,7.0,inf,True,False,how to product of a list in python
+q20241,6.0,9.0,True,True,get all dates between range datetime python
+q20242,7.0,64.0,True,True,python access file on remote
+q20243,27.0,17.0,True,True,how to download txt file from internet in python
+q20244,1.0,5.0,True,True,stopwords list remove python
+q20245,1.0,1.0,True,True,limit on open file handles in python
+q20246,27.0,67.0,True,True,determine the longest sentence in corpus in nlp python ocde
+q20247,52.0,inf,True,False,python deterministic dictionary printing
+q20248,7.0,7.0,True,True,remove namespace from xml tag python
+q20249,185.0,inf,False,False,fill is null with other columns python
+q20250,1.0,2.0,True,True,python async input from gui
+q20251,134.0,inf,False,False,how to identify the index of an element of a set in python
+q20252,6.0,90.0,True,True,python 3 print object string
+q20253,9.0,inf,True,False,python get most recent file containing string
+q20254,2.0,4.0,True,True,python sqlite3 delete doesn't delete records
+q20255,2.0,inf,True,False,python apply function to iterator
+q20256,316.0,inf,False,False,use python next to iterate through
+q20257,9.0,inf,True,False,how to print all the variables in an object python
+q20258,353.0,inf,False,False,how to determine the index interval for given range of array python
+q20259,14.0,76.0,True,True,python print numpy array with string
+q20260,3.0,6.0,True,True,python assert value is of type
+q20261,126.0,inf,False,False,python multiproccessing map with multiple inputs
+q20262,1.0,7.0,True,True,python add suffix to filename
+q20263,1.0,inf,True,False,best way to deal with pagination in python
+q20264,1.0,55.0,True,True,finding factors in python and return list
+q20265,3.0,63.0,True,True,best way to read xml in python
+q20266,50.0,inf,True,False,how to put a string in a yaml file python
+q20267,7.0,29.0,True,True,python move cursor to secific line
+q20268,2.0,19.0,True,True,token to id python
+q20269,11.0,1.0,True,True,python urlparse get domain
+q20270,7.0,inf,True,False,python turn a string into a number
+q20271,10.0,inf,True,False,python check if all are type string in a column
+q20272,19.0,inf,True,False,bin means python numpy
+q20273,11.0,7.0,True,True,python boto3 delete key from s3
+q20274,8.0,5.0,True,True,random walk steps python
+q20275,14.0,inf,True,False,python delete objects inside of objects
+q20276,19.0,inf,True,False,truncate seconds from a timestamp in python code
+q20277,1.0,52.0,True,True,python json load unorde
+q20278,15.0,18.0,True,True,python yaml expected single document
+q20279,inf,inf,False,False,python filter object at
+q20280,615.0,inf,False,False,python nonetype object has no attributte
+q20281,1.0,32.0,True,True,python tkinter how to create scrollable canvas
+q20282,1.0,5.0,True,True,geojson to topojson python
+q20283,9.0,inf,True,False,python get png image dimensions
+q20284,6.0,7.0,True,True,python flask separate functions get and post
+q20285,3.0,60.0,True,True,return year from date python
+q20286,1.0,inf,True,False,how to get all modes python
+q20287,7.0,inf,True,False,integer and returns a random bitstring of size python
+q20288,181.0,inf,False,False,how to get the encoding of a file python
+q20289,1.0,2.0,True,True,python connect to aws rds
+q20290,1.0,23.0,True,True,python cv2 check if image is empty
+q20291,1.0,6.0,True,True,how to hide a window using a button in python
+q20292,3.0,7.0,True,True,python marshmallow validation schema from parent
+q20293,12.0,3.0,True,True,fillna with string for specific columnin python
+q20294,104.0,inf,False,False,how to separate list elements by white space python
+q20295,43.0,inf,True,False,how to default value in python
+q20296,210.0,57.0,False,True,python dict keys lowercase
+q20297,6.0,29.0,True,True,python get index of list values that equal
+q20298,13.0,79.0,True,True,python requests logging not work
+q20299,17.0,96.0,True,True,python static files flask
+q20300,2.0,7.0,True,True,rest json schema validation python
+q20301,386.0,inf,False,False,write in bold and read in color of the print mesaage in python
+q20302,265.0,inf,False,False,python type cast to bigint
+q20303,6.0,14.0,True,True,converts matrix to pictures by python
+q20304,2.0,inf,True,False,python random selection from function
+q20305,9.0,18.0,True,True,python keep processpool open until tasks complete
+q20306,13.0,inf,True,False,running a def a specified amount of time python 3
+q20307,23.0,20.0,True,True,python str to dateal time
+q20308,1.0,inf,True,False,python check if file is executable
+q20309,8.0,21.0,True,True,python how to check the queue lenght
+q20310,4.0,10.0,True,True,query server objects ldap in python
+q20311,9.0,47.0,True,True,python docx document section different page
+q20312,44.0,inf,True,False,write a json object to file python
+q20313,56.0,56.0,True,True,how to compute the minimum value of a tensor in python
+q20314,63.0,inf,True,False,python unittest how to assert 2 lists are almost equal
+q20315,124.0,inf,False,False,how to check if 2 inputs are equal in python assert equal
+q20316,5.0,inf,True,False,python loop through proxies request
+q20317,182.0,inf,False,False,python loess with gaussian kernel
+q20318,2.0,17.0,True,True,greatest common divisor function in python
+q20319,60.0,inf,True,False,how to clear up memory python
+q20320,8.0,26.0,True,True,get eucliedan distance between two vectors python
+q20321,23.0,inf,True,False,python interactive shell color
+q20322,1.0,inf,True,False,passing a range of values python years
+q20323,93.0,inf,True,False,python yaml for each key value
+q20324,67.0,inf,True,False,python test if value is ctypes array
+q20325,1.0,3.0,True,True,function return apply async python
+q20326,1.0,54.0,True,True,reload device program code in python
+q20327,5.0,44.0,True,True,split string into n parts python
+q20328,620.0,inf,False,False,python get object as dict
+q20329,41.0,inf,True,False,selecting a range of 2d elements from a numpy array gives empty array in python 3
+q20330,3.0,21.0,True,True,python read tokens from line
+q20331,3.0,7.0,True,True,write data into fits file python
+q20332,1.0,inf,True,False,python print string with visible ansi codes
+q20333,2.0,55.0,True,True,python check if value in enum
+q20334,10.0,18.0,True,True,python sqlite table names in database
+q20335,150.0,inf,False,False,how to remove all element from a python dictionary
+q20336,10.0,48.0,True,True,python parse query string from url
+q20337,83.0,inf,True,False,python remove element set
+q20338,1.0,22.0,True,True,manhattan distance in python using longitude and latitude
+q20339,4.0,61.0,True,True,how to read from a file to a list python
+q20340,79.0,inf,True,False,dynamically update value in dictionary python
+q20341,5.0,29.0,True,True,python replace string from right
+q20342,18.0,inf,True,False,how to check if a path is writeable python
+q20343,30.0,inf,True,False,get attribute type in python
+q20344,5.0,30.0,True,True,get fields of object python
+q20345,3.0,10.0,True,True,how to fetch one value from one row from mysql query in python
+q20346,1.0,1.0,True,True,python flask routes add
+q20347,7.0,22.0,True,True,define function arg type and default values python
+q20348,6.0,inf,True,False,python image shape detect
+q20349,371.0,inf,False,False,what can iterators be iterated only once in python
+q20350,117.0,inf,False,False,remove all characters in string in python
+q20351,3.0,inf,True,False,python circle in a square bitmap array
+q20352,1.0,5.0,True,True,location of maya python exe
+q20353,6.0,86.0,True,True,how to make letters uppercase in python skipping spaces
+q20354,10.0,30.0,True,True,python delete element from set
+q20355,9.0,10.0,True,True,python get current git branch
+q20356,6.0,58.0,True,True,how to make a restart button using python
+q20357,22.0,inf,True,False,tracing python code execution
+q20358,5.0,2.0,True,True,delete pyc files from python script
+q20359,53.0,inf,True,False,sleep holding up python
+q20360,2.0,inf,True,False,traversal in tree in python
+q20361,6.0,70.0,True,True,timing a function call python
+q20362,1.0,34.0,True,True,python how to stop playsound
+q20363,1.0,26.0,True,True,python change dictioinary values in place
+q20364,503.0,inf,False,False,can i pass instance method as variable python
+q20365,6.0,98.0,True,True,pickle python read entiere file
+q20366,32.0,55.0,True,True,should there be equal no of columns to concanate two df python
+q20367,52.0,28.0,True,True,python flatten deep nested list
+q20368,667.0,inf,False,False,how to show a variable amount of precision in python string format
+q20369,5.0,99.0,True,True,python array get element by index with default
+q20370,41.0,inf,True,False,check if string is int in python
+q20371,90.0,inf,True,False,how to change numpy array to list in python
+q20372,15.0,inf,True,False,read a file into a set python
+q20373,50.0,52.0,True,True,python round float to int
+q20374,inf,83.0,False,True,how to write a parser on python
+q20375,45.0,inf,True,False,python dict with keys no value
+q20376,33.0,inf,True,False,how to remove blank lines from a text file in python
+q20377,22.0,inf,True,False,how to hash a binary file in python
+q20378,164.0,inf,False,False,python get function keyword names
+q20379,7.0,inf,True,False,iterate through words in text file python
+q20380,2.0,5.0,True,True,python make a put request to restful endpoint
+q20381,1.0,3.0,True,True,python get the id of the current thread
+q20382,24.0,inf,True,False,python function returning a list of all entities is called
+q20383,28.0,7.0,True,True,how to flat a list of list python
+q20384,1.0,1.0,True,True,python read yaml to numpy
+q20385,2.0,inf,True,False,discord python get user from id string
+q20386,10.0,inf,True,False,list of arbitrary objects to counts in python
+q20387,4.0,25.0,True,True,how to know queue size in python
+q20388,8.0,6.0,True,True,impute missing values in python
+q20389,6.0,inf,True,False,python dict rank by value
+q20390,40.0,19.0,True,True,generate short unique id python
+q20391,6.0,inf,True,False,python numpy inverse of the matrix
+q20392,16.0,20.0,True,True,python how to mix backslash and forward slashes in path
+q20393,507.0,inf,False,False,reduce functon not defined in python
+q20394,13.0,inf,True,False,python detect key press linux
+q20395,1.0,21.0,True,True,how to generate random binary tree in python
+q20396,3.0,46.0,True,True,python get epoch milis from datetime
+q20397,6.0,inf,True,False,python get environ user windows
+q20398,117.0,inf,False,False,iterator is past the end python
+q20399,66.0,inf,True,False,python if file not exist then creat
+q20400,1.0,85.0,True,True,python howe to tell if path passed in is absolute or relative
+q20401,356.0,inf,False,False,maker a string lowercase pythong
+q20402,74.0,24.0,True,True,python sys stdout write new line
+q20403,169.0,64.0,False,True,python how to create a iterable
+q20404,81.0,inf,True,False,how to use python function in tensorflow
+q20405,33.0,inf,True,False,python how to get range of array with positive values numpy
+q20406,6.0,inf,True,False,python 3 a build string from iterable
+q20407,2.0,90.0,True,True,unchecking a radio button python
+q20408,60.0,inf,True,False,python expected type sized
+q20409,26.0,5.0,True,True,python load csv to numpy array
+q20410,12.0,72.0,True,True,python remove element from list time complexity
+q20411,12.0,inf,True,False,python property by string name
+q20412,11.0,inf,True,False,index of an entry in a list python
+q20413,14.0,83.0,True,True,python how to determine if an iterable is iterable
+q20414,56.0,57.0,True,True,python how to create date from string
+q20415,10.0,13.0,True,True,how to append a line in a file in the middle of file in python
+q20416,4.0,28.0,True,True,how to split a string by every character in python
+q20417,8.0,inf,True,False,python get index of element each time it appears in list
+q20418,9.0,inf,True,False,python how to make dot character
+q20419,19.0,inf,True,False,python heap top element
+q20420,17.0,3.0,True,True,"in python, how to print strings in different colours"
+q20421,619.0,61.0,False,True,python yield unsupported operand type(s)
+q20422,10.0,31.0,True,True,how to sort files by filename python
+q20423,2.0,19.0,True,True,how to change the axis range in a plot in python for subplots
+q20424,1.0,99.0,True,True,python view vector to asimuth elevation
+q20425,1.0,inf,True,False,python sort data by variable
+q20426,139.0,inf,False,False,compute the middle index in list python
+q20427,85.0,inf,True,False,python josn dump to file
+q20428,22.0,53.0,True,True,python remove condition apply to dict
+q20429,15.0,23.0,True,True,python remove directory tree if no files
+q20430,245.0,inf,False,False,how to pop a node off a stack python
+q20431,43.0,inf,True,False,python open file with exclusive access permissions
+q20432,10.0,inf,True,False,python gevent combine multiprocessing
+q20433,11.0,inf,True,False,create copy that doesn't alter original python
+q20434,16.0,9.0,True,True,remove trailing whitespace in python
+q20435,7.0,inf,True,False,python default menuitem select
+q20436,80.0,30.0,True,True,get sort indexes in a list python
+q20437,8.0,39.0,True,True,how to start a new line in python gui
+q20438,11.0,36.0,True,True,how to get tuple of colors in image python
+q20439,75.0,inf,True,False,make datetime aware python
+q20440,32.0,inf,True,False,python dict drop empty
+q20441,35.0,inf,True,False,python pretty print without sort
+q20442,2.0,7.0,True,True,python check if interactive
+q20443,9.0,7.0,True,True,python pid determine existence
+q20444,1.0,1.0,True,True,python pymongo insert without duplicatte
+q20445,5.0,13.0,True,True,how to read json files with multiple object python
+q20446,1.0,5.0,True,True,python discord leave voice channel
+q20447,9.0,25.0,True,True,python unittest make tests discoverable
+q20448,10.0,inf,True,False,multiline text send message python
+q20449,8.0,30.0,True,True,extract integers from string in python
+q20450,14.0,inf,True,False,python take a string after the title
+q20451,22.0,inf,True,False,how to randomly select rows in ndarray in python
+q20452,26.0,97.0,True,True,how to open a file with a path in python
+q20453,1.0,13.0,True,True,python count distance between two vectors
+q20454,9.0,41.0,True,True,python get dimensions of list
+q20455,20.0,4.0,True,True,python filter lowpass minmum cutoff frequency
+q20456,8.0,99.0,True,True,"python 3, seperate a string into a list at comma"
+q20457,17.0,inf,True,False,how to delete an element in a python dictionary
+q20458,11.0,inf,True,False,how know if the box was selected in checkbox in python
+q20459,inf,inf,False,False,standard scalar function in python
+q20460,36.0,inf,True,False,python random gaussian distribution noise
+q20461,38.0,inf,True,False,return the number of numeric attributes in python
+q20462,66.0,1.0,True,True,python pil camera capture
+q20463,18.0,inf,True,False,python flask create cookie expiration
+q20464,679.0,inf,False,False,python sqlalchemy model *
+q20465,9.0,inf,True,False,python how to move to next command in for loop
+q20466,7.0,inf,True,False,python check if object is a char
+q20467,59.0,inf,True,False,how to achieve logarithmic complexity in python
+q20468,3.0,1.0,True,True,python listbox scrollbar not tk
+q20469,476.0,inf,False,False,identify the most common number in an array python
+q20470,inf,inf,False,False,pull multiple values to make table python
+q20471,3.0,78.0,True,True,python adjust data to normal distribution
+q20472,58.0,inf,True,False,python check if float has no floating points
+q20473,1.0,11.0,True,True,string remove the last blank python
+q20474,33.0,inf,True,False,python how to display object attributes
+q20475,8.0,30.0,True,True,determine if a list of numbers contains duplicates python
+q20476,8.0,73.0,True,True,python figure add title label size
+q20477,8.0,12.0,True,True,python networkx longest path directed acyclic graph
+q20478,157.0,inf,False,False,how to take list as input in python seperated with spaces
+q20479,inf,inf,False,False,is a list in python an array
+q20480,130.0,89.0,False,True,python cosine similarity of two vectors
+q20481,10.0,9.0,True,True,how to model a sphere python
+q20482,102.0,inf,False,False,how to check paths in python
+q20483,23.0,inf,True,False,python test truth value of list
+q20484,4.0,6.0,True,True,python string value of enum
+q20485,3.0,3.0,True,True,python create null pointer with ctypes
+q20486,9.0,10.0,True,True,python md5 hash string
+q20487,4.0,inf,True,False,python how to match dictionarys
+q20488,1.0,52.0,True,True,"select elements from a list, then delete these elements in the original list python"
+q20489,2.0,inf,True,False,pybool to c++ python 3
+q20490,1.0,inf,True,False,how to add a ? in python url
+q20491,10.0,11.0,True,True,python how to check whether the process with pid exist
+q20492,33.0,inf,True,False,how to cehck if somethign is a constant python
+q20493,20.0,35.0,True,True,python check if variable exists in locals
+q20494,24.0,inf,True,False,python filter a dictionary by value
+q20495,2.0,inf,True,False,read json file and turn into dictionary using python
+q20496,10.0,94.0,True,True,python change the shape of list
+q20497,24.0,inf,True,False,how to get the datatypes in python
+q20498,87.0,inf,True,False,initializing an empty string with a size python
+q20499,19.0,3.0,True,True,cast str as int in python
+q20500,26.0,61.0,True,True,"python, sql table column details"
+q20501,8.0,inf,True,False,python pathlib to traverse directories
+q20502,27.0,17.0,True,True,python create list of columns with their dtype
+q20503,1.0,2.0,True,True,python turn all nested object to dict
+q20504,2.0,2.0,True,True,python read dicom images
+q20505,inf,inf,False,False,python making string lower case
+q20506,1.0,12.0,True,True,how to implement a macro in python
+q20507,1.0,2.0,True,True,python subprocess close stdin
+q20508,434.0,inf,False,False,sum within a comprehension python
+q20509,3.0,4.0,True,True,python timedelta without microseconds
+q20510,131.0,inf,False,False,change python object to string
+q20511,1.0,3.0,True,True,eit request header in python flask
+q20512,15.0,inf,True,False,python lower all elements in list
+q20513,104.0,inf,False,False,using sort to move element in to new position in list python
+q20514,5.0,inf,True,False,remove special characters from column names in python
+q20515,19.0,inf,True,False,calculate the average of a given list in python
+q20516,49.0,80.0,True,True,past python git clone
+q20517,45.0,inf,True,False,python lambda function with 3 params
+q20518,4.0,38.0,True,True,check for punctuation python
+q20519,164.0,inf,False,False,unsupported media type json python
+q20520,18.0,inf,True,False,python separate string to list
+q20521,inf,inf,False,False,python remove phrase from list of strings
+q20522,121.0,inf,False,False,python fastest way to load data
+q20523,14.0,42.0,True,True,add noise to the audio python
+q20524,57.0,62.0,True,True,object with commas turned into list python
+q20525,4.0,13.0,True,True,python set limits on x axis
+q20526,1.0,3.0,True,True,is python ssl socket connection thread safe
+q20527,33.0,inf,True,False,python3 encode decode bytes
+q20528,1.0,1.0,True,True,xsd file to python object
+q20529,1.0,5.0,True,True,python expand a path
+q20530,62.0,inf,True,False,python flask template table example
+q20531,7.0,inf,True,False,how to check if object defined python
+q20532,23.0,26.0,True,True,s3 sync between bucket python
+q20533,21.0,inf,True,False,change the position of 3d coordinate in python
+q20534,27.0,inf,True,False,python how to get the number of cores in a computer
+q20535,8.0,4.0,True,True,python how to use pdb set trace
+q20536,1.0,inf,True,False,python dictionary url encode
+q20537,29.0,inf,True,False,how to check whether a string is int in python
+q20538,34.0,19.0,True,True,python 3 change permission of file chmod
+q20539,2.0,3.0,True,True,python gaussian filter array
+q20540,9.0,inf,True,False,how to cut off a calculated number to two decimals in python
+q20541,38.0,inf,True,False,replace many value at once in python
+q20542,96.0,inf,True,False,python numpy conver to float64
+q20543,1.0,inf,True,False,python how to rank a list object
+q20544,39.0,inf,True,False,how to check if file doesn't exist in python
+q20545,7.0,12.0,True,True,how to get the parent directory in python
+q20546,3.0,7.0,True,True,resize an image python pil
+q20547,1.0,inf,True,False,python boxplot data frame
+q20548,1.0,1.0,True,True,python glpk read from lp file
+q20549,9.0,2.0,True,True,python threadpool close join
+q20550,18.0,inf,True,False,python sklearn onehotencoder string values
+q20551,36.0,25.0,True,True,python change to bytes
+q20552,19.0,inf,True,False,python json loads try
+q20553,10.0,inf,True,False,create an empty column in data frame python
+q20554,14.0,10.0,True,True,remove whitespace at end of line in python
+q20555,7.0,60.0,True,True,python file opening modes
+q20556,15.0,21.0,True,True,python code input prompt for questions
+q20557,3.0,32.0,True,True,python parse a log file that is logging
+q20558,40.0,inf,True,False,remove an entry from a dict python
+q20559,4.0,57.0,True,True,new line statemnt pythong write
+q20560,77.0,inf,True,False,python view as series column format string
+q20561,26.0,inf,True,False,python select not null column values
+q20562,724.0,inf,False,False,how do functions in python know the parametr type
+q20563,31.0,inf,True,False,cursor positioning python windows
+q20564,2.0,2.0,True,True,python how to equally space points in an ellipse
+q20565,67.0,inf,True,False,how to see how similar two images are in python
+q20566,inf,inf,False,False,how to make a input to have no spaces in python\
+q20567,2.0,inf,True,False,next line to read in python
+q20568,1.0,75.0,True,True,move an item in list to front python
+q20569,9.0,inf,True,False,"python wrap (s,w) print"
+q20570,36.0,37.0,True,True,how to check if missing values are blanks or nan or none in python
+q20571,6.0,10.0,True,True,python to get the indices of bin edges
+q20572,56.0,9.0,True,True,python comma separated value
+q20573,1.0,4.0,True,True,python requests disable ssl certificate verification
+q20574,48.0,inf,True,False,python var and distribution of probability
+q20575,1.0,17.0,True,True,how to determine it's a orthogonal matrix using python
+q20576,1.0,8.0,True,True,strip html tags in python
+q20577,3.0,24.0,True,True,center align python text
+q20578,1.0,inf,True,False,python get list of keys on an object
+q20579,67.0,inf,True,False,is there any python function to check for nan valu
+q20580,2.0,41.0,True,True,python get cookie for request
+q20581,321.0,inf,False,False,python is list no na
+q20582,7.0,13.0,True,True,python determine if a file is image
+q20583,2.0,inf,True,False,python reorganise a data frame
+q20584,3.0,28.0,True,True,read first line in txt file in python
+q20585,1.0,26.0,True,True,pass defined parser object to subparser python
+q20586,4.0,inf,True,False,how to print generic error in python
+q20587,5.0,5.0,True,True,python change the name of a key
+q20588,2.0,52.0,True,True,moving mouse python click
+q20589,8.0,inf,True,False,python to determine if services are running
+q20590,12.0,inf,True,False,python set contains multiple items
+q20591,48.0,inf,True,False,python protobyf parse from byte
+q20592,4.0,26.0,True,True,python check if a directory is writable
+q20593,6.0,inf,True,False,object as list python
+q20594,1.0,18.0,True,True,replace function nan python
+q20595,6.0,14.0,True,True,python hash table check if key exist
+q20596,2.0,52.0,True,True,take all points in box python
+q20597,1.0,33.0,True,True,python create enum by name
+q20598,6.0,inf,True,False,python matplotlib use arrow markers
+q20599,8.0,37.0,True,True,python function default args
+q20600,18.0,19.0,True,True,python how to select first 100 rows
+q20601,9.0,59.0,True,True,removing columnsns in data frame python
+q20602,14.0,34.0,True,True,python array to torch tensor
+q20603,9.0,7.0,True,True,how to turn a list into a csv python
+q20604,5.0,8.0,True,True,how do i unzip file in python

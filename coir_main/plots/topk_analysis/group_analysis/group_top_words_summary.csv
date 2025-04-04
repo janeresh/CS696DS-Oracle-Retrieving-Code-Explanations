@@ -1,0 +1,41 @@
+group,word,frequency
+Both,python,261
+Both,file,26
+Both,list,23
+Both,string,19
+Both,check,12
+Both,read,11
+Both,remove,10
+Both,line,10
+Both,object,9
+Both,array,9
+Baseline Only,python,178
+Baseline Only,list,19
+Baseline Only,check,18
+Baseline Only,string,18
+Baseline Only,file,16
+Baseline Only,object,14
+Baseline Only,numpy,10
+Baseline Only,array,10
+Baseline Only,value,10
+Baseline Only,function,9
+Neither,python,51
+Neither,list,7
+Neither,index,5
+Neither,string,5
+Neither,array,4
+Neither,type,4
+Neither,object,4
+Neither,element,3
+Neither,remove,3
+Neither,cast,2
+Colbert Only,python,6
+Colbert Only,ctypes,1
+Colbert Only,array,1
+Colbert Only,arrays,1
+Colbert Only,dict,1
+Colbert Only,keys,1
+Colbert Only,lowercase,1
+Colbert Only,write,1
+Colbert Only,parser,1
+Colbert Only,create,1
