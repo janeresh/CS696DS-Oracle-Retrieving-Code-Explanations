@@ -14,24 +14,24 @@ pip install -r expansion_requirements.txt
 ### Query Expansion with Wordnet UnFiltered
 Expand queries using synonyms from WordNet without filtering:
 ```bash
-python nltk_unfiltered_query_exp.py
+python nltk_code/nltk_unfiltered_query_exp.py
 ```
 
 ### Query Expansion with Wordnet Filtered
 Expand queries using WordNet and filter out unrelated non-code terms:
 ```bash
-python nltk_filtered_query_exp.py
+python nltk_code/nltk_filtered_query_exp.py
 ```
 
 ## Query Expansion with LangChain
 Use an LLM via LangChain to generate query expansions:
 ```bash
-python llm_langchain_query_exp.py
+python langchain_code/llm_langchain_query_exp.py
 ```
 # Running on SLURM
 To run the LangChain+LLM job as a SLURM batch job:
 ```bash
-sbatch langchain_sbatch.sh
+sbatch langchain_code/langchain_sbatch.sh
 ```
 
 ## Query Expansion with Local LLM (vLLM)
@@ -46,7 +46,7 @@ This method uses a locally hosted large language model via vLLM to expand querie
 Run the query expansion script directly using a local LLM:
 
 ```bash
-python query_expansion_parallel.py <model_name> <input_csv> <output_csv>
+python llm_based_code/query_expansion_llm_vllm.py <model_name> <input_csv> <output_csv>
 ```
 
 ### Run LLM-Based Query Expansion for a Large Dataset
@@ -58,15 +58,15 @@ If your dataset is large, split it into smaller CSV shards (e.g., 5000 rows per 
 python ../utils/split_csv.py <input_csv> <output_csv> <shard_no>
 ```
 
-### Step 2: Batch Job with SLURM 
+#### Step 2: Batch Job with SLURM 
 To run the expansion in parallel across multiple shards/subcsv and GPUs:
 **Note:** Modify the input CSV, output CSV and model name in the script
 
 ```bash
-sbatch qa_expand.sh 
+sbatch llm_based_code/qa_expand.sh 
 ```
 
-### Step 3: Merge All Result CSVs
+#### Step 3: Merge All Result CSVs
 After all shards are processed, merge the outputs into one file: 
 **Note:** Add the input_csv and output_csv as arguments.
 
