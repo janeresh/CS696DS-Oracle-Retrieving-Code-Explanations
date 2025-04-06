@@ -1,36 +1,96 @@
-# Validation using RTC
+# RTC Validation
 
-This repository provides simple yet powerful scripts for expanding natural language queries using **NLTK** and **WordNet**. Query expansion is essential for improving search quality, information retrieval, and downstream NLP tasks.
+This directory provides utilities for validating the **quality of generated code explanations** using code cleaning, LLM-based generation, and multiple code evaluation metrics (CodeBLEU, CodeBERTScore, Structural metrics).
 
+## Directory Structure
 
-## Install Requirements
+```
+validation/RTC/
+├── code_cleaning/                 
+├── code_generation/              
+├── evaluation/                   
+├── scripts/                      
+├── round_trip_check_code.ipynb   
+├── validate_requirements.txt     
+```
+
+## Environment Setup
+
+Install dependencies:
 
 ```bash
 pip install -r validate_requirements.txt
 ```
 
-## NLTK
+## Code Cleaning
 
-### Wordnet UnFiltered
-Run the wordnet based query expansion file
+### General Cleaning:
+Run this command for general whitespace, docstring, and formatting cleanup.
 ```bash
-python nltk_unfiltered_query_exp.py
+python code_cleaning/clean_code.py <input_csv> <output_csv> <model_name>
 ```
 
-### Wordnet Filtered
-Run the wordnet based query expansion file and applying filter for code related words.
+### In-line Comment Cleaning:
+Run this command for removing inline and block comments from code
 ```bash
-python nltk_filtered_query_exp.py
+python code_cleaning/clean_code_remove_comments.py <input_csv> <output_csv> <model_name>
 ```
 
-### LangChain + LLM
-Run the LangChain + LLM query expansion file.
+## Code Generation (LLM-based)
+Generate code explanations using specific models such as Deepseek or Granite.
+
 ```bash
-python llm_langchain_query_exp.py
+python code_generation/main.py <input_csv> <output_csv> <model_name>
 ```
 
-We can run this as a SBatch Job by using the below file
+### Run as SBatch Job
+```bash
+sbatch code_generation/rtc_sbatch.sh <input_csv> <output_csv> <model_name>
+```
+
+### Run as Multiple SBatch Jobs
+```bash
+sh code_generation/submit_jobs.sh <input_csv> <output_csv> <model_name>
+```
+
+## Code Generation (LLM-based)
+Generate parallelized batch inference using specific models such as Deepseek or Granite.
 
 ```bash
-python langchain_sbatch.sh
+python code_generation/codegenerator_parallel.py <input_csv> <output_csv> <model_name>
+```
+
+### Run as SBatch Job (Array Job)
+```bash
+sbatch code_generation/parallel_run.sh <input_csv> <output_csv> <model_name>
+```
+
+## Evaluation
+
+### CodeBERT Metrics:
+Evaluates similarity using CodeBERTScore
+- `evaluate_codebleumetrics.py`: Calculates CodeBLEU
+- `structural_tree_code_metrics.py`: Computes structural similarity using Tree-Sitter
+
+```bash
+python evaluation/evaluate_codebertmetrics.py <input_csv> <output_csv> <model_name>
+```
+
+### CodeBLEU Metrics:
+Evaluates similarity using CodeBLEU
+```bash
+python evaluation/evaluate_codebleumetrics.py <input_csv> <output_csv> <model_name>
+```
+
+### Structural Metrics:
+Computes structural similarity using Tree-Sitter
+
+```bash
+python evaluation/structural_tree_code_metrics.py <input_csv> <output_csv> <model_name>
+```
+
+### Run as SBatch job 
+Metric names can be bert, bleu or struct
+```bash
+python evaluation/evaluate.sh <input_csv> <output_csv> <model_name> <metric_name>
 ```
