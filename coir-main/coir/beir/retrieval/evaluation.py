@@ -24,7 +24,7 @@ class EvaluateRetrieval:
         if not self.retriever:
             raise ValueError("Model/Technique has not been provided!")
         print('in beir/retrieval/evaluation.py: loading up search\n')
-        return self.retriever.search_bm25(corpus, queries, self.top_k, self.score_function, **kwargs)
+        return self.retriever.search(corpus, queries, self.top_k, self.score_function, **kwargs)
     
     def rerank(self, 
             corpus: Dict[str, Dict[str, str]], 
