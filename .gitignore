@@ -1,1 +1,9 @@
 .ipynb_checkpoints/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+coir-main/coir/beir/retrieval/__pycache__/*
+coir-main/coir/__pycache__/
+coir-main/results/**/*.csv
+coir-main/results/**/*.parquet

@@ -16,8 +16,10 @@ class InMemoryDataLoader:
         self.corpus = {}
         self.queries = {}
         self.qrels = {}
+        print('data loader init')
 
-    def load_custom(self) -> Tuple[Dict[str, Dict[str, str]], Dict[str, str], Dict[str, Dict[str, int]]]:
+    def load_custom(self, task_name) -> Tuple[Dict[str, Dict[str, str]], Dict[str, str], Dict[str, Dict[str, int]]]:
+
         logger.info("Loading Corpus...")
         self._load_corpus()
         logger.info("Loaded %d Documents.", len(self.corpus))
@@ -27,9 +29,24 @@ class InMemoryDataLoader:
         self._load_queries()
 
         self._load_qrels()
+
+#         print('before: ')
+#         print('corpus: ', self.corpus['c0'])
+#         print('query: ', self.queries['q0'])
+#         if task_name == 'CodeSearchNet-python':
+#             for qid in self.queries:
+#                 actual_id = qid[1:] 
+#                 cid = "c" + actual_id  
+
+#                 if cid in self.corpus:
+#                     self.corpus[cid]['text'], self.queries[qid] = self.queries[qid], self.corpus[cid]['text']
+#         print('after: ')
+#         print('corpus: ', self.corpus['c0'])
+#         print('query: ', self.queries['q0'])
         self.queries = {qid: self.queries[qid] for qid in self.qrels}
         logger.info("Loaded %d Queries.", len(self.queries))
         logger.info("Query Example: %s", list(self.queries.values())[0])
+        #print('4. ',len(self.corpus), len(self.queries), len(self.qrels))
 
         return self.corpus, self.queries, self.qrels
 
@@ -63,9 +80,24 @@ def load_data_from_hf(task_name):
         queries_corpus_dataset = load_dataset(f"CoIR-Retrieval/{task_name}-queries-corpus")
         qrels_dataset = load_dataset(f"CoIR-Retrieval/{task_name}-qrels")
 
+        print('fetched data from hf')
         corpus_data = queries_corpus_dataset['corpus']
         query_data = queries_corpus_dataset['queries']
         qrels_data = qrels_dataset['test']
+        data_loader = InMemoryDataLoader(corpus_data, query_data, qrels_data)
+        return data_loader.load_custom(task_name)
+    except Exception as e:
+        logger.error(f"Failed to load data for task {task_name}: {e}")
+        return None
+    
+def load_data_from_hf_train(task_name):
+    try:
+        queries_corpus_dataset = load_dataset(f"CoIR-Retrieval/{task_name}-queries-corpus")
+        qrels_dataset = load_dataset(f"CoIR-Retrieval/{task_name}-qrels")
+        print('fetched data from hf train')
+        corpus_data = queries_corpus_dataset['corpus']
+        query_data = queries_corpus_dataset['queries']
+        qrels_data = qrels_dataset['train']
 
         data_loader = InMemoryDataLoader(corpus_data, query_data, qrels_data)
         return data_loader.load_custom()
@@ -73,8 +105,26 @@ def load_data_from_hf(task_name):
         logger.error(f"Failed to load data for task {task_name}: {e}")
         return None
 
-def get_tasks(tasks: list):
+def load_data_from_hf_valid(task_name):
+    try:
+        queries_corpus_dataset = load_dataset(f"CoIR-Retrieval/{task_name}-queries-corpus")
+        qrels_dataset = load_dataset(f"CoIR-Retrieval/{task_name}-qrels")
+        print('fetched data from hf valid')
+        corpus_data = queries_corpus_dataset['corpus']
+        query_data = queries_corpus_dataset['queries']
+        qrels_data = qrels_dataset['valid']
+
+
+        data_loader = InMemoryDataLoader(corpus_data, query_data, qrels_data)
+        return data_loader.load_custom()
+    except Exception as e:
+        logger.error(f"Failed to load data for task {task_name}: {e}")
+        return None
+
+
+def get_tasks(tasks: list, segment="test"):
     all_tasks = {}
+    print('in tasks ')
 
     # Define sub-tasks for special cases
     special_tasks = {
@@ -88,14 +138,29 @@ def get_tasks(tasks: list):
         ]
     }
 
+
+    # for task in tasks:
+    #     if task in special_tasks:
+    #         for sub_task in special_tasks[task]:
+    #             task_data = load_data_from_hf(sub_task)
+    #             if task_data is not None:
+    #                 all_tasks[sub_task] = task_data
+    #     else:
+    #         task_data = load_data_from_hf(task)
+    #         if task_data is not None:
+    #             all_tasks[task] = task_data
+    
     for task in tasks:
-        if task in special_tasks:
-            for sub_task in special_tasks[task]:
-                task_data = load_data_from_hf(sub_task)
-                if task_data is not None:
-                    all_tasks[sub_task] = task_data
-        else:
+        if segment == "test":
             task_data = load_data_from_hf(task)
+            if task_data is not None:
+                all_tasks[task] = task_data
+        elif segment == "train": 
+            task_data = load_data_from_hf_train(task)
+            if task_data is not None:
+                all_tasks[task] = task_data
+        else:
+            task_data = load_data_from_hf_valid(task)
             if task_data is not None:
                 all_tasks[task] = task_data
 
