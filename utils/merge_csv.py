@@ -4,8 +4,8 @@ import os
 
 
 
-input_dir = "/work/pi_wenlongzhao_umass_edu/27/janet/validation_tool/RTC/results/explanations_4_codes_3/metrics/deepseek_struct_metrics_results_dir"
-output_file = "/work/pi_wenlongzhao_umass_edu/27/janet/validation_tool/RTC/results/explanations_4_codes_3/metrics/deepseek_struct_metrics_results.csv"
+input_dir = "/work/pi_wenlongzhao_umass_edu/27/janet/query_expansion/results/cosqa_queries_expanded_granite/"
+output_file = "/work/pi_wenlongzhao_umass_edu/27/janet/query_expansion/results/cosqa_queries_expanded_granite.csv"
 
 csv_files = glob.glob(os.path.join(input_dir, "*.csv"))
 
