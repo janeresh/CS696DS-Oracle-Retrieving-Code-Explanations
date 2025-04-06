@@ -3,7 +3,7 @@ import logging
 from io import StringIO
 from typing import Dict, Tuple
 import csv
-from datasets import load_dataset
+from datasets import load_dataset, Dataset, concatenate_datasets
 from tqdm.auto import tqdm
 
 logger = logging.getLogger(__name__)
@@ -30,19 +30,6 @@ class InMemoryDataLoader:
 
         self._load_qrels()
 
-#         print('before: ')
-#         print('corpus: ', self.corpus['c0'])
-#         print('query: ', self.queries['q0'])
-#         if task_name == 'CodeSearchNet-python':
-#             for qid in self.queries:
-#                 actual_id = qid[1:] 
-#                 cid = "c" + actual_id  
-
-#                 if cid in self.corpus:
-#                     self.corpus[cid]['text'], self.queries[qid] = self.queries[qid], self.corpus[cid]['text']
-#         print('after: ')
-#         print('corpus: ', self.corpus['c0'])
-#         print('query: ', self.queries['q0'])
         self.queries = {qid: self.queries[qid] for qid in self.qrels}
         logger.info("Loaded %d Queries.", len(self.queries))
         logger.info("Query Example: %s", list(self.queries.values())[0])
@@ -75,6 +62,30 @@ class InMemoryDataLoader:
             else:
                 self.qrels[query_id][corpus_id] = score
 
+def swap(corpus_data, query_data, qrels_data):
+    corpus_list = corpus_data.to_list()
+    query_list = query_data.to_list()
+
+    corpus_id_to_idx = {doc['_id']: idx for idx, doc in enumerate(corpus_list)}
+    query_id_to_idx = {qry['_id']: idx for idx, qry in enumerate(query_list)}
+
+    for example in qrels_data:
+        orig_query_id = example["query_id"]
+        orig_corpus_id = example["corpus_id"]
+
+        if orig_query_id in query_id_to_idx and orig_corpus_id in corpus_id_to_idx:
+            q_idx = query_id_to_idx[orig_query_id]
+            c_idx = corpus_id_to_idx[orig_corpus_id]
+
+            query_list[q_idx]['text'], corpus_list[c_idx]['text'] = (
+                corpus_list[c_idx]['text'], query_list[q_idx]['text']
+            )
+
+    swapped_corpus_data = Dataset.from_list(corpus_list).cast(corpus_data.features)
+    swapped_query_data = Dataset.from_list(query_list).cast(query_data.features)
+
+    return swapped_corpus_data, swapped_query_data
+
 def load_data_from_hf(task_name):
     try:
         queries_corpus_dataset = load_dataset(f"CoIR-Retrieval/{task_name}-queries-corpus")
@@ -83,8 +94,13 @@ def load_data_from_hf(task_name):
         print('fetched data from hf')
         corpus_data = queries_corpus_dataset['corpus']
         query_data = queries_corpus_dataset['queries']
-        qrels_data = qrels_dataset['test']
-        data_loader = InMemoryDataLoader(corpus_data, query_data, qrels_data)
+        qrels_data_test = qrels_dataset['test']
+        if task_name == "CodeSearchNet-python":            
+            qrels_data_train = qrels_dataset['train']
+            qrels_data_valid = qrels_dataset['valid']
+            qrels_data = concatenate_datasets([qrels_data_train, qrels_data_valid, qrels_data_test])
+            corpus_data, query_data = swap(corpus_data, query_data, qrels_data)
+        data_loader = InMemoryDataLoader(corpus_data, query_data, qrels_data_test)
         return data_loader.load_custom(task_name)
     except Exception as e:
         logger.error(f"Failed to load data for task {task_name}: {e}")
