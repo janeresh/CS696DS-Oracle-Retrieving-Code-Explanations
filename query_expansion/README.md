@@ -1,23 +1,17 @@
-# Query Expansion with NLTK and WordNet
-
-This repository provides simple yet powerful scripts for expanding natural language queries using **NLTK** and **WordNet**. Query expansion is essential for improving search quality, information retrieval, and downstream NLP tasks.
-
-
+# Query Expansion
 ## Install Requirements
 
 ```bash
 pip install -r expansion_requirements.txt
 ```
 
-## NLTK
-
-### Query Expansion with Wordnet UnFiltered
+## Query Expansion with Wordnet UnFiltered
 Expand queries using synonyms from WordNet without filtering:
 ```bash
 python nltk_code/nltk_unfiltered_query_exp.py
 ```
 
-### Query Expansion with Wordnet Filtered
+## Query Expansion with Wordnet Filtered
 Expand queries using WordNet and filter out unrelated non-code terms:
 ```bash
 python nltk_code/nltk_filtered_query_exp.py
@@ -28,7 +22,7 @@ Use an LLM via LangChain to generate query expansions:
 ```bash
 python langchain_code/llm_langchain_query_exp.py
 ```
-# Running on SLURM
+### Running on SLURM
 To run the LangChain+LLM job as a SLURM batch job:
 ```bash
 sbatch langchain_code/langchain_sbatch.sh
