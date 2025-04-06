@@ -3,10 +3,12 @@ import logging
 from typing import List, Dict, Tuple
 from .search.base import BaseSearch
 from .custom_metrics import mrr, recall_cap, hole, top_k_accuracy
+
 from collections import defaultdict
 from sentence_transformers.cross_encoder import CrossEncoder
 import pandas as pd
 import os
+
 
 logger = logging.getLogger(__name__)
 
@@ -17,9 +19,9 @@ class EvaluateRetrieval:
         self.top_k = max(k_values)
         self.retriever = retriever
         self.score_function = score_function
+
         #self.cross_encoder = CrossEncoder('cross-encoder/ms-marco-MiniLM-L-6-v2')
 
-            
     def retrieve(self, corpus: Dict[str, Dict[str, str]], queries: Dict[str, str], **kwargs) -> Dict[str, Dict[str, float]]:
         if not self.retriever:
             raise ValueError("Model/Technique has not been provided!")
@@ -92,7 +94,6 @@ class EvaluateRetrieval:
             reranked_results[query_id] = {doc_id: score for doc_id, score in reranked}
 
         return reranked_results
-
 
 
     @staticmethod
@@ -170,3 +171,4 @@ class EvaluateRetrieval:
         
         elif metric.lower() in ["acc", "top_k_acc", "accuracy", "accuracy@k", "top_k_accuracy"]:
             return top_k_accuracy(qrels, results, k_values)
+

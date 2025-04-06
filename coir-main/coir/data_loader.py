@@ -19,6 +19,7 @@ class InMemoryDataLoader:
         print('data loader init')
 
     def load_custom(self, task_name) -> Tuple[Dict[str, Dict[str, str]], Dict[str, str], Dict[str, Dict[str, int]]]:
+
         logger.info("Loading Corpus...")
         self._load_corpus()
         logger.info("Loaded %d Documents.", len(self.corpus))
@@ -28,6 +29,7 @@ class InMemoryDataLoader:
         self._load_queries()
 
         self._load_qrels()
+
 #         print('before: ')
 #         print('corpus: ', self.corpus['c0'])
 #         print('query: ', self.queries['q0'])
@@ -45,6 +47,7 @@ class InMemoryDataLoader:
         logger.info("Loaded %d Queries.", len(self.queries))
         logger.info("Query Example: %s", list(self.queries.values())[0])
         #print('4. ',len(self.corpus), len(self.queries), len(self.qrels))
+
         return self.corpus, self.queries, self.qrels
 
     def _load_corpus(self):
@@ -76,6 +79,7 @@ def load_data_from_hf(task_name):
     try:
         queries_corpus_dataset = load_dataset(f"CoIR-Retrieval/{task_name}-queries-corpus")
         qrels_dataset = load_dataset(f"CoIR-Retrieval/{task_name}-qrels")
+
         print('fetched data from hf')
         corpus_data = queries_corpus_dataset['corpus']
         query_data = queries_corpus_dataset['queries']
@@ -110,15 +114,18 @@ def load_data_from_hf_valid(task_name):
         query_data = queries_corpus_dataset['queries']
         qrels_data = qrels_dataset['valid']
 
+
         data_loader = InMemoryDataLoader(corpus_data, query_data, qrels_data)
         return data_loader.load_custom()
     except Exception as e:
         logger.error(f"Failed to load data for task {task_name}: {e}")
         return None
 
+
 def get_tasks(tasks: list, segment="test"):
     all_tasks = {}
     print('in tasks ')
+
     # Define sub-tasks for special cases
     special_tasks = {
         "codesearchnet": [
@@ -130,6 +137,7 @@ def get_tasks(tasks: list, segment="test"):
             "CodeSearchNet-ccr-ruby", "CodeSearchNet-ccr-python", "CodeSearchNet-ccr-php"
         ]
     }
+
 
     # for task in tasks:
     #     if task in special_tasks:
@@ -155,4 +163,5 @@ def get_tasks(tasks: list, segment="test"):
             task_data = load_data_from_hf_valid(task)
             if task_data is not None:
                 all_tasks[task] = task_data
+
     return all_tasks

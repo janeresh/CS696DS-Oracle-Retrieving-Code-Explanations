@@ -50,6 +50,9 @@ class DenseRetrievalExactSearch(BaseSearch):
         # Create embeddings for all queries using model.encode_queries()
         # Runs semantic search against the corpus embeddings
         # Returns a ranked list with the corpus ids
+
+        print('in exact_search.py')
+
         if score_function not in self.score_functions:
             raise ValueError("score function: {} must be either (cos_sim) for cosine similarity or (dot) for dot product".format(score_function))
             
@@ -57,7 +60,9 @@ class DenseRetrievalExactSearch(BaseSearch):
         query_ids = list(queries.keys())
         self.results = {qid: {} for qid in query_ids}
         queries = [queries[qid] for qid in queries]
+
         print('len of queries: ', len(query_ids))
+
         query_embeddings = self.model.encode_queries(
             queries, batch_size=self.batch_size, show_progress_bar=self.show_progress_bar, convert_to_tensor=self.convert_to_tensor)
           
@@ -65,7 +70,9 @@ class DenseRetrievalExactSearch(BaseSearch):
 
         corpus_ids = sorted(corpus, key=lambda k: len(corpus[k].get("title", "") + corpus[k].get("text", "")), reverse=True)
         corpus = [corpus[cid] for cid in corpus_ids]
+
         print('len of corpus: ', len(corpus_ids))
+
         logger.info("Encoding Corpus in batches... Warning: This might take a while!")
         logger.info("Scoring Function: {} ({})".format(self.score_function_desc[score_function], score_function))
 
@@ -110,6 +117,7 @@ class DenseRetrievalExactSearch(BaseSearch):
                 self.results[qid][corpus_id] = score
         
         return self.results 
+
     
     def search_bm25(self, 
                 corpus: Dict[str, Dict[str, str]], 
@@ -556,4 +564,3 @@ class DenseRetrievalExactSearch(BaseSearch):
 
         print("Search complete!")
         return self.results
-

@@ -26,7 +26,9 @@ class DenseRetrievalFaissSearch(BaseSearch):
         self.results = {}
         self.mapping = {}
         self.rev_mapping = {}
+
         print('in faiss search init')
+
     
     def _create_mapping_ids(self, corpus_ids):
         if not all(isinstance(doc_id, int) for doc_id in corpus_ids):
@@ -106,8 +108,10 @@ class DenseRetrievalFaissSearch(BaseSearch):
                top_k: int,
                score_function = str, **kwargs) -> Dict[str, Dict[str, float]]:
         
+
         print('in drfs search')
         
+
         assert score_function in self.score_functions
         normalize_embeddings = True if score_function == "cos_sim" else False
 
