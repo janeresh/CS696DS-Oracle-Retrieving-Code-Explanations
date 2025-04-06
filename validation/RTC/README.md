@@ -69,8 +69,6 @@ sbatch code_generation/parallel_run.sh <input_csv> <output_csv> <model_name>
 
 ### CodeBERT Metrics:
 Evaluates similarity using CodeBERTScore
-- `evaluate_codebleumetrics.py`: Calculates CodeBLEU
-- `structural_tree_code_metrics.py`: Computes structural similarity using Tree-Sitter
 
 ```bash
 python evaluation/evaluate_codebertmetrics.py <input_csv> <output_csv> <model_name>
