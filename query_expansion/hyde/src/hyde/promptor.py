@@ -1,7 +1,11 @@
 WEB_SEARCH = """Please write a passage to answer the question.
 Question: {}
 Passage:"""
-
+EXPAND_QUERY = """Expand the following query into a detailed, well-structured explanation of approximately 500 words. 
+Do not provide any code or pseudocode. Focus only on natural language explanation, including relevant background, examples, and reasoning.
+Query: {}
+Expanded Explanation:
+"""
 
 SCIFACT = """Please write a scientific paper passage to support/refute the claim.
 Claim: {}
@@ -45,6 +49,8 @@ class Promptor:
     
     def build_prompt(self, query: str):
         if self.task == 'web search':
+            return WEB_SEARCH.format(query)
+        elif self.task == 'expand':
             return WEB_SEARCH.format(query)
         elif self.task == 'scifact':
             return SCIFACT.format(query)

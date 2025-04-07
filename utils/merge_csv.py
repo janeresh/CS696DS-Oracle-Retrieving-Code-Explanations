@@ -4,8 +4,8 @@ import os
 
 
 
-input_dir = "/work/pi_wenlongzhao_umass_edu/27/janet/query_expansion/results/cosqa_queries_expanded_granite/"
-output_file = "/work/pi_wenlongzhao_umass_edu/27/janet/query_expansion/results/cosqa_queries_expanded_granite.csv"
+input_dir = "/work/pi_wenlongzhao_umass_edu/27/janet/query_expansion/results/cosqa_queries_expanded_granite2/"
+output_file = "/work/pi_wenlongzhao_umass_edu/27/janet/query_expansion/results/cosqa_queries_expanded_granite2.csv"
 
 csv_files = glob.glob(os.path.join(input_dir, "*.csv"))
 

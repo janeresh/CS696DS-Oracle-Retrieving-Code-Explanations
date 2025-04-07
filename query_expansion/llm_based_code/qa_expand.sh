@@ -24,4 +24,4 @@ if [ ! -f "$INPUT_CSV" ]; then
     exit 1
 fi
 
-python query_expansion_llm_vllm.py $MODEL $INPUT_CSV $OUTPUT_CSV
+python query_expansion2.py $MODEL $INPUT_CSV $OUTPUT_CSV
