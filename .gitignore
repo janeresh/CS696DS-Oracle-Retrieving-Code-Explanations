@@ -1,4 +1,5 @@
 .ipynb_checkpoints/
+coir-main/coir/**/*.pyc
 __pycache__/
 *.pyc
 *.pyo
