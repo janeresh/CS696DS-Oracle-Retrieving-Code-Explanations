@@ -40,29 +40,30 @@ python code_cleaning/clean_code_remove_comments.py <input_csv> <output_csv> <mod
 Generate code explanations using specific models such as Deepseek or Granite.
 
 ```bash
-python code_generation/main.py <input_csv> <output_csv> <model_name>
+python code_generation/main.py <input_csv> <output_csv> <model_name> <exps_no> <number_backward_passes>
 ```
 
 ### Run as SBatch Job
 ```bash
-sbatch code_generation/rtc_sbatch.sh <input_csv> <output_csv> <model_name>
+sbatch code_generation/rtc_sbatch.sh <input_csv> <output_csv> <model_name> <exps_no> <number_backward_passes>
 ```
 
 ### Run as Multiple SBatch Jobs
+**Note:** Modify the input CSV, output CSV, model name, number of explanations and number of codes to be generated(backward passes).
 ```bash
-sh code_generation/submit_jobs.sh <input_csv> <output_csv> <model_name>
+sh code_generation/submit_jobs.sh 
 ```
 
 ## Code Generation (LLM-based)
 Generate parallelized batch inference using specific models such as Deepseek or Granite.
 
 ```bash
-python code_generation/codegenerator_parallel.py <input_csv> <output_csv> <model_name>
+python code_generation/codegenerator_parallel.py <input_csv> <output_csv> <model_name> <exps_no> <number_backward_passes>
 ```
 
 ### Run as SBatch Job (Array Job)
 ```bash
-sbatch code_generation/parallel_run.sh <input_csv> <output_csv> <model_name>
+sbatch code_generation/parallel_run.sh <input_csv> <output_csv> <model_name> <exps_no> <number_backward_passes>
 ```
 
 ## Evaluation
