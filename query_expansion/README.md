@@ -46,15 +46,15 @@ python llm_based_code/query_expansion_llm_vllm.py <model_name> <input_csv> <outp
 ### Run LLM-Based Query Expansion for a Large Dataset
 #### Step 1: Split the Input CSV
 If your dataset is large, split it into smaller CSV shards (e.g., 5000 rows per file):
-**Note:** Add the input_csv, output_csv and shard_no as arguments.
+**Note:** Add the input_csv, output_csv and shard_no in the script.
 
 ```bash
-python ../utils/split_csv.py <input_csv> <output_csv> <shard_no>
+python ../utils/split_csv.py 
 ```
 
 #### Step 2: Batch Job with SLURM 
 To run the expansion in parallel across multiple shards/subcsv and GPUs:
-**Note:** Modify the input CSV, output CSV and model name in the script
+**Note:** Modify the input CSV, output CSV and model name in the script.
 
 ```bash
 sbatch llm_based_code/qa_expand.sh 
@@ -62,7 +62,7 @@ sbatch llm_based_code/qa_expand.sh
 
 #### Step 3: Merge All Result CSVs
 After all shards are processed, merge the outputs into one file: 
-**Note:** Add the input_csv and output_csv as arguments.
+**Note:** Add the input_csv and output_csv in the script.
 
 ```bash
 python ../utils/merge_csv.py <input_csv> <output_csv>
