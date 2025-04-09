@@ -84,7 +84,7 @@ def split_code_and_comments(source_code: str) -> str:
     return final_code
 
 def clean_code_column(input_csv: str, code_column: str = "code"):
-    df = pd.read_csv(input_csv).iloc[551:552]
+    df = pd.read_csv(input_csv)
     df["cleaned_code"] = df[code_column].apply(split_code_and_comments)
     return df
 
