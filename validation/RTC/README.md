@@ -63,7 +63,7 @@ python code_generation/codegenerator_parallel.py <input_csv> <output_csv> <model
 
 ### Run as SBatch Job (Array Job)
 ```bash
-sbatch code_generation/parallel_run.sh <input_csv> <output_csv> <model_name> <exps_no> <number_backward_passes>
+sbatch code_generation/parallel_run.sh 
 ```
 
 ## Evaluation
@@ -91,5 +91,5 @@ python evaluation/structural_tree_code_metrics.py <input_csv> <output_csv> <mode
 ### Run as SBatch job 
 Metric names can be bert, bleu or struct
 ```bash
-python evaluation/evaluate.sh <input_csv> <output_csv> <model_name> <metric_name>
+python evaluation/evaluate.sh
 ```
