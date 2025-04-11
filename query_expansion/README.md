@@ -40,7 +40,7 @@ This method uses a locally hosted large language model via vLLM to expand querie
 Run the query expansion script directly using a local LLM:
 
 ```bash
-python llm_based_code/query_expansion_llm_vllm.py <model_name> <input_csv> <output_csv>
+python llm_based_code/query_expansion_tfidf_mmr.py <model_name> <input_csv> <tfidf_ranked_output_csv> <mmr_ranked_output_csv>
 ```
 
 ### Run LLM-Based Query Expansion for a Large Dataset
@@ -57,7 +57,7 @@ To run the expansion in parallel across multiple shards/subcsv and GPUs:
 **Note:** Modify the input CSV, output CSV and model name in the script.
 
 ```bash
-sbatch llm_based_code/qa_expand.sh 
+sbatch llm_based_code/query_exp_mmr_tfidf.sh 
 ```
 
 #### Step 3: Merge All Result CSVs
@@ -65,5 +65,5 @@ After all shards are processed, merge the outputs into one file:
 **Note:** Add the input_csv and output_csv in the script.
 
 ```bash
-python ../utils/merge_csv.py <input_csv> <output_csv>
+python ../utils/merge_csv.py
 ```
