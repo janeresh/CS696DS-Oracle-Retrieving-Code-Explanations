@@ -7,3 +7,9 @@ coir-main/coir/beir/retrieval/__pycache__/*
 coir-main/coir/__pycache__/
 coir-main/results/**/*.csv
 coir-main/results/**/*.parquet
+Explanation_Generation/output
+Explanation_Generation/preprocessing/slurm-31908501.err
+Explanation_Generation/preprocessing/slurm-31908502.err
+Explanation_Generation/Cosqa/output
+Explanation_Generation/Cosqa/raw_data
+Explanation_Generation/Cosqa/pre_processing_COSQA

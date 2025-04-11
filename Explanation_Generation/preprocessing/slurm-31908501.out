@@ -1,0 +1,23 @@
+cuda
+Dataset loaded - /work/pi_wenlongzhao_umass_edu/27/anamikaghosh/pre_processing_CSN/CodeSearchNet_Python_train_cleaned.csv
+Output location - /work/pi_wenlongzhao_umass_edu/27/anamikaghosh/CS696DS-Oracle-Retrieving-Code-Explanations/Explanation-Generation/output/CSN_deepseek_train.csv
+Starting from line 37248
+INFO 04-10 23:18:13 __init__.py:207] Automatically detected platform cuda.
+WARNING 04-10 23:18:13 config.py:2448] Casting torch.bfloat16 to torch.float16.
+INFO 04-10 23:18:31 config.py:549] This model supports multiple tasks: {'generate', 'embed', 'score', 'classify', 'reward'}. Defaulting to 'generate'.
+WARNING 04-10 23:18:31 arg_utils.py:1187] Chunked prefill is enabled by default for models with max_model_len > 32K. Currently, chunked prefill might not work with some features or models. If you encounter any issues, please disable chunked prefill by setting --enable-chunked-prefill=False.
+INFO 04-10 23:18:31 config.py:1555] Chunked prefill is enabled with max_num_batched_tokens=2048.
+INFO 04-10 23:18:31 llm_engine.py:234] Initializing a V0 LLM engine (v0.7.3) with config: model='/datasets/ai/deepseek/hub/models--deepseek-ai--DeepSeek-R1-Distill-Qwen-1.5B/snapshots/530ca3e1ad39d440e182c2e4317aa40f012512fa', speculative_config=None, tokenizer='/datasets/ai/deepseek/hub/models--deepseek-ai--DeepSeek-R1-Distill-Qwen-1.5B/snapshots/530ca3e1ad39d440e182c2e4317aa40f012512fa', skip_tokenizer_init=False, tokenizer_mode=auto, revision=None, override_neuron_config=None, tokenizer_revision=None, trust_remote_code=False, dtype=torch.float16, max_seq_len=131072, download_dir=None, load_format=auto, tensor_parallel_size=1, pipeline_parallel_size=1, disable_custom_all_reduce=False, quantization=None, enforce_eager=False, kv_cache_dtype=auto,  device_config=cuda, decoding_config=DecodingConfig(guided_decoding_backend='xgrammar'), observability_config=ObservabilityConfig(otlp_traces_endpoint=None, collect_model_forward_time=False, collect_model_execute_time=False), seed=0, served_model_name=/datasets/ai/deepseek/hub/models--deepseek-ai--DeepSeek-R1-Distill-Qwen-1.5B/snapshots/530ca3e1ad39d440e182c2e4317aa40f012512fa, num_scheduler_steps=1, multi_step_stream_outputs=True, enable_prefix_caching=False, chunked_prefill_enabled=True, use_async_output_proc=True, disable_mm_preprocessor_cache=False, mm_processor_kwargs=None, pooler_config=None, compilation_config={"splitting_ops":[],"compile_sizes":[],"cudagraph_capture_sizes":[256,248,240,232,224,216,208,200,192,184,176,168,160,152,144,136,128,120,112,104,96,88,80,72,64,56,48,40,32,24,16,8,4,2,1],"max_capture_size":256}, use_cached_outputs=False, 
+INFO 04-10 23:18:33 cuda.py:178] Cannot use FlashAttention-2 backend for Volta and Turing GPUs.
+INFO 04-10 23:18:33 cuda.py:226] Using XFormers backend.
+INFO 04-10 23:18:34 model_runner.py:1110] Starting to load model /datasets/ai/deepseek/hub/models--deepseek-ai--DeepSeek-R1-Distill-Qwen-1.5B/snapshots/530ca3e1ad39d440e182c2e4317aa40f012512fa...
+INFO 04-10 23:18:39 model_runner.py:1115] Loading model weights took 3.3414 GB
+INFO 04-10 23:18:40 worker.py:267] Memory profiling takes 0.73 seconds
+INFO 04-10 23:18:40 worker.py:267] the current vLLM instance can use total_gpu_memory (47.45GiB) x gpu_memory_utilization (0.90) = 42.70GiB
+INFO 04-10 23:18:40 worker.py:267] model weights take 3.34GiB; non_torch_memory takes 0.06GiB; PyTorch activation peak memory takes 1.39GiB; the rest of the memory reserved for KV Cache is 37.91GiB.
+INFO 04-10 23:18:40 executor_base.py:111] # cuda blocks: 88741, # CPU blocks: 9362
+INFO 04-10 23:18:40 executor_base.py:116] Maximum concurrency for 131072 tokens per request: 10.83x
+INFO 04-10 23:18:46 model_runner.py:1434] Capturing cudagraphs for decoding. This may lead to unexpected consequences if the model is not static. To run the model in eager mode, set 'enforce_eager=True' or use '--enforce-eager' in the CLI. If out-of-memory error occurs during cudagraph capture, consider decreasing `gpu_memory_utilization` or switching to eager mode. You can also reduce the `max_num_seqs` as needed to decrease memory usage.
+INFO 04-10 23:19:03 model_runner.py:1562] Graph capturing finished in 18 secs, took 0.20 GiB
+INFO 04-10 23:19:03 llm_engine.py:436] init engine (profile, create kv cache, warmup model) took 24.53 seconds
+Model loaded - /datasets/ai/deepseek/hub/models--deepseek-ai--DeepSeek-R1-Distill-Qwen-1.5B/snapshots/530ca3e1ad39d440e182c2e4317aa40f012512fa
