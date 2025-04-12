@@ -37,10 +37,10 @@ This method uses a locally hosted large language model via vLLM to expand querie
 - Python 3.8+
 
 ### Run LLM-Based Query Expansion for a Small Dataset
-Run the query expansion script directly using a local LLM:
+Run the query expansion script directly using a local LLM. This script calls explanation_generation.py for generating the expansions of the query. After this, the script calls ranker.py for ranking the generated expansions using TF-IDF and MMR top k - ranking methods.
 
 ```bash
-python llm_based_code/query_expansion_tfidf_mmr.py <model_name> <input_csv> <tfidf_ranked_output_csv> <mmr_ranked_output_csv>
+python llm_based_code/queryexp_main.py <model_name> <input_csv> <tfidf_ranked_output_csv> <mmr_ranked_output_csv>
 ```
 
 ### Run LLM-Based Query Expansion for a Large Dataset
@@ -57,7 +57,7 @@ To run the expansion in parallel across multiple shards/subcsv and GPUs:
 **Note:** Modify the input CSV, output CSV and model name in the script.
 
 ```bash
-sbatch llm_based_code/query_exp_mmr_tfidf.sh 
+sbatch llm_based_code/qa_expand.sh 
 ```
 
 #### Step 3: Merge All Result CSVs
