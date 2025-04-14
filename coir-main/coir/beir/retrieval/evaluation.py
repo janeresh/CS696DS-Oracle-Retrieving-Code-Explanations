@@ -26,7 +26,7 @@ class EvaluateRetrieval:
         if not self.retriever:
             raise ValueError("Model/Technique has not been provided!")
         print('in beir/retrieval/evaluation.py: loading up search\n')
-        return self.retriever.search_bm25(corpus, queries, self.top_k, self.score_function, **kwargs)
+        return self.retriever.search(corpus, queries, self.top_k, self.score_function, **kwargs)
     
     def rerank(self, 
             corpus: Dict[str, Dict[str, str]], 
@@ -153,6 +153,77 @@ class EvaluateRetrieval:
             print(f"Retrieval evaluation results saved to {filename}")
 
         return ndcg, _map, recall, precision
+    
+    @staticmethod
+    
+    def evaluate_grouped(qrels: Dict[str, Dict[str, int]], 
+                     results: Dict[str, Dict[str, float]], 
+                     k_values: List[int],
+                     ignore_identical_ids: bool = True,
+                     save_results: bool = True,
+                     filename: str = "/work/pi_wenlongzhao_umass_edu/27/vaishnavisha/CS696DS-Oracle-Retrieving-Code-Explanations/coir-main/results/retrieval_evaluation.csv") -> Tuple[Dict[str, float], Dict[str, float], Dict[str, float], Dict[str, float]]:
+
+        print('Grouped evaluation based on query prefixes...\n')
+
+        from collections import defaultdict
+        import os
+        import pandas as pd
+        import pytrec_eval
+
+        if ignore_identical_ids:
+            logger.info('Ignoring identical query and document IDs...')
+            for qid, rels in results.items():
+                results[qid] = {pid: score for pid, score in rels.items() if qid != pid}
+
+        ndcg, _map, recall, precision = {}, {}, {}, {}
+
+        for k in k_values:
+            ndcg[f"NDCG@{k}"], _map[f"MAP@{k}"], recall[f"Recall@{k}"], precision[f"P@{k}"] = 0.0, 0.0, 0.0, 0.0
+
+        map_string = "map_cut." + ",".join(map(str, k_values))
+        ndcg_string = "ndcg_cut." + ",".join(map(str, k_values))
+        recall_string = "recall." + ",".join(map(str, k_values))
+        precision_string = "P." + ",".join(map(str, k_values))
+
+        evaluator = pytrec_eval.RelevanceEvaluator(qrels, {map_string, ndcg_string, recall_string, precision_string})
+        scores = evaluator.evaluate(results)
+
+        result_data = []
+        grouped_scores = defaultdict(lambda: defaultdict(list))  # {prefix: {metric@k: [vals]}}
+        grouped_results = defaultdict(list)  # {prefix: rows}
+
+        for query_id in scores:
+            prefix = query_id.split('.')[0]
+
+            for k in k_values:
+                grouped_scores[prefix][f"NDCG@{k}"].append(scores[query_id][f"ndcg_cut_{k}"])
+                grouped_scores[prefix][f"MAP@{k}"].append(scores[query_id][f"map_cut_{k}"])
+                grouped_scores[prefix][f"Recall@{k}"].append(scores[query_id][f"recall_{k}"])
+                grouped_scores[prefix][f"P@{k}"].append(scores[query_id][f"P_{k}"])
+
+            for doc_id, score in sorted(results[query_id].items(), key=lambda x: x[1], reverse=True):
+                relevance = qrels.get(query_id, {}).get(doc_id, 0)
+                grouped_results[prefix].append([query_id, doc_id, score, relevance])
+
+        # Average metrics per prefix
+        total_groups = len(grouped_scores)
+        for k in k_values:
+            ndcg[f"NDCG@{k}"] = round(sum([sum(v[f"NDCG@{k}"]) / len(v[f"NDCG@{k}"]) for v in grouped_scores.values()]) / total_groups, 5)
+            _map[f"MAP@{k}"] = round(sum([sum(v[f"MAP@{k}"]) / len(v[f"MAP@{k}"]) for v in grouped_scores.values()]) / total_groups, 5)
+            recall[f"Recall@{k}"] = round(sum([sum(v[f"Recall@{k}"]) / len(v[f"Recall@{k}"]) for v in grouped_scores.values()]) / total_groups, 5)
+            precision[f"P@{k}"] = round(sum([sum(v[f"P@{k}"]) / len(v[f"P@{k}"]) for v in grouped_scores.values()]) / total_groups, 5)
+
+        if save_results:
+            all_rows = []
+            for rows in grouped_results.values():
+                all_rows.extend(rows)
+            df = pd.DataFrame(all_rows, columns=["query_id", "retrieved_doc_id", "score", "ground_truth_relevance"])
+            os.makedirs(os.path.dirname(filename), exist_ok=True)
+            df.to_csv(filename, index=False)
+            print(f"Grouped evaluation results saved to {filename}")
+
+        return ndcg, _map, recall, precision
+
 
 
     @staticmethod
