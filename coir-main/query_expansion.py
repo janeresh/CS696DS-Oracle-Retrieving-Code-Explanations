@@ -16,13 +16,13 @@ cosqa_deepseek_qe_path = '/work/pi_wenlongzhao_umass_edu/27/janet/query_expansio
 # In[16]:
 
 
-df = pd.read_csv(cosqa_deepseek_qe_path)
+# df = pd.read_csv(cosqa_deepseek_qe_path)
 
 
-# In[48]:
+# # In[48]:
 
 
-df[['id', 'expanded_query']].head()
+# df[['id', 'expanded_query']].head()
 
 
 #  instead of q1 i will rename it as q1.1 q1.2
@@ -32,10 +32,10 @@ df[['id', 'expanded_query']].head()
 # In[18]:
 
 
-from coir.data_loader import get_tasks
-from coir.evaluation import COIR
-from coir.models import YourCustomDEModel
-import pandas as pd
+# from coir.data_loader import get_tasks
+# from coir.evaluation import COIR
+# from coir.models import YourCustomDEModel
+# import pandas as pd
 
 
 # In[19]:
@@ -49,31 +49,31 @@ def load_data(dataset_name):
 # In[20]:
 
 
-dataset_name = "cosqa"
+# dataset_name = "cosqa"
 
 
 # In[22]:
 
 
-tasks = load_data(dataset_name)
+# tasks = load_data(dataset_name)
 
 
 # In[24]:
 
 
-corpus, queries, qrels = tasks["cosqa"]
+# corpus, queries, qrels = tasks["cosqa"]
 
 
 # In[41]:
 
 
-len(queries)
+# len(queries)
 
 
-# In[36]:
+# # In[36]:
 
 
-qrels['q20105']
+# qrels['q20105']
 
 
 # In[1]:
@@ -101,25 +101,25 @@ def expand_queries_and_qrels(expanded_df, original_qrels):
 # In[38]:
 
 
-new_queries, new_qrels = expand_queries_and_qrels(df, qrels)
+# new_queries, new_qrels = expand_queries_and_qrels(df, qrels)
 
 
-# In[51]:
+# # In[51]:
 
 
-df.loc[df['id'] == 'q20108']
+# df.loc[df['id'] == 'q20108']
 
 
-# In[47]:
+# # In[47]:
 
 
-new_queries['q20105.5']
+# new_queries['q20105.5']
 
 
-# In[52]:
+# # In[52]:
 
 
-new_qrels['q20105.5']
+# new_qrels['q20105.5']
 
 
 # In[ ]:
