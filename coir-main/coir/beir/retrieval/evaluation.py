@@ -3,7 +3,7 @@ import logging
 from typing import List, Dict, Tuple
 from .search.base import BaseSearch
 from .custom_metrics import mrr, recall_cap, hole, top_k_accuracy
-
+import json
 from collections import defaultdict
 from sentence_transformers.cross_encoder import CrossEncoder
 import pandas as pd
@@ -161,67 +161,96 @@ class EvaluateRetrieval:
                      k_values: List[int],
                      ignore_identical_ids: bool = True,
                      save_results: bool = True,
-                     filename: str = "/work/pi_wenlongzhao_umass_edu/27/vaishnavisha/CS696DS-Oracle-Retrieving-Code-Explanations/coir-main/results/retrieval_evaluation.csv") -> Tuple[Dict[str, float], Dict[str, float], Dict[str, float], Dict[str, float]]:
-
+                     filename: str = "/work/pi_wenlongzhao_umass_edu/27/vaishnavisha/CS696DS-Oracle-Retrieving-Code-Explanations/coir-main/results/retrieval_evaluation.csv"
+                    ) -> Tuple[Dict[str, float], Dict[str, float], Dict[str, float], Dict[str, float]]:
+    
         print('Grouped evaluation based on query prefixes...\n')
 
         from collections import defaultdict
         import os
+        import json
         import pandas as pd
         import pytrec_eval
 
         if ignore_identical_ids:
-            logger.info('Ignoring identical query and document IDs...')
+            print('Ignoring identical query and document IDs...')
             for qid, rels in results.items():
                 results[qid] = {pid: score for pid, score in rels.items() if qid != pid}
 
-        ndcg, _map, recall, precision = {}, {}, {}, {}
-
-        for k in k_values:
-            ndcg[f"NDCG@{k}"], _map[f"MAP@{k}"], recall[f"Recall@{k}"], precision[f"P@{k}"] = 0.0, 0.0, 0.0, 0.0
-
+        # Evaluation strings
         map_string = "map_cut." + ",".join(map(str, k_values))
         ndcg_string = "ndcg_cut." + ",".join(map(str, k_values))
         recall_string = "recall." + ",".join(map(str, k_values))
         precision_string = "P." + ",".join(map(str, k_values))
 
         evaluator = pytrec_eval.RelevanceEvaluator(qrels, {map_string, ndcg_string, recall_string, precision_string})
-        scores = evaluator.evaluate(results)
+        raw_scores = evaluator.evaluate(results)
 
-        result_data = []
-        grouped_scores = defaultdict(lambda: defaultdict(list))  # {prefix: {metric@k: [vals]}}
-        grouped_results = defaultdict(list)  # {prefix: rows}
+        # Save raw scores
+        os.makedirs(filename, exist_ok=True)
+        raw_score_path = filename + '/retrieval_scores.json'
+        with open(raw_score_path, 'w') as f:
+            json.dump(raw_scores, f, indent=2)
 
-        for query_id in scores:
-            prefix = query_id.split('.')[0]
+        # Group by query prefix
+        prefix_scores = defaultdict(lambda: defaultdict(float))
+        prefix_counts = defaultdict(int)
 
-            for k in k_values:
-                grouped_scores[prefix][f"NDCG@{k}"].append(scores[query_id][f"ndcg_cut_{k}"])
-                grouped_scores[prefix][f"MAP@{k}"].append(scores[query_id][f"map_cut_{k}"])
-                grouped_scores[prefix][f"Recall@{k}"].append(scores[query_id][f"recall_{k}"])
-                grouped_scores[prefix][f"P@{k}"].append(scores[query_id][f"P_{k}"])
+        for qid, metrics in raw_scores.items():
+            prefix = qid.split('.')[0]
+            for metric_name, value in metrics.items():
+                prefix_scores[prefix][metric_name] += value
+            prefix_counts[prefix] += 1
 
-            for doc_id, score in sorted(results[query_id].items(), key=lambda x: x[1], reverse=True):
-                relevance = qrels.get(query_id, {}).get(doc_id, 0)
-                grouped_results[prefix].append([query_id, doc_id, score, relevance])
+        # Compute average metrics per prefix
+        averaged_scores = {}
+        for prefix, metrics in prefix_scores.items():
+            count = prefix_counts[prefix]
+            averaged_scores[prefix] = {metric: round(value / count, 6) for metric, value in metrics.items()}
 
-        # Average metrics per prefix
-        total_groups = len(grouped_scores)
+        # Save averaged scores
+        os.makedirs(filename, exist_ok=True)
+        averaged_score_path = filename + '/retrieval_averaged_scores.json'
+        with open(averaged_score_path, 'w') as f:
+            json.dump(averaged_scores, f, indent=2)
+
+        # Initialize metrics
+        ndcg, _map, recall, precision = {}, {}, {}, {}
         for k in k_values:
-            ndcg[f"NDCG@{k}"] = round(sum([sum(v[f"NDCG@{k}"]) / len(v[f"NDCG@{k}"]) for v in grouped_scores.values()]) / total_groups, 5)
-            _map[f"MAP@{k}"] = round(sum([sum(v[f"MAP@{k}"]) / len(v[f"MAP@{k}"]) for v in grouped_scores.values()]) / total_groups, 5)
-            recall[f"Recall@{k}"] = round(sum([sum(v[f"Recall@{k}"]) / len(v[f"Recall@{k}"]) for v in grouped_scores.values()]) / total_groups, 5)
-            precision[f"P@{k}"] = round(sum([sum(v[f"P@{k}"]) / len(v[f"P@{k}"]) for v in grouped_scores.values()]) / total_groups, 5)
+            ndcg[f"NDCG@{k}"] = 0.0
+            _map[f"MAP@{k}"] = 0.0
+            recall[f"Recall@{k}"] = 0.0
+            precision[f"P@{k}"] = 0.0
 
+        # Use averaged scores for metrics
+        for prefix, metrics in averaged_scores.items():
+            for k in k_values:
+                ndcg[f"NDCG@{k}"] += metrics.get(f"ndcg_cut_{k}", 0.0)
+                _map[f"MAP@{k}"] += metrics.get(f"map_cut_{k}", 0.0)
+                recall[f"Recall@{k}"] += metrics.get(f"recall_{k}", 0.0)
+                precision[f"P@{k}"] += metrics.get(f"P_{k}", 0.0)
+
+        total_prefixes = len(averaged_scores)
+        for k in k_values:
+            ndcg[f"NDCG@{k}"] = round(ndcg[f"NDCG@{k}"] / total_prefixes, 5)
+            _map[f"MAP@{k}"] = round(_map[f"MAP@{k}"] / total_prefixes, 5)
+            recall[f"Recall@{k}"] = round(recall[f"Recall@{k}"] / total_prefixes, 5)
+            precision[f"P@{k}"] = round(precision[f"P@{k}"] / total_prefixes, 5)
+
+        # Build result_data from raw scores (preserve original qid + doc_ids)
+        result_data = []
+        for qid in results:
+            for doc_id, score in sorted(results[qid].items(), key=lambda x: x[1], reverse=True):
+                relevance = qrels.get(qid, {}).get(doc_id, 0)
+                result_data.append([qid, doc_id, score, relevance])
+
+        # Save CSV
         if save_results:
-            all_rows = []
-            for rows in grouped_results.values():
-                all_rows.extend(rows)
-            df = pd.DataFrame(all_rows, columns=["query_id", "retrieved_doc_id", "score", "ground_truth_relevance"])
-            os.makedirs(os.path.dirname(filename), exist_ok=True)
-            df.to_csv(filename, index=False)
-            print(f"Grouped evaluation results saved to {filename}")
-
+            df = pd.DataFrame(result_data, columns=["query_id", "retrieved_doc_id", "score", "ground_truth_relevance"])
+            os.makedirs(filename, exist_ok=True)
+            df.to_csv(filename+'/retrieval_evaluation.csv', index=False)
+            print(f"Retrieval evaluation results saved to {filename}")
+        
         return ndcg, _map, recall, precision
 
 
