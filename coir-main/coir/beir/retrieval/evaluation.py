@@ -7,10 +7,52 @@ import json
 from collections import defaultdict
 from sentence_transformers.cross_encoder import CrossEncoder
 import pandas as pd
-import os
-
+from statistics import median
+import os 
 
 logger = logging.getLogger(__name__)
+
+def combine_scores_by_average(results, top_k=1000):
+    print('in combine scores by average')
+    grouped = defaultdict(lambda: defaultdict(list))  # {q_prefix: {corpus_id: [scores]}}
+
+    for qid, corpus_scores in results.items():
+        q_prefix = qid.split('.')[0]
+        for cid, score in corpus_scores.items():
+            grouped[q_prefix][cid].append(score)
+
+    final_results = {}
+
+    for q_prefix, cid_scores in grouped.items():
+        freq_counter = {cid: len(scores) for cid, scores in cid_scores.items()}
+        averaged = {cid: sum(scores)/len(scores) for cid, scores in cid_scores.items()}
+        top_k_cids = sorted(freq_counter.items(), key=lambda x: (-x[1], -averaged[x[0]]))[:top_k]
+
+        # Formatted as {q_prefix: {cid: score, ...}}
+        final_results[q_prefix] = {cid: round(averaged[cid], 4) for cid, _ in top_k_cids}
+
+    return final_results
+
+def combine_scores_by_median(results, top_k=1000):
+    print('in combine scores by median')
+    grouped = defaultdict(lambda: defaultdict(list))  # {q_prefix: {corpus_id: [scores]}}
+
+    for qid, corpus_scores in results.items():
+        q_prefix = qid.split('.')[0]
+        for cid, score in corpus_scores.items():
+            grouped[q_prefix][cid].append(score)
+
+    final_results = {}
+
+    for q_prefix, cid_scores in grouped.items():
+        freq_counter = {cid: len(scores) for cid, scores in cid_scores.items()}
+        median_scores = {cid: median(scores) for cid, scores in cid_scores.items()}
+        top_k_cids = sorted(freq_counter.items(), key=lambda x: (-x[1], -median_scores[x[0]]))[:top_k]
+
+        # Formatted as {q_prefix: {cid: score, ...}}
+        final_results[q_prefix] = {cid: round(median_scores[cid], 4) for cid, _ in top_k_cids}
+
+    return final_results
 
 class EvaluateRetrieval:
     
@@ -28,74 +70,8 @@ class EvaluateRetrieval:
         print('in beir/retrieval/evaluation.py: loading up search\n')
         return self.retriever.search(corpus, queries, self.top_k, self.score_function, **kwargs)
     
-    def rerank(self, 
-            corpus: Dict[str, Dict[str, str]], 
-            queries: Dict[str, str],
-            results: Dict[str, Dict[str, float]],
-            top_k: int) -> Dict[str, Dict[str, float]]:
+ 
     
-        new_corpus = {}
-    
-        for query_id in results:
-            if len(results[query_id]) > top_k:
-                for (doc_id, _) in sorted(results[query_id].items(), key=lambda item: item[1], reverse=True)[:top_k]:
-                    new_corpus[doc_id] = corpus[doc_id]
-            else:
-                for doc_id in results[query_id]:
-                    new_corpus[doc_id] = corpus[doc_id]
-                    
-        return self.retriever.search(new_corpus, queries, top_k, self.score_function)
-
-    def rerank_rrf(self, 
-               corpus: Dict[str, Dict[str, str]], 
-               queries: Dict[str, str],
-               results: Dict[str, Dict[str, float]],
-               top_k: int,
-               rrf_k: int = 60) -> Dict[str, Dict[str, float]]:
-        """
-        Enhanced reranking using Reciprocal Rank Fusion (RRF).
-
-        rrf_k: Controls the impact of lower-ranked documents. Higher means lower-ranked docs contribute less.
-        """
-
-        reranked_results = defaultdict(dict)
-
-        for query_id, doc_scores in results.items():
-            # Sort docs by original score and take top-k
-            top_docs = sorted(doc_scores.items(), key=lambda item: item[1], reverse=True)[:top_k]
-
-            # RRF score aggregation
-            rrf_scores = defaultdict(float)
-            for rank, (doc_id, _) in enumerate(top_docs, start=1):
-                # Reciprocal Rank Fusion formula: RRF = 1 / (rank + rrf_k)
-                rrf_scores[doc_id] += 1 / (rank + rrf_k)
-
-            # Sort by final RRF scores
-            reranked_results[query_id] = {doc_id: score for doc_id, score in sorted(rrf_scores.items(), key=lambda x: x[1], reverse=True)}
-
-        return reranked_results
-    
-    def rerank_cross_encoder(self, 
-                         corpus: Dict[str, Dict[str, str]], 
-                         queries: Dict[str, str],
-                         results: Dict[str, Dict[str, float]],
-                         top_k: int) -> Dict[str, Dict[str, float]]:
-
-        reranked_results = {}
-
-        for query_id, doc_scores in results.items():
-            top_docs = sorted(doc_scores.items(), key=lambda item: item[1], reverse=True)[:top_k]
-
-            pairs = [(queries[query_id], corpus[doc_id]['text']) for doc_id, _ in top_docs]
-
-            scores = self.cross_encoder.predict(pairs, batch_size=self.batch_size)
-
-            reranked = sorted(zip([doc_id for doc_id, _ in top_docs], scores), key=lambda x: x[1], reverse=True)
-            reranked_results[query_id] = {doc_id: score for doc_id, score in reranked}
-
-        return reranked_results
-
-
     @staticmethod
 
     def evaluate(qrels: Dict[str, Dict[str, int]], 
@@ -111,7 +87,13 @@ class EvaluateRetrieval:
             logger.info('Ignoring identical query and document IDs...')
             for qid, rels in results.items():
                 results[qid] = {pid: score for pid, score in rels.items() if qid != pid}
-
+        results = combine_scores_by_average(results, max(k_values))
+        
+        # os.makedirs(filename, exist_ok=True)
+        # path = filename + '/results.json'
+        # with open(path, 'w') as f:
+        #     json.dump(results, f, indent=2)
+        
         ndcg, _map, recall, precision = {}, {}, {}, {}
 
         for k in k_values:
@@ -124,7 +106,10 @@ class EvaluateRetrieval:
 
         evaluator = pytrec_eval.RelevanceEvaluator(qrels, {map_string, ndcg_string, recall_string, precision_string})
         scores = evaluator.evaluate(results)
-
+        # os.makedirs(filename, exist_ok=True)
+        # path = filename + '/scores.json'
+        # with open(path, 'w') as f:
+        #     json.dump(scores, f, indent=2)
         result_data = []  
 
         for query_id in scores.keys():
@@ -153,6 +138,7 @@ class EvaluateRetrieval:
             print(f"Retrieval evaluation results saved to {filename}")
 
         return ndcg, _map, recall, precision
+    
     
     @staticmethod
     
@@ -272,3 +258,72 @@ class EvaluateRetrieval:
         elif metric.lower() in ["acc", "top_k_acc", "accuracy", "accuracy@k", "top_k_accuracy"]:
             return top_k_accuracy(qrels, results, k_values)
 
+    def rerank(self, 
+            corpus: Dict[str, Dict[str, str]], 
+            queries: Dict[str, str],
+            results: Dict[str, Dict[str, float]],
+            top_k: int) -> Dict[str, Dict[str, float]]:
+    
+        new_corpus = {}
+    
+        for query_id in results:
+            if len(results[query_id]) > top_k:
+                for (doc_id, _) in sorted(results[query_id].items(), key=lambda item: item[1], reverse=True)[:top_k]:
+                    new_corpus[doc_id] = corpus[doc_id]
+            else:
+                for doc_id in results[query_id]:
+                    new_corpus[doc_id] = corpus[doc_id]
+                    
+        return self.retriever.search(new_corpus, queries, top_k, self.score_function)
+
+    def rerank_rrf(self, 
+               corpus: Dict[str, Dict[str, str]], 
+               queries: Dict[str, str],
+               results: Dict[str, Dict[str, float]],
+               top_k: int,
+               rrf_k: int = 60) -> Dict[str, Dict[str, float]]:
+        """
+        Enhanced reranking using Reciprocal Rank Fusion (RRF).
+
+        rrf_k: Controls the impact of lower-ranked documents. Higher means lower-ranked docs contribute less.
+        """
+
+        reranked_results = defaultdict(dict)
+
+        for query_id, doc_scores in results.items():
+            # Sort docs by original score and take top-k
+            top_docs = sorted(doc_scores.items(), key=lambda item: item[1], reverse=True)[:top_k]
+
+            # RRF score aggregation
+            rrf_scores = defaultdict(float)
+            for rank, (doc_id, _) in enumerate(top_docs, start=1):
+                # Reciprocal Rank Fusion formula: RRF = 1 / (rank + rrf_k)
+                rrf_scores[doc_id] += 1 / (rank + rrf_k)
+
+            # Sort by final RRF scores
+            reranked_results[query_id] = {doc_id: score for doc_id, score in sorted(rrf_scores.items(), key=lambda x: x[1], reverse=True)}
+
+        return reranked_results
+    
+    def rerank_cross_encoder(self, 
+                         corpus: Dict[str, Dict[str, str]], 
+                         queries: Dict[str, str],
+                         results: Dict[str, Dict[str, float]],
+                         top_k: int) -> Dict[str, Dict[str, float]]:
+
+        reranked_results = {}
+
+        for query_id, doc_scores in results.items():
+            top_docs = sorted(doc_scores.items(), key=lambda item: item[1], reverse=True)[:top_k]
+
+            pairs = [(queries[query_id], corpus[doc_id]['text']) for doc_id, _ in top_docs]
+
+            scores = self.cross_encoder.predict(pairs, batch_size=self.batch_size)
+
+            reranked = sorted(zip([doc_id for doc_id, _ in top_docs], scores), key=lambda x: x[1], reverse=True)
+            reranked_results[query_id] = {doc_id: score for doc_id, score in reranked}
+
+        return reranked_results
+
+
+   
