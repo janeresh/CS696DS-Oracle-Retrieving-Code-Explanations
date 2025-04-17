@@ -56,7 +56,7 @@ class COIR:
 
             # Evaluate results
             print('in evaluation.py: evaluating\n')
-            ndcg, map, recall, precision = retriever.evaluate_grouped(qrels, initial_results, retriever.k_values, True, True, output_folder)
+            ndcg, map, recall, precision = retriever.evaluate(qrels, initial_results, retriever.k_values, True, True, output_folder)
 
             metrics = {
                 "NDCG": ndcg,

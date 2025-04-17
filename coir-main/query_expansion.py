@@ -10,7 +10,7 @@ import pandas as pd
 # In[15]:
 
 
-cosqa_deepseek_qe_path = '/work/pi_wenlongzhao_umass_edu/27/janet/query_expansion/results/cosqa/cosqa_queries_expanded_deepseek_temp_0.csv'
+# cosqa_deepseek_qe_path = '/work/pi_wenlongzhao_umass_edu/27/janet/query_expansion/results/cosqa/cosqa_queries_expanded_deepseek_temp_0.csv'
 
 
 # In[16]:

@@ -2,6 +2,7 @@ from coir.data_loader import get_tasks
 from coir.evaluation import COIR
 from coir.models import YourCustomDEModel
 import pandas as pd
+from collections import defaultdict
 
 def update_corpus_with_cleaned_code(corpus: dict, df: pd.DataFrame, id_col='corpus_id', code_col='cleaned_code') -> dict:
     updated_corpus = corpus.copy()
@@ -64,3 +65,4 @@ def run(model_name, tasks, llm_name, retrieval_name, dataset_name):
     else:
         results = evaluation.run(model, output_folder=f"results/{dataset_name}/{llm_name}/{retrieval_name}/{model_name}")
     print(results)
+    
