@@ -5,6 +5,8 @@ from typing import Dict, Tuple
 import csv
 from datasets import load_dataset, Dataset, concatenate_datasets
 from tqdm.auto import tqdm
+import pandas as pd
+from collections import defaultdict
 
 logger = logging.getLogger(__name__)
 
@@ -86,6 +88,99 @@ def swap(corpus_data, query_data, qrels_data):
 
     return swapped_corpus_data, swapped_query_data
 
+def update_cosqa_qrels_one2Many(corpus_data, query_data, qrels_data):
+    code_to_corpus_ids = defaultdict(list)
+    for row in corpus_data:
+        code_to_corpus_ids[row['text']].append(row['_id'])
+
+    duplicate_codes = {code: ids for code, ids in code_to_corpus_ids.items() if len(ids) > 1}
+
+    corpus_id_to_code = {corpus_id: code for code, corpus_ids in duplicate_codes.items() for corpus_id in corpus_ids}
+
+    corpus_id_to_query_ids = defaultdict(set)
+    for row in qrels_data:
+        corpus_id = row['corpus_id']
+        query_id = row['query_id']
+        if corpus_id in corpus_id_to_code:
+            corpus_id_to_query_ids[corpus_id].add(query_id)
+
+    final_results = []
+    for code, corpus_ids in duplicate_codes.items():
+        all_query_ids = set()
+        for cid in corpus_ids:
+            all_query_ids.update(corpus_id_to_query_ids.get(cid, []))
+        final_results.append({
+            'code_snippet': code,
+            'corpus_ids': corpus_ids,
+            'query_ids': list(all_query_ids)
+        })
+
+    final_results = sorted(final_results, key=lambda x: len(x['corpus_ids']), reverse=True)
+
+    final_results_df = pd.DataFrame(final_results)
+
+    code_to_corpus_ids = final_results_df.explode('corpus_ids').groupby('code_snippet')['corpus_ids'].apply(set).to_dict()
+
+    new_qrels = []
+
+    for _, row in final_results_df.iterrows():
+        query_ids = row['query_ids']         
+        code = row['code_snippet']                   
+        corpus_ids_with_same_code = code_to_corpus_ids[code]
+
+        for qid in query_ids:
+            for cid in corpus_ids_with_same_code:
+                new_qrels.append({'query_id': qid, 'corpus_id': cid, 'score': 1})
+
+    new_qrels_dataset = Dataset.from_list(new_qrels)
+
+    updated_qrels = concatenate_datasets([qrels_data, new_qrels_dataset])
+
+    seen_pairs = set()
+    filtered_rows = []
+
+    for row in updated_qrels:
+        pair = (row['query_id'], row['corpus_id'])
+        if pair not in seen_pairs:
+            seen_pairs.add(pair)
+            filtered_rows.append(row)
+
+    updated_qrels = Dataset.from_list(filtered_rows)
+    return updated_qrels
+
+def deduplicate_qrels_by_code(corpus_data, qrels_data):
+    print('in deduplicate_qrels_by_code')
+    code_to_corpus_ids = defaultdict(list)
+    for row in corpus_data:
+        code_to_corpus_ids[row['text']].append(row['_id'])
+
+    duplicate_codes = {code: ids for code, ids in code_to_corpus_ids.items() if len(ids) > 1}
+
+    corpus_id_replacements = {}
+    for code, ids in duplicate_codes.items():
+        canonical_id = ids[0] # first occuring as the cid
+        for cid in ids:
+            corpus_id_replacements[cid] = canonical_id
+
+    updated_qrels = []
+    seen = set()
+    for row in qrels_data:
+        query_id = row['query_id']
+        corpus_id = row['corpus_id']
+
+        canonical_id = corpus_id_replacements.get(corpus_id, corpus_id)
+
+        pair = (query_id, canonical_id)
+        if pair not in seen:
+            seen.add(pair)
+            updated_qrels.append({
+                'query_id': query_id,
+                'corpus_id': canonical_id,
+                'score': 1  
+            })
+
+    return Dataset.from_list(updated_qrels)
+
 def load_data_from_hf(task_name):
     try:
         queries_corpus_dataset = load_dataset(f"CoIR-Retrieval/{task_name}-queries-corpus")
@@ -95,6 +190,8 @@ def load_data_from_hf(task_name):
         corpus_data = queries_corpus_dataset['corpus']
         query_data = queries_corpus_dataset['queries']
         qrels_data_test = qrels_dataset['test']
+        if task_name == 'cosqa':
+            qrels_data_test = deduplicate_qrels_by_code(corpus_data, qrels_data_test)
         if task_name == "CodeSearchNet-python":            
             qrels_data_train = qrels_dataset['train']
             qrels_data_valid = qrels_dataset['valid']
