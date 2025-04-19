@@ -3,6 +3,9 @@ from vllm import LLM, SamplingParams
 from transformers import AutoTokenizer
 from collections import defaultdict
 import pandas as pd
+import ast
+import re
+import textwrap
 
 class CodeGeneration:
     def __init__(self, model_path, model_name, batch_size=8):
