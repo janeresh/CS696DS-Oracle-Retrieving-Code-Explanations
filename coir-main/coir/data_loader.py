@@ -148,17 +148,24 @@ def update_cosqa_qrels_one2Many(corpus_data, query_data, qrels_data):
     updated_qrels = Dataset.from_list(filtered_rows)
     return updated_qrels
 
-def deduplicate_qrels_by_code(corpus_data, qrels_data):
-    print('in deduplicate_qrels_by_code')
-    code_to_corpus_ids = defaultdict(list)
-    for row in corpus_data:
-        code_to_corpus_ids[row['text']].append(row['_id'])
+from collections import defaultdict
+from datasets import Dataset
 
-    duplicate_codes = {code: ids for code, ids in code_to_corpus_ids.items() if len(ids) > 1}
+def deduplicate_qrels_and_corpus_by_code(corpus_data, qrels_data):
+    print('Deduplicating corpus and qrels based on code content...')
+
+    code_to_corpus_ids = defaultdict(list)
+    code_to_entry = {}
+
+    for row in corpus_data:
+        code = row['text']
+        code_to_corpus_ids[code].append(row['_id'])
+        if code not in code_to_entry:
+            code_to_entry[code] = row   # first occurence
 
     corpus_id_replacements = {}
-    for code, ids in duplicate_codes.items():
-        canonical_id = ids[0] # first occuring as the cid
+    for code, ids in code_to_corpus_ids.items():
+        canonical_id = ids[0] # first occurence
         for cid in ids:
             corpus_id_replacements[cid] = canonical_id
 
@@ -166,20 +173,27 @@ def deduplicate_qrels_by_code(corpus_data, qrels_data):
     seen = set()
     for row in qrels_data:
         query_id = row['query_id']
-        corpus_id = row['corpus_id']
+        original_cid = row['corpus_id']
+        canonical_cid = corpus_id_replacements.get(original_cid, original_cid)
 
-        canonical_id = corpus_id_replacements.get(corpus_id, corpus_id)
-
-        pair = (query_id, canonical_id)
+        pair = (query_id, canonical_cid)
         if pair not in seen:
             seen.add(pair)
             updated_qrels.append({
                 'query_id': query_id,
-                'corpus_id': canonical_id,
-                'score': 1  
+                'corpus_id': canonical_cid,
+                'score': 1
             })
 
-    return Dataset.from_list(updated_qrels)
+    deduplicated_corpus = list(code_to_entry.values())
+
+    print(f"Original corpus size: {len(corpus_data)}")
+    print(f"Deduplicated corpus size: {len(deduplicated_corpus)}")
+    print(f"Original qrels size: {len(qrels_data)}")
+    print(f"Updated qrels size: {len(updated_qrels)}")
+
+    return Dataset.from_list(deduplicated_corpus), Dataset.from_list(updated_qrels)
+
 
 def load_data_from_hf(task_name):
     try:
@@ -191,7 +205,7 @@ def load_data_from_hf(task_name):
         query_data = queries_corpus_dataset['queries']
         qrels_data_test = qrels_dataset['test']
         if task_name == 'cosqa':
-            qrels_data_test = deduplicate_qrels_by_code(corpus_data, qrels_data_test)
+            corpus_data, qrels_data_test = deduplicate_qrels_and_corpus_by_code(corpus_data, qrels_data_test)
         if task_name == "CodeSearchNet-python":            
             qrels_data_train = qrels_dataset['train']
             qrels_data_valid = qrels_dataset['valid']
