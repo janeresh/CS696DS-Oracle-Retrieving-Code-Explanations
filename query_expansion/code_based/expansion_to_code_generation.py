@@ -4,7 +4,7 @@ from vllm import LLM, SamplingParams
 from transformers import AutoTokenizer
 import gc
 from tqdm import tqdm
-from clean_code import CodeCleaner
+from code_cleaning import CodeCleaner
 
 class CodeGeneration:
     def __init__(self, model_paths, checkpoint_csv):
@@ -109,7 +109,7 @@ class CodeGeneration:
                         "code": code,
                         "para_query": para_query,
                         "expansion_idx": idx + 1,
-                        "generated_code": self.codecleaner(raw_text)
+                        "generated_code": raw_text
                     })
 
             if checkpoint_rows:

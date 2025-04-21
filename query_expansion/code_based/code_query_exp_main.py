@@ -75,9 +75,9 @@ if generated_so_far >= total_rows:
     logger.info(f"[{MODEL}] Code explanations already completed. Skipping Stage 3.")
 else:
     logger.info(f"[{MODEL}] Resuming code explanation from row {generated_so_far}")
-    code_explainer = CodeExplainer(MODEL_PATHS, codeexplain_stage_3_csv)
+    code_explainer = CodeExplainer(MODEL_PATHS, OUTPUT_CSV)
     code_explainer.generate_explanations(MODEL, codegen_stage_2_csv, query_batch_size=batch_size)
-    logger.info(f"[{MODEL}] Code Explanation complete → {codeexplain_stage_3_csv}")
+    logger.info(f"[{MODEL}] Code Explanation complete → {OUTPUT_CSV}")
 
 gc.collect()
 if torch.cuda.is_available():

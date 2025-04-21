@@ -2,7 +2,7 @@
 #SBATCH --job-name=code_expand
 #SBATCH --output=logs/code_%A_%a.out
 #SBATCH --error=logs/code_%A_%a.err
-#SBATCH --array=0-1
+#SBATCH --array=0-25
 #SBATCH --gres=gpu:1
 #SBATCH --cpus-per-task=4
 #SBATCH --mem=80G
@@ -13,9 +13,9 @@
 module load cuda/11.8
 source /work/pi_wenlongzhao_umass_edu/27/.venv/bin/activate
 MODEL="granite"
-dataset="csn/csn_test"
+dataset="csn/csn_train"
 mkdir -p results/${dataset}_queries_expanded_${MODEL}_code_based logs
-INPUT_CSV="../data/csn_test_queries/part_${SLURM_ARRAY_TASK_ID}.csv"
+INPUT_CSV="../data/csn_train_queries/part_${SLURM_ARRAY_TASK_ID}.csv"
 OUTPUT_CSV="results/${dataset}_queries_expanded_${MODEL}_code_based/result_${SLURM_ARRAY_TASK_ID}.csv"
 
 echo "Running task ${SLURM_ARRAY_TASK_ID} on host $(hostname)"
