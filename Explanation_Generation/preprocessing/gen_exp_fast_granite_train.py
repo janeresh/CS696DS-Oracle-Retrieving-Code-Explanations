@@ -89,8 +89,8 @@ class ExplanationGeneratorLama:
 
 # === CONFIG ===
 csv_path = '/work/pi_wenlongzhao_umass_edu/27/anamikaghosh/pre_processing_CSN/CodeSearchNet_Python_train_cleaned.csv'
-output_path = '/work/pi_wenlongzhao_umass_edu/27/anamikaghosh/CS696DS-Oracle-Retrieving-Code-Explanations/Explanation-Generation/output/CSN_granite_train.csv'
-checkpoint_path = '/work/pi_wenlongzhao_umass_edu/27/anamikaghosh/CS696DS-Oracle-Retrieving-Code-Explanations/Explanation-Generation/checkpoint/CSN_granite_train.txt'
+output_path = '/work/pi_wenlongzhao_umass_edu/27/anamikaghosh/CS696DS-Oracle-Retrieving-Code-Explanations/Explanation_Generation/output/CSN_granite_train.csv'
+checkpoint_path = '/work/pi_wenlongzhao_umass_edu/27/anamikaghosh/CS696DS-Oracle-Retrieving-Code-Explanations/Explanation_Generation/checkpoint/CSN_granite_train.txt'
 # model_path = "/datasets/ai/deepseek/hub/models--deepseek-ai--DeepSeek-R1-Distill-Qwen-1.5B/snapshots/530ca3e1ad39d440e182c2e4317aa40f012512fa"
 # model = "deepseek"
 model_path = "/datasets/ai/ibm-granite/hub/models--ibm-granite--granite-3.0-2b-instruct/snapshots/69e41fe735f54cec1792de2ac4f124b6cc84638f"

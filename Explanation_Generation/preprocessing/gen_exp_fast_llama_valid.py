@@ -89,10 +89,12 @@ class ExplanationGeneratorLama:
 
 # === CONFIG ===
 csv_path = '/work/pi_wenlongzhao_umass_edu/27/anamikaghosh/pre_processing_CSN/CodeSearchNet_Python_valid_cleaned.csv'
-output_path = '/work/pi_wenlongzhao_umass_edu/27/anamikaghosh/CS696DS-Oracle-Retrieving-Code-Explanations/Explanation-Generation/output/CSN_llama4_valid.csv'
-checkpoint_path = '/work/pi_wenlongzhao_umass_edu/27/anamikaghosh/CS696DS-Oracle-Retrieving-Code-Explanations/Explanation-Generation/checkpoint/CSN_llama4_valid.txt'
-model_path = "/datasets/ai/llama4/hub/models--meta-llama--Llama-4-Scout-17B-16E-Instruct/snapshots/4bd10c4dc905b4000d76640d07a552344146faec"
-model = "llama4"
+output_path = '/work/pi_wenlongzhao_umass_edu/27/anamikaghosh/CS696DS-Oracle-Retrieving-Code-Explanations/Explanation_Generation/output/CSN_llama3_valid.csv'
+checkpoint_path = '/work/pi_wenlongzhao_umass_edu/27/anamikaghosh/CS696DS-Oracle-Retrieving-Code-Explanations/Explanation_Generation/checkpoint/CSN_llama3_valid.txt'
+# model_path = "/datasets/ai/llama4/hub/models--meta-llama--Llama-4-Scout-17B-16E-Instruct/snapshots/4bd10c4dc905b4000d76640d07a552344146faec"
+# model = "llama4"
+model_path = "/datasets/ai/llama3/hub/models--meta-llama--Llama-3.2-3B-Instruct/snapshots/0cb88a4f764b7a12671c53f0838cd831a0843b95"
+model = "llama3"
 # model_path = "/datasets/ai/ibm-granite/hub/models--ibm-granite--granite-3.0-2b-instruct/snapshots/69e41fe735f54cec1792de2ac4f124b6cc84638f"
 # model = "granite"
 batch_size = 128  # adjust to your GPU memory

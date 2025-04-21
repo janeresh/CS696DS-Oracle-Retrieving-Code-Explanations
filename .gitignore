@@ -13,3 +13,5 @@ Explanation_Generation/preprocessing/slurm-31908502.err
 Explanation_Generation/Cosqa/output
 Explanation_Generation/Cosqa/raw_data
 Explanation_Generation/Cosqa/pre_processing_COSQA
+Explanation_Generation/Cosqa/postprocessing/output
+Explanation_Generation/postprocessing/output
