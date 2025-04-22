@@ -197,20 +197,23 @@ def deduplicate_qrels_and_corpus_by_code(corpus_data, qrels_data):
 
 def load_data_from_hf(task_name):
     try:
-        queries_corpus_dataset = load_dataset(f"CoIR-Retrieval/{task_name}-queries-corpus")
-        qrels_dataset = load_dataset(f"CoIR-Retrieval/{task_name}-qrels")
+        if task_name == "CodeSearchNet-python":  
+            queries_corpus_dataset = load_dataset(f"CoIR-Retrieval/{task_name}-queries-corpus")
+            qrels_dataset = load_dataset(f"CoIR-Retrieval/{task_name}-qrels")
 
-        print('fetched data from hf')
-        corpus_data = queries_corpus_dataset['corpus']
-        query_data = queries_corpus_dataset['queries']
-        qrels_data_test = qrels_dataset['test']
-        if task_name == 'cosqa':
-            corpus_data, qrels_data_test = deduplicate_qrels_and_corpus_by_code(corpus_data, qrels_data_test)
-        if task_name == "CodeSearchNet-python":            
+            print('fetched data from hf')
+            corpus_data = queries_corpus_dataset['corpus']
+            query_data = queries_corpus_dataset['queries']
+            qrels_data_test = qrels_dataset['test']
+        
             qrels_data_train = qrels_dataset['train']
             qrels_data_valid = qrels_dataset['valid']
             qrels_data = concatenate_datasets([qrels_data_train, qrels_data_valid, qrels_data_test])
             corpus_data, query_data = swap(corpus_data, query_data, qrels_data)
+        if task_name == "cosqa":
+            corpus_data = load_dataset("vaishnavisha/cosqa_corpus_data")['train']
+            query_data = load_dataset("vaishnavisha/cosqa_query_data")['train']
+            qrels_data_test = load_dataset("vaishnavisha/cosqa_qrels_data_test")['train']
         data_loader = InMemoryDataLoader(corpus_data, query_data, qrels_data_test)
         return data_loader.load_custom(task_name)
     except Exception as e:
