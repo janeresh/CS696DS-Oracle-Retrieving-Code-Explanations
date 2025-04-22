@@ -43,6 +43,19 @@ class YourCustomDEModel:
             batch_size = last_hidden_states.shape[0]
             return last_hidden_states[torch.arange(batch_size, device=last_hidden_states.device), sequence_lengths]
 
+    def encode_text_with_retries(self, texts, batch_size=12, max_length=128):
+        while batch_size >= 1:
+            try:
+                return self.encode_text(texts, batch_size, max_length)
+            except RuntimeError as e:
+                if "out of memory" in str(e):
+                    torch.cuda.empty_cache()
+                    batch_size = batch_size // 2
+                    logging.warning(f"OOM detected. Reducing batch size to {batch_size}")
+                else:
+                    raise e
+        raise RuntimeError("Failed to encode even with batch size 1.")
+
     def encode_text(self, texts: List[str], batch_size: int = 12, max_length: int = 128) -> np.ndarray:
         logging.info(f"Encoding {len(texts)} texts...")
 
@@ -51,7 +64,8 @@ class YourCustomDEModel:
             batch_texts = texts[i:i+batch_size]
             encoded_input = self.tokenizer(batch_texts, padding=True, truncation=True, max_length=max_length, return_tensors="pt").to(device)
             with torch.no_grad():
-                model_output = self.model(**encoded_input)
+                with torch.cuda.amp.autocast():
+                    model_output = self.model(**encoded_input)
             batch_embeddings = self.mean_pooling(model_output, encoded_input['attention_mask'])
             embeddings.append(batch_embeddings.cpu())
 
@@ -72,4 +86,4 @@ class YourCustomDEModel:
         all_texts = ["passage: "+ doc['text'] for doc in corpus]
         #all_texts = ["passage: "+ doc for doc in corpus]
 
-        return self.encode_text(all_texts, batch_size, max_length)
+        return self.encode_text_with_retries(all_texts, batch_size, max_length)

@@ -71,6 +71,64 @@ class EvaluateRetrieval:
         return self.retriever.search(corpus, queries, self.top_k, self.score_function, **kwargs)
     
  
+    @staticmethod
+    def evaluate_eff(qrels: Dict[str, Dict[str, int]], 
+                 results: Dict[str, Dict[str, float]], 
+                 k_values: List[int],
+                 ignore_identical_ids: bool = True,
+                 save_results: bool = True,
+                 filename: str = "/work/pi_wenlongzhao_umass_edu/27/vaishnavisha/CS696DS-Oracle-Retrieving-Code-Explanations/coir-main/results/retrieval_evaluation.csv") -> Tuple[Dict[str, float], Dict[str, float], Dict[str, float], Dict[str, float]]:
+
+        import numpy as np
+        from collections import defaultdict
+
+        print('in beir/retrieval/evaluation.py: evaluating now\n')
+
+        if ignore_identical_ids:
+            logger.info('Ignoring identical query and document IDs...')
+            for qid, rels in results.items():
+                results[qid] = {pid: score for pid, score in rels.items() if qid != pid}
+        
+        results = combine_scores_by_median(results, max(k_values))
+
+        ndcg, _map, recall, precision = defaultdict(float), defaultdict(float), defaultdict(float), defaultdict(float)
+
+        map_string = "map_cut." + ",".join(map(str, k_values))
+        ndcg_string = "ndcg_cut." + ",".join(map(str, k_values))
+        recall_string = "recall." + ",".join(map(str, k_values))
+        precision_string = "P." + ",".join(map(str, k_values))
+
+        evaluator = pytrec_eval.RelevanceEvaluator(qrels, {map_string, ndcg_string, recall_string, precision_string})
+        scores = evaluator.evaluate(results)
+
+        result_data = [
+            [qid, doc_id, score, qrels.get(qid, {}).get(doc_id, 0)]
+            for qid in scores.keys()
+            for doc_id, score in sorted(results[qid].items(), key=lambda x: x[1], reverse=True)
+        ]
+
+        total_queries = len(scores)
+        for k in k_values:
+            for qid in scores.keys():
+                ndcg[f"NDCG@{k}"] += scores[qid].get(f"ndcg_cut_{k}", 0.0)
+                _map[f"MAP@{k}"] += scores[qid].get(f"map_cut_{k}", 0.0)
+                recall[f"Recall@{k}"] += scores[qid].get(f"recall_{k}", 0.0)
+                precision[f"P@{k}"] += scores[qid].get(f"P_{k}", 0.0)
+
+            ndcg[f"NDCG@{k}"] = round(ndcg[f"NDCG@{k}"] / total_queries, 5)
+            _map[f"MAP@{k}"] = round(_map[f"MAP@{k}"] / total_queries, 5)
+            recall[f"Recall@{k}"] = round(recall[f"Recall@{k}"] / total_queries, 5)
+            precision[f"P@{k}"] = round(precision[f"P@{k}"] / total_queries, 5)
+
+        if save_results:
+            df = pd.DataFrame(result_data, columns=["query_id", "retrieved_doc_id", "score", "ground_truth_relevance"])
+            os.makedirs(filename, exist_ok=True)
+            df.to_csv(os.path.join(filename, "retrieval_evaluation.csv"), index=False)
+            print(f"Retrieval evaluation results saved to {filename}")
+
+        return dict(ndcg), dict(_map), dict(recall), dict(precision)
+
+    
     
     @staticmethod
 
@@ -134,7 +192,7 @@ class EvaluateRetrieval:
         if save_results:
             df = pd.DataFrame(result_data, columns=["query_id", "retrieved_doc_id", "score", "ground_truth_relevance"])
             os.makedirs(filename, exist_ok=True)
-            df.to_csv(filename+'/retrieval_evaluation.csv', index=False)
+            df.to_csv(os.path.join(filename, "retrieval_evaluation.csv"), index=False)
             print(f"Retrieval evaluation results saved to {filename}")
 
         return ndcg, _map, recall, precision

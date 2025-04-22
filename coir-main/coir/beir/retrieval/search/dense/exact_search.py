@@ -73,14 +73,14 @@ class DenseRetrievalExactSearch(BaseSearch):
 
         print('len of corpus: ', len(corpus_ids))
 
-        logger.info("Encoding Corpus in batches... Warning: This might take a while!")
-        logger.info("Scoring Function: {} ({})".format(self.score_function_desc[score_function], score_function))
-
+        print("Encoding Corpus in batches... Warning: This might take a while!")
+        print("Scoring Function: {} ({})".format(self.score_function_desc[score_function], score_function))
+        self.corpus_chunk_size = 10000
         itr = range(0, len(corpus), self.corpus_chunk_size)
         
         result_heaps = {qid: [] for qid in query_ids}  # Keep only the top-k docs for each query
         for batch_num, corpus_start_idx in enumerate(itr):
-            logger.info("Encoding Batch {}/{}...".format(batch_num+1, len(itr)))
+            print("Encoding Batch {}/{}...".format(batch_num+1, len(itr)))
             corpus_end_idx = min(corpus_start_idx + self.corpus_chunk_size, len(corpus))
 
             # Encode chunk of corpus    
@@ -90,7 +90,6 @@ class DenseRetrievalExactSearch(BaseSearch):
                 show_progress_bar=self.show_progress_bar, 
                 convert_to_tensor = self.convert_to_tensor
                 )
-
             # Compute similarites using either cosine-similarity or dot product
             cos_scores = self.score_functions[score_function](query_embeddings, sub_corpus_embeddings)
             cos_scores[torch.isnan(cos_scores)] = -1
@@ -115,7 +114,7 @@ class DenseRetrievalExactSearch(BaseSearch):
         for qid in result_heaps:
             for score, corpus_id in result_heaps[qid]:
                 self.results[qid][corpus_id] = score
-        
+        print('exact_search finished')
         return self.results 
 
     
