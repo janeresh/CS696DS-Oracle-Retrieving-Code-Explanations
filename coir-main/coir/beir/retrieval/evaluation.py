@@ -64,11 +64,12 @@ class EvaluateRetrieval:
 
         #self.cross_encoder = CrossEncoder('cross-encoder/ms-marco-MiniLM-L-6-v2')
 
-    def retrieve(self, corpus: Dict[str, Dict[str, str]], queries: Dict[str, str], **kwargs) -> Dict[str, Dict[str, float]]:
+    def retrieve(self, corpus: Dict[str, Dict[str, str]], queries: Dict[str, str],fileName:str, **kwargs) -> Dict[str, Dict[str, float]]:
         if not self.retriever:
             raise ValueError("Model/Technique has not been provided!")
         print('in beir/retrieval/evaluation.py: loading up search\n')
         return self.retriever.search(corpus, queries, self.top_k, self.score_function, **kwargs)
+        #return self.retriever.search_dres_sparse(corpus, queries, self.top_k, self.score_function, fileName, **kwargs)
     
  
     @staticmethod
@@ -89,7 +90,7 @@ class EvaluateRetrieval:
             for qid, rels in results.items():
                 results[qid] = {pid: score for pid, score in rels.items() if qid != pid}
         
-        results = combine_scores_by_median(results, max(k_values))
+        results = combine_scores_by_average(results, max(k_values))
 
         ndcg, _map, recall, precision = defaultdict(float), defaultdict(float), defaultdict(float), defaultdict(float)
 

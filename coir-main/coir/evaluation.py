@@ -43,7 +43,7 @@ class COIR:
             
             # Retrieve results            
             print('in evaluation.py: retrieving\n')
-            initial_results = retriever.retrieve(corpus, queries)
+            initial_results = retriever.retrieve(corpus, queries, output_folder)
             
             
             # Rerank the results

@@ -32,7 +32,7 @@ def add_expl(tasks, dataset_name, explanation_df_path, col_name='explanation_dee
             corpus[corpus_id]['text'] = explanation  
 
     corpus = {doc_id: doc for doc_id, doc in corpus.items() if 'text' in doc and doc['text'].strip()}
-    print(corpus['d1'])
+    #print(corpus['d1'])
     tasks[dataset_name] = (corpus, queries, qrels)
 
     print(f"Total docs in corpus after replacement: {len(tasks[dataset_name][0])}")

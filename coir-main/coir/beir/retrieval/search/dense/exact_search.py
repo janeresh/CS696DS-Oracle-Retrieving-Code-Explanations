@@ -12,12 +12,12 @@ from collections import defaultdict
 from concurrent.futures import ThreadPoolExecutor
 import numpy as np
 import pandas as pd
-import os
+import os, pickle
 from sklearn.preprocessing import MinMaxScaler
 from joblib import Parallel, delayed
 import faiss
 from concurrent.futures import ThreadPoolExecutor
-
+from transformers import AutoTokenizer, AutoModelForSequenceClassification
 
 def tokenize(text):
     return [token.text.lower() for token in nlp(text) if not token.is_punct and not token.is_space]
@@ -29,7 +29,7 @@ logger = logging.getLogger(__name__)
 # Abstract class is BaseSearch
 class DenseRetrievalExactSearch(BaseSearch):
     
-    def __init__(self, model, batch_size: int = 128, corpus_chunk_size: int = 50000, **kwargs):
+    def __init__(self, model, batch_size: int = 128, corpus_chunk_size: int = 50000, alpha=0.7, **kwargs):
         #model is class that provides encode_corpus() and encode_queries()
         self.model = model
         self.batch_size = batch_size
@@ -38,7 +38,38 @@ class DenseRetrievalExactSearch(BaseSearch):
         self.corpus_chunk_size = corpus_chunk_size
         self.show_progress_bar = kwargs.get("show_progress_bar", True)
         self.convert_to_tensor = kwargs.get("convert_to_tensor", True)
+        self.alpha = alpha
+        self.bm25 = None
         self.results = {}
+        self.ce_tokenizer = AutoTokenizer.from_pretrained("Salesforce/codet5p-220m-py")
+        self.ce_model     = AutoModelForSequenceClassification.from_pretrained(
+                            "Salesforce/codet5p-220m-py").to("cuda")
+    
+    def build_bm25(self, corpus, cache_path="bm25_tokens.pkl"):
+        """
+        Build BM25 index once and cache the tokenised corpus to disk.
+        Next run: reload tokens and rebuild BM25 in milliseconds.
+        """
+        self.corpus_ids = list(corpus.keys())
+
+        # -------- check cache --------
+        if os.path.exists(cache_path):
+            logger.info(f"Loading BM25 tokens from {cache_path}")
+            with open(cache_path, "rb") as f:
+                corpus_tokens = pickle.load(f)
+        else:
+            logger.info("Tokenising corpus for BM25 …")
+            corpus_tokens = [self.tokenize(doc["text"]) for doc in corpus.values()]
+            os.makedirs(os.path.dirname(cache_path) or ".", exist_ok=True)
+            with open(cache_path, "wb") as f:
+                pickle.dump(corpus_tokens, f)
+
+        # (Re)create the BM25Okapi object
+        self.bm25 = BM25Okapi(corpus_tokens)
+
+    @staticmethod
+    def tokenize(text: str):
+        return text.lower().split()
     
     def search(self, 
                corpus: Dict[str, Dict[str, str]], 
@@ -116,6 +147,95 @@ class DenseRetrievalExactSearch(BaseSearch):
                 self.results[qid][corpus_id] = score
         print('exact_search finished')
         return self.results 
+
+    def search_dres_sparse(
+            self,
+            corpus: Dict[str, Dict[str, str]],
+            queries: Dict[str, str],
+            top_k: int,
+            score_function: str = "cos_sim",
+            cache_path: str = "bm25_tokens.pkl",
+            return_sorted: bool = False,
+            **kwargs) -> Dict[str, Dict[str, float]]:
+
+        print("in exact_search.py  dres+sparse (RRF)")
+
+        if self.bm25 is None:
+            self.build_bm25(corpus, cache_path+"bm25_tokens.pkl")    
+        id2row = {cid: i for i, cid in enumerate(self.corpus_ids)}
+
+        if score_function not in self.score_functions:
+            raise ValueError("score_function must be 'cos_sim' or 'dot'")
+
+        query_ids   = list(queries.keys())
+        query_texts = [queries[qid] for qid in query_ids]
+        self.results = {qid: {} for qid in query_ids}
+
+        q_emb = self.model.encode_queries(
+            query_texts, batch_size=self.batch_size,
+            show_progress_bar=self.show_progress_bar,
+            convert_to_tensor=self.convert_to_tensor)
+
+        corpus_sorted_ids = sorted(
+            corpus, key=lambda k: len(corpus[k].get("title", "") +
+                                    corpus[k].get("text", "")), reverse=True)
+        corpus_sorted = [corpus[cid] for cid in corpus_sorted_ids]
+
+        result_heaps = {qid: [] for qid in query_ids}
+        for start in range(0, len(corpus_sorted), self.corpus_chunk_size):
+            end = min(start + self.corpus_chunk_size, len(corpus_sorted))
+            sub_emb = self.model.encode_corpus(
+                corpus_sorted[start:end], batch_size=self.batch_size,
+                show_progress_bar=self.show_progress_bar,
+                convert_to_tensor=self.convert_to_tensor)
+
+            sims = self.score_functions[score_function](q_emb, sub_emb)
+            sims[torch.isnan(sims)] = -1
+
+            vals, idxs = torch.topk(
+                sims, min(top_k+1, sub_emb.shape[0]), dim=1,
+                largest=True, sorted=return_sorted)
+            vals, idxs = vals.cpu().tolist(), idxs.cpu().tolist()
+
+            for qi, qid in enumerate(query_ids):
+                heap = result_heaps[qid]
+                for idx, dscore in zip(idxs[qi], vals[qi]):
+                    doc_id = corpus_sorted_ids[start + idx]
+                    if len(heap) < top_k:
+                        heapq.heappush(heap, (dscore, doc_id))
+                    else:
+                        heapq.heappushpop(heap, (dscore, doc_id))
+
+        k_rrf = 60     
+
+        for qid, qtext in queries.items():
+            q_tok      = self.tokenize(qtext)
+            bm25_vec   = self.bm25.get_scores(q_tok)            
+            bm25_top   = np.argpartition(bm25_vec, -top_k)[-top_k:]
+            bm25_hits  = [(bm25_vec[i], self.corpus_ids[i]) for i in bm25_top]
+
+            dense_hits = list(result_heaps[qid])                 
+
+            all_docs = {doc for _, doc in dense_hits} 
+
+            dense_rank = {doc: r for r, (_, doc) in
+                        enumerate(sorted(dense_hits, key=lambda x: x[0], reverse=True), 1)}
+            bm25_rank  = {doc: r for r, doc in
+                        enumerate(sorted(all_docs,
+                                key=lambda d: bm25_vec[id2row[d]], reverse=True), 1)}
+            sentinel = 10**9
+
+            fused = []
+            for doc in all_docs:
+                r_dense = dense_rank.get(doc, sentinel)
+                r_bm25  = bm25_rank[doc]
+                rrf     = 1/(k_rrf + r_dense) + 1/(k_rrf + r_bm25)
+                fused.append((rrf, doc))
+
+            fused.sort(reverse=True)                  # high → low
+            self.results[qid] = {doc: s for s, doc in fused[:top_k]}
+
+        return self.results
 
     
     def search_bm25(self, 
@@ -361,8 +481,6 @@ class DenseRetrievalExactSearch(BaseSearch):
         print(f"Retrieval evaluation results saved to {filename}")
         return self.results
     
-
-
     def search_combinedScoresF(self, 
                    corpus: Dict[str, Dict[str, str]], 
                    queries: Dict[str, str], 
