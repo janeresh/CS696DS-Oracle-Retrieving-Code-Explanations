@@ -68,7 +68,7 @@ class EvaluateRetrieval:
         if not self.retriever:
             raise ValueError("Model/Technique has not been provided!")
         print('in beir/retrieval/evaluation.py: loading up search\n')
-        return self.retriever.search(corpus, queries, self.top_k, self.score_function, **kwargs)
+        return self.retriever.search_reranker(corpus, queries, self.top_k, self.score_function, **kwargs)
         #return self.retriever.search_dres_sparse(corpus, queries, self.top_k, self.score_function, fileName, **kwargs)
     
  

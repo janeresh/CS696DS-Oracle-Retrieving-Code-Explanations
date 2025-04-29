@@ -41,9 +41,9 @@ class DenseRetrievalExactSearch(BaseSearch):
         self.alpha = alpha
         self.bm25 = None
         self.results = {}
-        self.ce_tokenizer = AutoTokenizer.from_pretrained("Salesforce/codet5p-220m-py")
-        self.ce_model     = AutoModelForSequenceClassification.from_pretrained(
-                            "Salesforce/codet5p-220m-py").to("cuda")
+        self.ce_tokenizer = AutoTokenizer.from_pretrained(
+        "cross-encoder/ms-marco-MiniLM-L-6-v2")
+        self.ce_model = AutoModelForSequenceClassification.from_pretrained("cross-encoder/ms-marco-MiniLM-L-6-v2").half().to("cuda")
     
     def build_bm25(self, corpus, cache_path="bm25_tokens.pkl"):
         """
@@ -148,6 +148,90 @@ class DenseRetrievalExactSearch(BaseSearch):
         print('exact_search finished')
         return self.results 
 
+    def search_reranker(self, 
+               corpus: Dict[str, Dict[str, str]], 
+               queries: Dict[str, str], 
+               top_k: int, 
+               score_function: str,
+               return_sorted: bool = False, 
+               **kwargs) -> Dict[str, Dict[str, float]]:
+        # Create embeddings for all queries using model.encode_queries()
+        # Runs semantic search against the corpus embeddings
+        # Returns a ranked list with the corpus ids
+
+        print('in exact_search reranker.py')
+
+        lambda_blend = 0.5
+        if score_function not in self.score_functions:
+            raise ValueError("score function: {} must be either (cos_sim) for cosine similarity or (dot) for dot product".format(score_function))
+            
+        query_ids   = list(queries.keys())
+        query_texts = [queries[qid] for qid in query_ids]
+        print('encoding queries')
+        q_emb = self.model.encode_queries(
+            query_texts,
+            batch_size=self.batch_size,
+            show_progress_bar=self.show_progress_bar,
+            convert_to_tensor=self.convert_to_tensor)
+
+        corpus_ids_sorted = sorted(
+            corpus, key=lambda k: len(corpus[k].get("title", "") +
+                                    corpus[k].get("text", "")), reverse=True)
+        corpus_sorted = [corpus[cid] for cid in corpus_ids_sorted]
+
+        result_heaps = {qid: [] for qid in query_ids}
+        print('encoding corpus')
+        for start in range(0, len(corpus_sorted), self.corpus_chunk_size):
+            end = min(start + self.corpus_chunk_size, len(corpus_sorted))
+            c_emb = self.model.encode_corpus(
+                corpus_sorted[start:end],
+                batch_size=self.batch_size,
+                show_progress_bar=self.show_progress_bar,
+                convert_to_tensor=self.convert_to_tensor)
+
+            sims = self.score_functions[score_function](q_emb, c_emb)
+            sims[torch.isnan(sims)] = -1
+
+            vals, idxs = torch.topk(
+                sims, min(top_k + 1, c_emb.shape[0]), dim=1,
+                largest=True, sorted=return_sorted)
+            vals, idxs = vals.cpu().tolist(), idxs.cpu().tolist()
+
+            for qi, qid in enumerate(query_ids):
+                heap = result_heaps[qid]
+                for idx, dscore in zip(idxs[qi], vals[qi]):
+                    doc_id = corpus_ids_sorted[start + idx]
+                    if len(heap) < top_k:
+                        heapq.heappush(heap, (dscore, doc_id))
+                    else:
+                        heapq.heappushpop(heap, (dscore, doc_id))
+
+        self.results = {}
+        print('using cross encoder')
+        for qid, qtext in zip(query_ids, query_texts):
+            dense_hits = heapq.nlargest(top_k, result_heaps[qid])  # [(dscore, doc)]
+            docs = [corpus[doc_id]["text"] for _, doc_id in dense_hits]
+
+            enc = self.ce_tokenizer([qtext]*len(docs),
+                                    docs,
+                                    padding=True,
+                                    truncation=True,
+                                    max_length=512,
+                                    return_tensors="pt").to("cuda")
+            with torch.no_grad():
+                ce_logits = self.ce_model(**enc).logits.squeeze()   # (len(docs),)
+
+            ce_scores = ce_logits.cpu().tolist()
+            fused = []
+            for (dscore, doc_id), ce in zip(dense_hits, ce_scores):
+                fused_score = lambda_blend * ce + (1 - lambda_blend) * dscore
+                fused.append((fused_score, doc_id))
+
+            fused.sort(reverse=True)
+            self.results[qid] = {doc: s for s, doc in fused[:top_k]}
+
+        return self.results 
+
     def search_dres_sparse(
             self,
             corpus: Dict[str, Dict[str, str]],
@@ -237,7 +321,6 @@ class DenseRetrievalExactSearch(BaseSearch):
 
         return self.results
 
-    
     def search_bm25(self, 
                 corpus: Dict[str, Dict[str, str]], 
                 queries: Dict[str, str], 
