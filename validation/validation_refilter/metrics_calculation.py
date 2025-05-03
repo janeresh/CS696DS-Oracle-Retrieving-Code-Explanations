@@ -29,30 +29,6 @@ class CodeBERTScorer:
     def pass_at_k(self, n, c, k):
         return 1.0 if n - c < k else 1.0 - np.prod(1.0 - k / np.arange(n - c + 1, n + 1))
 
-    def compute_metrics(self, row, model_name, col_no, num_backward_passes):
-        original_code = row.get("cleaned_code", "")
-        codebert_scores = []
-
-        for i in range(col_no):
-            sub_scores = []
-            for j in range(num_backward_passes):
-                col = f"generated_code_{i+1}_code{j+1}"
-                score_col = f"CodeBERT_Score_{model_name}_{i+1}_code{j+1}"
-                match_col = f"Exact_Match_{model_name}_{i+1}_code{j+1}"
-                gen_code = row.get(col, "")
-                if isinstance(gen_code, str) and isinstance(original_code, str):
-                    exact_match, score = self.evaluate_generated_code(original_code, gen_code)
-                else:
-                    exact_match, score = False, 0.0
-                row[score_col] = score
-                row[match_col] = exact_match
-                sub_scores.append(score)
-            codebert_scores.append(sub_scores)
-
-        row[f"RTC_{model_name}_CodeBERT_Score"] = self.compute_rtc(codebert_scores)
-        pass1 = sum(score > self.threshold for scores in codebert_scores for score in scores)
-        row[f"Pass@1_{model_name}_CodeBERT_Score"] = self.pass_at_k(col_no * num_backward_passes, pass1, 1)
-        return row
 
 class CodeStructureScorer:
     def __init__(self):
@@ -120,28 +96,6 @@ class CodeStructureScorer:
     def pass_at_k(self, n, c, k):
         return 1.0 if n - c < k else 1.0 - np.prod(1.0 - k / np.arange(n - c + 1, n + 1))
 
-    def compute_structural_scores(self, row, model, col_no, num_backward_passes):
-        original_code = row.get("cleaned_code", "")
-        sim_scores = []
-
-        for i in range(col_no):
-            row_scores = []
-            for j in range(num_backward_passes):
-                col_name = f"generated_code_{i+1}_code{j+1}"
-                score_col = f"Structural_Score_{i+1}_code_{j+1}"
-                sim = 0.0
-                gen_code = row.get(col_name, "")
-                if isinstance(gen_code, str) and isinstance(original_code, str):
-                    sim = self.compute_cosine_similarity(original_code, gen_code)
-                row[score_col] = sim
-                row_scores.append(sim)
-            sim_scores.append(row_scores)
-
-        row[f"RTC_Struct_Score"] = self.compute_rtc(sim_scores)
-        true_positive = sum(score > 0.8 for scores in sim_scores for score in scores)
-        row[f"Pass@1_Struct_Score"] = round(self.pass_at_k(col_no * num_backward_passes, true_positive, 1), 4)
-        return row
-
 
 class CodeBLEUEvaluator:
     def __init__(self, script_path='../CodeBLEU/calc_code_bleu.py', lang='python', params='0.25,0.25,0.25,0.25'):
@@ -157,8 +111,7 @@ class CodeBLEUEvaluator:
     def pass_at_k(self, n, c, k):
         return 1.0 if n - c < k else 1.0 - np.prod(1.0 - k / np.arange(n - c + 1, n + 1))
 
-    def run_codebleu_on_strings(self, reference_codes, generated_code, lang='python',
-                                params='0.25,0.25,0.25,0.25', script_path='CodeBLEU/calc_code_bleu.py'):
+    def run_codebleu_on_strings(self, reference_codes, generated_code):
         ref_paths = []
         # Flatten multi-line code into single line
         
@@ -182,8 +135,8 @@ class CodeBLEUEvaluator:
             tmp_hyp.close()
 
             # Run subprocess
-            cmd = ["python", script_path, "--refs", *ref_paths, "--hyp", hyp_path,
-                "--lang", lang, "--params", params]
+            cmd = ["python", self.script_path, "--refs", *ref_paths, "--hyp", hyp_path,
+                "--lang", self.lang, "--params", self.params]
             result = subprocess.run(cmd, capture_output=True, text=True)
 
             print("=== CodeBLEU OUTPUT ===")
@@ -202,30 +155,3 @@ class CodeBLEUEvaluator:
 
         return score
     
-    def compute_bleu_metrics(self, row, model, col_no, num_backward_passes):
-        code_bleu_scores = []
-        original_code = row.get("cleaned_code", "")
-
-        for i in range(col_no):
-            code_bleu_scores_sub = []
-            for j in range(num_backward_passes):
-                gen_col = f"generated_code_{i+1}_code{j+1}"
-                score_col = f"CodeBLEU_Score_{i+1}_code{j+1}"
-                
-                gen_code = row.get(gen_col, "")
-                
-                if isinstance(gen_code, str) and isinstance(original_code, str):
-                    code_bleu_score = self.run_codebleu_on_strings([original_code], gen_code)
-                    row[score_col] = code_bleu_score
-                    code_bleu_scores_sub.append(code_bleu_score)
-                else:
-                    row[score_col] = 0.0
-                    code_bleu_scores_sub.append(0.0)
-            
-            code_bleu_scores.append(code_bleu_scores_sub)
-
-        row[f"RTC_CodeBLEU_Score"] = self.compute_rtc(code_bleu_scores)
-        pass1_true_count = sum(score > 0.8 for scores in code_bleu_scores for score in scores)
-        row[f"Pass@1_CodeBLEU_Score"] = self.pass_at_k(col_no * num_backward_passes, pass1_true_count, 1)
-
-        return row

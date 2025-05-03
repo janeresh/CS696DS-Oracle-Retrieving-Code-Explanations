@@ -114,7 +114,7 @@ else:
     cleaned_df = pd.read_csv(cleaned_file, skiprows=range(1, scored_so_far + 1))
     codebert = CodeBERTScorer(threshold=0.8)
     structure = CodeStructureScorer()
-    codebleu = CodeBLEUEvaluator(script_path="CodeBLEU/calc_code_bleu.py")
+    codebleu = CodeBLEUEvaluator(script_path="../CodeBLEU/calc_code_bleu.py")
 
     for i in tqdm(range(0, len(cleaned_df), batch_size), desc="Scoring"):
         batch = cleaned_df.iloc[i:i + batch_size].copy()
