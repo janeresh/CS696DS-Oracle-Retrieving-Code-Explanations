@@ -1,1 +1,14 @@
 .ipynb_checkpoints/
+coir-main/coir/**/*.pyc
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+coir-main/coir/beir/retrieval/__pycache__/*
+coir-main/coir/__pycache__/
+coir-main/results/**/*.csv
+coir-main/results/**/*.parquet
+coir-main/results/**/results.json
+coir-main/results/**/retrieval_averaged_scores.json
+coir-main/results/**/retrieval_scores.json
+jupyter
