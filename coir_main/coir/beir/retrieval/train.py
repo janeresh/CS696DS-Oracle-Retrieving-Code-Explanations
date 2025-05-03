@@ -24,18 +24,18 @@ class TrainRetriever:
         
         query_ids = list(queries.keys())
         train_samples = []
-
+        print("Scoring modified")
         for idx, start_idx in enumerate(trange(0, len(query_ids), self.batch_size, desc='Adding Input Examples')):
             query_ids_batch = query_ids[start_idx:start_idx+self.batch_size]
             for query_id in query_ids_batch:
                 for corpus_id, score in qrels[query_id].items():
-                    if score >= 1: # if score = 0, we don't consider for training
-                        try:
-                            s1 = queries[query_id]
-                            s2 = corpus[corpus_id].get("title") + " " + corpus[corpus_id].get("text") 
-                            train_samples.append(InputExample(guid=idx, texts=[s1, s2], label=1))
-                        except KeyError:
-                            logging.error("Error: Key {} not present in corpus!".format(corpus_id))
+                    #if score >= 1: # if score = 0, we don't consider for training
+                    try:
+                        s1 = queries[query_id]
+                        s2 = corpus[corpus_id].get("title") + " " + corpus[corpus_id].get("text") 
+                        train_samples.append(InputExample(guid=idx, texts=[s1, s2], label=score))
+                    except KeyError:
+                        logging.error("Error: Key {} not present in corpus!".format(corpus_id))
 
         logger.info("Loaded {} training pairs.".format(len(train_samples)))
         return train_samples
