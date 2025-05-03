@@ -4,17 +4,32 @@ import logging
 from transformers import AutoTokenizer, AutoModel
 from typing import List, Dict
 from tqdm.auto import tqdm
+import os
 
 logger = logging.getLogger(__name__)
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 class YourCustomDEModel:
-    def __init__(self, model_name="intfloat/e5-base-v2", **kwargs):
-        self.tokenizer = AutoTokenizer.from_pretrained(model_name)
-        self.model = AutoModel.from_pretrained(model_name).to(device)
-        self.model_name = model_name
+    def __init__(
+    self,
+    model_name = "intfloat/e5-base-v2",
+    local_path = None,
+    **kwargs
+    ):
+        source = local_path if (local_path and os.path.isdir(local_path)) else model_name
+
+        # load tokenizer
+        self.tokenizer = AutoTokenizer.from_pretrained(source, use_fast=True)
         self.tokenizer.add_eos_token = False
+
+        # load model
+        self.model = AutoModel.from_pretrained(source).to(device)
+        self.model_name = model_name
+        print(
+            f"YourCustomDEModel init → "
+            f"loaded from {'local_path' if source == local_path else 'hub'}"
+        )
 
     def mean_pooling(self, model_output, attention_mask):
         token_embeddings = model_output[0]  # First element of model_output contains all token embeddings
