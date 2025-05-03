@@ -1,5 +1,5 @@
 torch==2.4.0+cu118
-torchaudio==2.5.1
+torchaudio==2.4.0+cu118
 torchvision==0.19.0+cu118
 accelerate==1.4.0
 code_bert_score==0.4.1
@@ -30,5 +30,5 @@ tree-sitter-php==0.23.11
 tree-sitter-python==0.23.6
 tree-sitter-ruby==0.23.1
 tree-sitter-rust==0.23.2
-vllm 
+vllm==0.6.3
 vllm-flash-attn==2.6.2

@@ -1,95 +1,74 @@
 # RTC Validation
 
-This directory provides utilities for validating the **quality of generated code explanations** using code cleaning, LLM-based generation, and multiple code evaluation metrics (CodeBLEU, CodeBERTScore, Structural metrics).
+This directory provides utilities for validating the quality of generated code from explanations using a combination of code cleaning, LLM-based generation, and multiple similarity metrics, including CodeBLEU, CodeBERTScore, and structural comparison.
 
 ## Directory Structure
 
 ```
 validation/RTC/
-├── code_cleaning/                 
-├── code_generation/              
-├── evaluation/                   
-├── scripts/                      
+├── clean_code.py                 
+├── codegenerator_parallel.py              
+├── metrics_calculation.py                   
+├── rtc_validation.sh                      
 ├── round_trip_check_code.ipynb   
 ├── validate_requirements.txt     
 ```
+## Prerequisites
+- A compatible GPU (e.g., A100 / L40S with ≥32GB VRAM)
+- A local model path (e.g., DeepSeek, Granite)
+- Python 3.8+
 
 ## Environment Setup
 
-Install dependencies:
+Install all dependencies using:
 
 ```bash
 pip install -r validate_requirements.txt
 ```
 
-## Code Cleaning
+## Round Trip Correctness Execution
 
-### General Cleaning:
-Run this command for general whitespace, docstring, and formatting cleanup.
+Run the full validation pipeline:
 ```bash
-python code_cleaning/clean_code.py <input_csv> <output_csv> <model_name>
+python validation_main.py <input_csv> <output_csv> <model_name>
 ```
 
-### In-line Comment Cleaning:
-Run this command for removing inline and block comments from code
-```bash
-python code_cleaning/clean_code_remove_comments.py <input_csv> <output_csv> <model_name>
-```
+This performs the following:
 
-## Code Generation (LLM-based)
-Generate code explanations using specific models such as Deepseek or Granite.
+**1. Code Generation from Explanations**
+Handled by `codegenerator_parallel.py` using LLM-based models.
 
-```bash
-python code_generation/main.py <input_csv> <output_csv> <model_name> <exps_no> <number_backward_passes>
-```
+**2. Code Cleaning**
+Using `clean_code.py` to strip docstrings, inline comments, and update deprcdecated functions.
 
-### Run as SBatch Job
-```bash
-sbatch code_generation/rtc_sbatch.sh <input_csv> <output_csv> <model_name> <exps_no> <number_backward_passes>
-```
+**3. Similarity Metrics Calculation**
+Done using `metrics_calculation.py`, which includes: CodeBERTScorer, CodeStructureScorer and CodeBLEUEvaluator
 
-### Run as Multiple SBatch Jobs
-**Note:** Modify the input CSV, output CSV, model name, number of explanations and number of codes to be generated(backward passes).
-```bash
-sh code_generation/submit_jobs.sh 
-```
 
-## Code Generation (LLM-based)
-Generate parallelized batch inference using specific models such as Deepseek or Granite.
+## Running on Full Dataset
+**1. Split the Input CSV for Parallel Jobs**
+If your dataset is large, split it into smaller CSV shards (e.g., 5000 rows per file):
+**Note:** Add the input_csv, output_csv and shard_no in the script.
 
 ```bash
-python code_generation/codegenerator_parallel.py <input_csv> <output_csv> <model_name> <exps_no> <number_backward_passes>
+python ../utils/split_csv.py 
 ```
 
-### Run as SBatch Job (Array Job)
-```bash
-sbatch code_generation/parallel_run.sh 
-```
-
-## Evaluation
-
-### CodeBERT Metrics:
-Evaluates similarity using CodeBERTScore
+**2. Run the Jobs in Parallel (SLURM Batch Job)**
+Submit the job array using:
 
 ```bash
-python evaluation/evaluate_codebertmetrics.py <input_csv> <output_csv> <model_name>
+sbatch rtc_validation.sh 
 ```
+Each job will process one split independently.
 
-### CodeBLEU Metrics:
-Evaluates similarity using CodeBLEU
-```bash
-python evaluation/evaluate_codebleumetrics.py <input_csv> <output_csv> <model_name>
-```
+Note: Replace the input_csv, output_csv and model name parameters.
 
-### Structural Metrics:
-Computes structural similarity using Tree-Sitter
+**3. Merge Output Files into a Single CSV**
+After all shards are processed, merge the outputs into one file: 
+**Note:** Add the input_csv and output_csv in the script.
 
 ```bash
-python evaluation/structural_tree_code_metrics.py <input_csv> <output_csv> <model_name>
+python ../utils/merge_csv.py
 ```
 
-### Run as SBatch job 
-Metric names can be bert, bleu or struct
-```bash
-python evaluation/evaluate.sh
-```
