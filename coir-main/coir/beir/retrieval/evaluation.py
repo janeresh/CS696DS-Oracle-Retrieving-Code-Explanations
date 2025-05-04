@@ -12,6 +12,20 @@ import os
 
 logger = logging.getLogger(__name__)
 
+def collapse_results_by_prefix(results: Dict[str, Dict[str, float]]) -> Dict[str, Dict[str, float]]:
+    collapsed = {}
+
+    for qid, doc_scores in results.items():
+        prefix_scores = defaultdict(list)
+        
+        for doc_id, score in doc_scores.items():
+            prefix = doc_id.split('.')[0]  # Extract 'd1' from 'd1.1'
+            prefix_scores[prefix].append(score)
+        
+        collapsed[qid] = {prefix: max(scores) for prefix, scores in prefix_scores.items()}
+    
+    return collapsed
+
 def combine_scores_by_average(results, top_k=1000):
     print('in combine scores by average')
     grouped = defaultdict(lambda: defaultdict(list))  # {q_prefix: {corpus_id: [scores]}}
@@ -68,7 +82,7 @@ class EvaluateRetrieval:
         if not self.retriever:
             raise ValueError("Model/Technique has not been provided!")
         print('in beir/retrieval/evaluation.py: loading up search\n')
-        return self.retriever.search_reranker(corpus, queries, self.top_k, self.score_function, **kwargs)
+        return self.retriever.search(corpus, queries, self.top_k, self.score_function, **kwargs)
         #return self.retriever.search_dres_sparse(corpus, queries, self.top_k, self.score_function, fileName, **kwargs)
     
  
@@ -89,7 +103,11 @@ class EvaluateRetrieval:
             logger.info('Ignoring identical query and document IDs...')
             for qid, rels in results.items():
                 results[qid] = {pid: score for pid, score in rels.items() if qid != pid}
-        
+        os.makedirs(filename, exist_ok=True)
+        path = filename + '/query_corpus_expansion_results.json'
+        with open(path, 'w') as f:
+            json.dump(results, f, indent=2)
+        results = collapse_results_by_prefix(results)
         results = combine_scores_by_average(results, max(k_values))
 
         ndcg, _map, recall, precision = defaultdict(float), defaultdict(float), defaultdict(float), defaultdict(float)
