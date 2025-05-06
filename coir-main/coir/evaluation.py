@@ -43,6 +43,7 @@ class COIR:
             
             # Retrieve results            
             print('in evaluation.py: retrieving\n')
+            print(len(corpus))
             initial_results = retriever.retrieve(corpus, queries, output_folder)
             
             

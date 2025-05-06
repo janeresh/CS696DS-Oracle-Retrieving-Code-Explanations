@@ -101,7 +101,7 @@ class DenseRetrievalExactSearch(BaseSearch):
 
         corpus_ids = sorted(corpus, key=lambda k: len(corpus[k].get("title", "") + corpus[k].get("text", "")), reverse=True)
         corpus = [corpus[cid] for cid in corpus_ids]
-
+        
         print('len of corpus: ', len(corpus_ids))
 
         print("Encoding Corpus in batches... Warning: This might take a while!")

@@ -12,19 +12,30 @@ import os
 
 logger = logging.getLogger(__name__)
 
-def collapse_results_by_prefix(results: Dict[str, Dict[str, float]]) -> Dict[str, Dict[str, float]]:
-    collapsed = {}
-
-    for qid, doc_scores in results.items():
-        prefix_scores = defaultdict(list)
-        
-        for doc_id, score in doc_scores.items():
-            prefix = doc_id.split('.')[0]  # Extract 'd1' from 'd1.1'
-            prefix_scores[prefix].append(score)
-        
-        collapsed[qid] = {prefix: max(scores) for prefix, scores in prefix_scores.items()}
+def collapse_results_qce(results: Dict[str, Dict[str, float]], top_k: int = 1000) -> Dict[str, Dict[str, float]]:
+    aggregate: Dict[str, Dict[str, Dict[str, float]]] = {}
     
-    return collapsed
+    for full_qid, doc_scores in results.items():
+        q_prefix = full_qid.split('.')[0]        
+        if q_prefix not in aggregate:
+            aggregate[q_prefix] = {}
+        for full_doc_id, score in doc_scores.items():
+            d_prefix = full_doc_id.split('.')[0] 
+            if d_prefix not in aggregate[q_prefix]:
+                aggregate[q_prefix][d_prefix] = {"sum": 0.0, "count": 0}
+            aggregate[q_prefix][d_prefix]["sum"] += score
+            aggregate[q_prefix][d_prefix]["count"] += 1
+    
+    collapsed_results: Dict[str, Dict[str, float]] = {}
+    for q_prefix, docs in aggregate.items():
+        doc_list = []
+        for d_prefix, stats in docs.items():
+            avg_score = stats["sum"] / stats["count"]
+            doc_list.append((d_prefix, stats["count"], avg_score))
+        doc_list.sort(key=lambda x: (x[1], x[2]), reverse=True)
+        top_docs = doc_list[:top_k] if top_k is not None else doc_list
+        collapsed_results[q_prefix] = {d: avg for (d, _count, avg) in top_docs}
+    return collapsed_results
 
 def combine_scores_by_average(results, top_k=1000):
     print('in combine scores by average')
@@ -107,8 +118,8 @@ class EvaluateRetrieval:
         path = filename + '/query_corpus_expansion_results.json'
         with open(path, 'w') as f:
             json.dump(results, f, indent=2)
-        results = collapse_results_by_prefix(results)
-        results = combine_scores_by_average(results, max(k_values))
+        results = collapse_results_qce(results)
+        #results = combine_scores_by_average(results, max(k_values))
 
         ndcg, _map, recall, precision = defaultdict(float), defaultdict(float), defaultdict(float), defaultdict(float)
 

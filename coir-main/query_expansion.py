@@ -86,6 +86,13 @@ def expand_queries_and_qrels(expanded_df, original_qrels):
     grouped = expanded_df.groupby('id')
 
     for qid, group in grouped:
+        original_query = group['original_query'].iloc[0]
+        new_qid_original = f"{qid}.0"
+        new_queries[new_qid_original] = original_query
+
+        if qid in original_qrels:
+            new_qrels[new_qid_original] = original_qrels[qid]
+
         for idx, row in enumerate(group.itertuples(index=False), start=1):
             if pd.isna(row.expanded_query) or not str(row.expanded_query).strip():
                 continue
@@ -96,6 +103,7 @@ def expand_queries_and_qrels(expanded_df, original_qrels):
                 new_qrels[new_qid] = original_qrels[qid]
 
     return new_queries, new_qrels
+
 
 
 # In[38]:
