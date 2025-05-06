@@ -11,5 +11,5 @@ coir-main/results/**/*.parquet
 coir-main/results/**/results.json
 coir-main/results/**/retrieval_averaged_scores.json
 coir-main/results/**/retrieval_scores.json
-coir-main/*
+coir-main/results/*
 jupyter
